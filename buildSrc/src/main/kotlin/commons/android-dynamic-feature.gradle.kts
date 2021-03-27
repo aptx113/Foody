@@ -20,7 +20,6 @@ import BuildType
 import dependencyLibs.AndroidTestDependencies
 import dependencyLibs.Kotlin
 import dependencyLibs.TestDependencies
-import gradle.kotlin.dsl.accessors._c1423b320eb21bea40af7b76d5a93e57.androidTestImplementation
 import gradle.kotlin.dsl.accessors._c1423b320eb21bea40af7b76d5a93e57.implementation
 import gradle.kotlin.dsl.accessors._c1423b320eb21bea40af7b76d5a93e57.testImplementation
 
