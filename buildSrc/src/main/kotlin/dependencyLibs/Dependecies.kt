@@ -104,8 +104,8 @@ object Moshi {
 }
 
 object Navigation {
-    const val FRAG = "androidx.navigation:navigation-fragment:${NAV_VERSION}"
-    const val UI = "androidx.navigation:navigation-ui:${NAV_VERSION}"
+    const val FRAG = "androidx.navigation:navigation-fragment-ktx:${NAV_VERSION}"
+    const val UI = "androidx.navigation:navigation-ui-ktx:${NAV_VERSION}"
     const val SAFE_ARGS_GRADLE =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${NAV_VERSION}"
 }
