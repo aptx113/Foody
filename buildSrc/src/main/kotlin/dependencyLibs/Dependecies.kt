@@ -4,10 +4,13 @@ import dependencyVersions.DependencyVersions.ACTIVITY_VERSION
 import dependencyVersions.DependencyVersions.APPCOMPAT_VERSION
 import dependencyVersions.DependencyVersions.COIL_VERSION
 import dependencyVersions.DependencyVersions.CONSTRAINTLAYOUT_VERSION
+import dependencyVersions.DependencyVersions.COORDINATORLAYOT_VERSION
 import dependencyVersions.DependencyVersions.CORE_VERSION
 import dependencyVersions.DependencyVersions.COROUTINES_VERSION
+import dependencyVersions.DependencyVersions.DATASTORE_VERSION
 import dependencyVersions.DependencyVersions.FRAG_VERSION
 import dependencyVersions.DependencyVersions.HILT_VERSION
+import dependencyVersions.DependencyVersions.JSOUP_VERSION
 import dependencyVersions.DependencyVersions.KOTLIN_VERSION
 import dependencyVersions.DependencyVersions.LIFECYCLE_VERSION
 import dependencyVersions.DependencyVersions.MATERIAL_VERSION
@@ -18,6 +21,8 @@ import dependencyVersions.DependencyVersions.PAGING_VERSION
 import dependencyVersions.DependencyVersions.RECYCLERVIEW_VERSION
 import dependencyVersions.DependencyVersions.RETROFIT2_VERSION
 import dependencyVersions.DependencyVersions.ROOM_VERSION
+import dependencyVersions.DependencyVersions.SHIMMER_RECYCLER_VERSION
+import dependencyVersions.DependencyVersions.SHIMMER_VERSION
 import dependencyVersions.DependencyVersions.TIMBER_VERSION
 import dependencyVersions.DependencyVersions.VIEWPAGER2_VERSION
 
@@ -42,6 +47,11 @@ object ConstraintLayout {
         "androidx.constraintlayout:constraintlayout:${CONSTRAINTLAYOUT_VERSION}"
 }
 
+object CoordinatorLayout {
+    const val COORDINATOR_LAYOUT =
+        "androidx.coordinatorlayout:coordinatorlayout:${COORDINATORLAYOT_VERSION}"
+}
+
 object Core {
     const val CORE_KTX = "androidx.core:core-ktx:${CORE_VERSION}"
 }
@@ -51,6 +61,10 @@ object Coroutines {
         COROUTINES_VERSION
     }"
     const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${COROUTINES_VERSION}"
+}
+
+object DataStore {
+    const val PREFS_DATASTORE = "androidx.datastore:datastore-preferences:${DATASTORE_VERSION}"
 }
 
 object Fragment {
@@ -63,6 +77,10 @@ object Hilt {
     const val HILT_GRADLE = "com.google.dagger:hilt-android-gradle-plugin:${HILT_VERSION}"
 }
 
+object Jsoup {
+    const val JSOUP = "org.jsoup:jsoup:${JSOUP_VERSION}"
+}
+
 object Kotlin {
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${KOTLIN_VERSION}"
     const val KOTLIN_GRADLE = "org.jetbrains.kotlin:kotlin-gradle-plugin:${KOTLIN_VERSION}"
@@ -73,6 +91,7 @@ object Lifecycle {
     const val LIVEDATE = "androidx.lifecycle:lifecycle-livedata-ktx:${LIFECYCLE_VERSION}"
     const val VIEWMODEL_SAVEDSTATE =
         "androidx.lifecycle:lifecycle-viewmodel-savedstate:${LIFECYCLE_VERSION}"
+    const val RUNTIME = "androidx.lifecycle:lifecycle-runtime-ktx:${LIFECYCLE_VERSION}"
 }
 
 object Material {
@@ -85,8 +104,8 @@ object Moshi {
 }
 
 object Navigation {
-    const val FRAG = "androidx.navigation:navigation-fragment:${NAV_VERSION}"
-    const val UI = "androidx.navigation:navigation-ui:${NAV_VERSION}"
+    const val FRAG = "androidx.navigation:navigation-fragment-ktx:${NAV_VERSION}"
+    const val UI = "androidx.navigation:navigation-ui-ktx:${NAV_VERSION}"
     const val SAFE_ARGS_GRADLE =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${NAV_VERSION}"
 }
@@ -114,6 +133,11 @@ object Room {
     const val KTX = "androidx.room:room-ktx:${ROOM_VERSION}"
 }
 
+object Shimmer {
+    const val SHIMMER = "com.facebook.shimmer:shimmer:${SHIMMER_VERSION}"
+    const val SHIMMER_RECYCLER = "com.todkars:shimmer-recyclerview:${SHIMMER_RECYCLER_VERSION}"
+}
+
 object Timber {
     const val TIMBER = "com.jakewharton.timber:timber:${TIMBER_VERSION}"
 }
@@ -128,15 +152,19 @@ object Libraries {
         add(AppCompat.APPCOMPAT)
         add(Coil.COIL)
         add(ConstraintLayout.CONSTRAINT_LAYOUT)
+        add(CoordinatorLayout.COORDINATOR_LAYOUT)
         add(Core.CORE_KTX)
         add(Coroutines.ANDROID)
         add(Coroutines.CORE)
+        add(DataStore.PREFS_DATASTORE)
         add(Fragment.FRAG_KTX)
         add(Hilt.ANDROID)
+        add(Jsoup.JSOUP)
         add(Kotlin.stdlib)
         add(Lifecycle.LIVEDATE)
         add(Lifecycle.VIEWMODEL)
         add(Lifecycle.VIEWMODEL_SAVEDSTATE)
+        add(Lifecycle.RUNTIME)
         add(Material.MATERIAL)
         add(Moshi.CODEGEN)
         add(Moshi.KOTLIN)
@@ -149,6 +177,8 @@ object Libraries {
         add(Retrofit2.RETROFIT)
         add(Room.KTX)
         add(Room.RUNTIME)
+        add(Shimmer.SHIMMER)
+        add(Shimmer.SHIMMER_RECYCLER)
         add(Timber.TIMBER)
         add(ViewPager2.VIEWPAGER2)
     }

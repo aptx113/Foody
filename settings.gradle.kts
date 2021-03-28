@@ -31,5 +31,5 @@ pluginManagement {
     }
 }
 
-include(":app", ":core", ":library")
-rootProject.name = "my-android-template"
+include(":app")
+rootProject.name = "Foody"
