@@ -13,23 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    resolutionStrategy {
-        eachPlugin {
-            when (requested.id.namespace) {
-                "com.android" -> {
-                    useModule("com.android.tools.build:gradle:${requested.version}")
-                }
-            }
-        }
-    }
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-        jcenter()
-    }
-}
+package com.danteyu.studio.foody.model
 
-include(":app")
-rootProject.name = "Foody"
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class FoodRecipe(
+    @Json(name = "results")
+    val results: List<Result>
+)
