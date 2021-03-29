@@ -13,23 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    resolutionStrategy {
-        eachPlugin {
-            when (requested.id.namespace) {
-                "com.android" -> {
-                    useModule("com.android.tools.build:gradle:${requested.version}")
-                }
-            }
-        }
-    }
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-        jcenter()
-    }
-}
+package com.danteyu.studio.foody
 
-include(":app")
-rootProject.name = "Foody"
+/**
+ * Created by George Yu on 2021/3/29.
+ */
+const val BASE_URL = "https://api.spoonacular.com"
+const val API_KEY = "608549c6eb1e479c81df6846659bf926"

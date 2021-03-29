@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    resolutionStrategy {
-        eachPlugin {
-            when (requested.id.namespace) {
-                "com.android" -> {
-                    useModule("com.android.tools.build:gradle:${requested.version}")
-                }
-            }
-        }
-    }
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-        jcenter()
-    }
-}
+package com.danteyu.studio.foody.model
 
-include(":app")
-rootProject.name = "Foody"
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class ExtendedIngredient(
+    @Json(name = "amount")
+    val amount: Double,
+    @Json(name = "consistency")
+    val consistency: String,
+    @Json(name = "image")
+    val image: String,
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "original")
+    val original: String,
+    @Json(name = "unit")
+    val unit: String
+)

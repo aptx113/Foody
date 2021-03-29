@@ -13,23 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    resolutionStrategy {
-        eachPlugin {
-            when (requested.id.namespace) {
-                "com.android" -> {
-                    useModule("com.android.tools.build:gradle:${requested.version}")
-                }
-            }
-        }
-    }
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-        jcenter()
-    }
-}
+package com.danteyu.studio.foody.data.remote
 
-include(":app")
-rootProject.name = "Foody"
+/**
+ * Created by George Yu on 2021/3/29.
+ */
+class RemoteDataSource {
+    val a = 1
+}
