@@ -15,9 +15,16 @@
  */
 package com.danteyu.studio.foody.data.remote
 
+import com.danteyu.studio.foody.api.FoodyApiService
+import com.danteyu.studio.foody.model.FoodRecipe
+import retrofit2.Response
+import javax.inject.Inject
+
 /**
  * Created by George Yu on 2021/3/29.
  */
-class RemoteDataSource {
-    val a = 1
+class RemoteDataSource @Inject constructor(private val foodyApiService: FoodyApiService) {
+
+    suspend fun getRecipes(queries: Map<String, String>): Response<FoodRecipe> =
+        foodyApiService.getRecipes(queries)
 }
