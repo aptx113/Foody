@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.utils
+package com.danteyu.studio.foody.data.source.remote
+
+import com.danteyu.studio.foody.api.FoodyApiService
+import com.danteyu.studio.foody.data.source.DataSource
+import com.danteyu.studio.foody.model.FoodRecipe
+import retrofit2.Response
+import javax.inject.Inject
 
 /**
  * Created by George Yu on 2021/3/29.
  */
-sealed class NetworkResult<T>(val data: T? = null, val message: String? = null) {
+class FoodyRemoteDataSource @Inject constructor(private val foodyApiService: FoodyApiService) :
+    DataSource {
 
-    class Success<T>(data: T) : NetworkResult<T>(data)
-    class Error<T>(message: String?, data: T? = null) : NetworkResult<T>(data, message)
-    class Loading<T> : NetworkResult<T>()
+    suspend fun getRecipes(queries: Map<String, String>): Response<FoodRecipe> =
+        foodyApiService.getRecipes(queries)
 }

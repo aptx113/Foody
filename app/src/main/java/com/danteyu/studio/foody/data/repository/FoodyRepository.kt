@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.data.remote
+package com.danteyu.studio.foody.data.repository
 
-import com.danteyu.studio.foody.api.FoodyApiService
-import com.danteyu.studio.foody.model.FoodRecipe
-import retrofit2.Response
+import com.danteyu.studio.foody.data.source.DataSource
+import com.danteyu.studio.foody.di.RemoteDataSource
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import javax.inject.Inject
 
 /**
  * Created by George Yu on 2021/3/29.
  */
-class RemoteDataSource @Inject constructor(private val foodyApiService: FoodyApiService) {
+@ActivityRetainedScoped
+class FoodyRepository @Inject constructor(@RemoteDataSource remoteDataSource: DataSource) :
+    Repository {
 
-    suspend fun getRecipes(queries: Map<String, String>): Response<FoodRecipe> =
-        foodyApiService.getRecipes(queries)
+    val remote = remoteDataSource
 }

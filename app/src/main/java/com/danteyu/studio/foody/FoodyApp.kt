@@ -17,9 +17,20 @@ package com.danteyu.studio.foody
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+import kotlin.properties.Delegates
 
 /**
  * Created by George Yu on 2021/3/29.
  */
 @HiltAndroidApp
-class FoodyApp : Application()
+class FoodyApp : Application() {
+
+    companion object {
+        var instance: FoodyApp by Delegates.notNull()
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
+}

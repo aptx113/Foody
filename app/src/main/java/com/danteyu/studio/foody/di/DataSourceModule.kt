@@ -13,14 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.utils
+package com.danteyu.studio.foody.di
+
+import com.danteyu.studio.foody.data.source.DataSource
+import com.danteyu.studio.foody.data.source.remote.FoodyRemoteDataSource
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 /**
- * Created by George Yu on 2021/3/29.
+ * Created by George Yu on 2021/3/30.
  */
-sealed class NetworkResult<T>(val data: T? = null, val message: String? = null) {
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class DataSourceModule {
 
-    class Success<T>(data: T) : NetworkResult<T>(data)
-    class Error<T>(message: String?, data: T? = null) : NetworkResult<T>(data, message)
-    class Loading<T> : NetworkResult<T>()
+    @RemoteDataSource
+    @Singleton
+    @Binds
+    abstract fun bindRemoteDataSource(dataSource: FoodyRemoteDataSource): DataSource
 }

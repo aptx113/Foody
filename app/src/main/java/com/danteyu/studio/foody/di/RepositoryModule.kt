@@ -13,17 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.data
+package com.danteyu.studio.foody.di
 
-import com.danteyu.studio.foody.data.remote.RemoteDataSource
-import dagger.hilt.android.scopes.ActivityRetainedScoped
-import javax.inject.Inject
+import com.danteyu.studio.foody.data.repository.FoodyRepository
+import com.danteyu.studio.foody.data.repository.Repository
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
 /**
- * Created by George Yu on 2021/3/29.
+ * Created by George Yu on 2021/3/30.
  */
-@ActivityRetainedScoped
-class Repository @Inject constructor(remoteDataSource: RemoteDataSource) {
+@Module
+@InstallIn(ViewComponent::class)
+abstract class RepositoryModule {
 
-    val remote = remoteDataSource
+    @ViewModelScoped
+    @Binds
+    abstract fun bindRepository(foodyRepository: FoodyRepository): Repository
 }

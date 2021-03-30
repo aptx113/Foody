@@ -13,14 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.utils
+package com.danteyu.studio.foody.data.source
 
 /**
- * Created by George Yu on 2021/3/29.
+ * Created by George Yu on 2021/3/30.
  */
-sealed class NetworkResult<T>(val data: T? = null, val message: String? = null) {
-
-    class Success<T>(data: T) : NetworkResult<T>(data)
-    class Error<T>(message: String?, data: T? = null) : NetworkResult<T>(data, message)
-    class Loading<T> : NetworkResult<T>()
-}
+interface DataSource
