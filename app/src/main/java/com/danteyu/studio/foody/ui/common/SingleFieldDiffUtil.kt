@@ -13,11 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.data.remote
+package com.danteyu.studio.foody.ui.common
+
+import android.annotation.SuppressLint
+import androidx.recyclerview.widget.DiffUtil
 
 /**
- * Created by George Yu on 2021/3/29.
+ * Created by George Yu on 2021/4/1.
  */
-class RemoteDataSource {
-    val a = 1
+class SingleFieldDiffUtil<T>(val fieldExtractor: (T) -> Any?) : DiffUtil.ItemCallback<T>() {
+    override fun areItemsTheSame(oldItem: T, newItem: T) =
+        fieldExtractor(oldItem) == fieldExtractor(newItem)
+
+    @SuppressLint("DiffUtilEquals")
+    override fun areContentsTheSame(oldItem: T, newItem: T) = oldItem == newItem
 }

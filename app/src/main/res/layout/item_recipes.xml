@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="result"
+            type="com.danteyu.studio.foody.model.Result" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
