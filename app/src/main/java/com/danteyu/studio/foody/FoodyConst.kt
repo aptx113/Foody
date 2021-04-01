@@ -21,3 +21,5 @@ package com.danteyu.studio.foody
 const val BASE_URL = "https://api.spoonacular.com"
 const val API_KEY = "608549c6eb1e479c81df6846659bf926"
 const val API_TIMEOUT_SECONDS = 15L
+const val TIME_OUT = "timeout"
+const val PAYMENT_REQUIRED = 402

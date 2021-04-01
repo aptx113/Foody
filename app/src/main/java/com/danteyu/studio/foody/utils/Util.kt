@@ -18,6 +18,7 @@ package com.danteyu.studio.foody.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import androidx.annotation.StringRes
 import com.danteyu.studio.foody.FoodyApp
 
 /**
@@ -37,4 +38,6 @@ object Util {
             else -> false
         }
     }
+
+    fun getString(@StringRes resId: Int) = FoodyApp.instance.getString(resId)
 }

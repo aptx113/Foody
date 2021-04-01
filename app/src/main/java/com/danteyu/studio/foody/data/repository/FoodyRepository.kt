@@ -15,17 +15,18 @@
  */
 package com.danteyu.studio.foody.data.repository
 
-import com.danteyu.studio.foody.data.source.DataSource
-import com.danteyu.studio.foody.di.RemoteDataSource
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+import com.danteyu.studio.foody.data.source.remote.FoodyRemoteDataSource
+import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
  * Created by George Yu on 2021/3/29.
  */
-@ActivityRetainedScoped
-class FoodyRepository @Inject constructor(@RemoteDataSource remoteDataSource: DataSource) :
+@ViewModelScoped
+class FoodyRepository @Inject constructor(private val remoteDataSource: FoodyRemoteDataSource) :
     Repository {
 
-    val remote = remoteDataSource
+    fun getRecipesFlow(queries: Map<String, String>) =
+        flow { emit(remoteDataSource.getRecipes(queries)) }
 }

@@ -18,15 +18,18 @@ package com.danteyu.studio.foody.data.source.remote
 import com.danteyu.studio.foody.api.FoodyApiService
 import com.danteyu.studio.foody.data.source.DataSource
 import com.danteyu.studio.foody.model.FoodRecipe
-import retrofit2.Response
+import com.danteyu.studio.foody.utils.NetworkResult
+import com.danteyu.studio.foody.utils.safeApiCall
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by George Yu on 2021/3/29.
  */
+@Singleton
 class FoodyRemoteDataSource @Inject constructor(private val foodyApiService: FoodyApiService) :
     DataSource {
 
-    suspend fun getRecipes(queries: Map<String, String>): Response<FoodRecipe> =
-        foodyApiService.getRecipes(queries)
+    suspend fun getRecipes(queries: Map<String, String>): NetworkResult<FoodRecipe> =
+        safeApiCall { foodyApiService.getRecipes(queries) }
 }
