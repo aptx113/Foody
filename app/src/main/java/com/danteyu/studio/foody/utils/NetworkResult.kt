@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody
+package com.danteyu.studio.foody.utils
 
 /**
  * Created by George Yu on 2021/3/29.
  */
-const val BASE_URL = "https://api.spoonacular.com"
-const val API_KEY = "608549c6eb1e479c81df6846659bf926"
-const val API_TIMEOUT_SECONDS = 15L
-const val TIME_OUT = "timeout"
-const val PAYMENT_REQUIRED = 402
+sealed class NetworkResult<T>(val data: T? = null, val message: String? = null) {
+
+    class Success<T>(data: T) : NetworkResult<T>(data)
+    class Error<T>(message: String?, data: T? = null) : NetworkResult<T>(data, message)
+    class Loading<T> : NetworkResult<T>()
+}

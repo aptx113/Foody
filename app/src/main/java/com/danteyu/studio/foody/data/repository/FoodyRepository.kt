@@ -13,13 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody
+package com.danteyu.studio.foody.data.repository
+
+import com.danteyu.studio.foody.data.source.remote.FoodyRemoteDataSource
+import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 /**
  * Created by George Yu on 2021/3/29.
  */
-const val BASE_URL = "https://api.spoonacular.com"
-const val API_KEY = "608549c6eb1e479c81df6846659bf926"
-const val API_TIMEOUT_SECONDS = 15L
-const val TIME_OUT = "timeout"
-const val PAYMENT_REQUIRED = 402
+@ViewModelScoped
+class FoodyRepository @Inject constructor(private val remoteDataSource: FoodyRemoteDataSource) :
+    Repository {
+
+    fun getRecipesFlow(queries: Map<String, String>) =
+        flow { emit(remoteDataSource.getRecipes(queries)) }
+}
