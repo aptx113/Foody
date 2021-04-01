@@ -13,30 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package commons
+package com.danteyu.studio.foody
 
-import dependencyLibs.Kotlin
-import dependencyLibs.TestDependencies
-import gradle.kotlin.dsl.accessors._c1423b320eb21bea40af7b76d5a93e57.implementation
-import gradle.kotlin.dsl.accessors._c1423b320eb21bea40af7b76d5a93e57.testImplementation
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+import kotlin.properties.Delegates
 
-plugins {
-    id("kotlin")
-}
+/**
+ * Created by George Yu on 2021/3/29.
+ */
+@HiltAndroidApp
+class FoodyApp : Application() {
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-
-    sourceSets {
-        getByName("main") {
-            java.srcDir("src/main/kotlin")
-        }
+    companion object {
+        var instance: FoodyApp by Delegates.notNull()
     }
-}
 
-dependencies {
-    implementation(Kotlin.stdlib)
-
-    testImplementation(TestDependencies.JUNIT)
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
 }

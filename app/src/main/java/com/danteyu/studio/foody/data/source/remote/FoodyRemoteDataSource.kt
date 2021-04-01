@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.api
+package com.danteyu.studio.foody.data.source.remote
 
+import com.danteyu.studio.foody.api.FoodyApiService
+import com.danteyu.studio.foody.data.source.DataSource
 import com.danteyu.studio.foody.model.FoodRecipe
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.QueryMap
+import com.danteyu.studio.foody.utils.NetworkResult
+import com.danteyu.studio.foody.utils.safeApiCall
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by George Yu on 2021/3/29.
  */
-interface FoodyApiService {
+@Singleton
+class FoodyRemoteDataSource @Inject constructor(private val foodyApiService: FoodyApiService) :
+    DataSource {
 
-    @GET("/recipes/complexSearch")
-    suspend fun getRecipes(@QueryMap queries: Map<String, String>): Response<FoodRecipe>
+    suspend fun getRecipes(queries: Map<String, String>): NetworkResult<FoodRecipe> =
+        safeApiCall { foodyApiService.getRecipes(queries) }
 }
