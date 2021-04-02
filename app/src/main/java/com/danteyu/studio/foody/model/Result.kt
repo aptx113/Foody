@@ -37,7 +37,7 @@ data class Result(
     @Json(name = "readyInMinutes")
     val readyInMinutes: Int,
     @Json(name = "sourceName")
-    val sourceName: String,
+    val sourceName: String?,
     @Json(name = "sourceUrl")
     val sourceUrl: String,
     @Json(name = "summary")

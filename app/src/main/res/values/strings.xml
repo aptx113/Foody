@@ -7,4 +7,5 @@
     <string name="timeout">Timeout</string>
     <string name="api_key_limited">API key Limited.</string>
     <string name="resource_not_found">Resource not found.</string>
+    <string name="vegan">Vegan</string>
 </resources>

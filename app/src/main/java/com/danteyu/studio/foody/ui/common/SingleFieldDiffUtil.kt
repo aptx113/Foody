@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.model
+package com.danteyu.studio.foody.ui.common
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import android.annotation.SuppressLint
+import androidx.recyclerview.widget.DiffUtil
 
-@JsonClass(generateAdapter = true)
-data class ExtendedIngredient(
-    @Json(name = "amount")
-    val amount: Double,
-    @Json(name = "consistency")
-    val consistency: String?,
-    @Json(name = "image")
-    val image: String?,
-    @Json(name = "name")
-    val name: String,
-    @Json(name = "original")
-    val original: String,
-    @Json(name = "unit")
-    val unit: String
-)
+/**
+ * Created by George Yu on 2021/4/1.
+ */
+class SingleFieldDiffUtil<T>(val fieldExtractor: (T) -> Any?) : DiffUtil.ItemCallback<T>() {
+    override fun areItemsTheSame(oldItem: T, newItem: T) =
+        fieldExtractor(oldItem) == fieldExtractor(newItem)
+
+    @SuppressLint("DiffUtilEquals")
+    override fun areContentsTheSame(oldItem: T, newItem: T) = oldItem == newItem
+}
