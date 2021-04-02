@@ -19,17 +19,62 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.danteyu.studio.foody.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
+import com.danteyu.studio.foody.databinding.FragmentRecipesBinding
+import com.danteyu.studio.foody.utils.NetworkResult
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipesFragment : Fragment() {
+
+    private lateinit var viewDataBinding: FragmentRecipesBinding
+    private val viewModel by viewModels<RecipesViewModel>()
+    private val adapter by lazy { RecipesAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipes, container, false)
+    ): View {
+        viewDataBinding = FragmentRecipesBinding.inflate(layoutInflater, container, false)
+        viewDataBinding.lifecycleOwner = viewLifecycleOwner
+        setupRecyclerView()
+        return viewDataBinding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getRecipes(viewModel.applyQueries())
+        viewModel.recipesFlow.asLiveData().observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    hideShimmerEffect()
+                    response.data?.let { adapter.submitList(it.results) }
+                }
+                is NetworkResult.Error -> {
+                    hideShimmerEffect()
+                    Toast.makeText(
+                        requireContext(),
+                        response.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                is NetworkResult.Loading -> {
+                    showShimmerEffect()
+                }
+            }
+        }
+    }
+
+    private fun setupRecyclerView() {
+        viewDataBinding.recipesRecycler.adapter = adapter
+        showShimmerEffect()
+    }
+
+    private fun showShimmerEffect() = viewDataBinding.recipesRecycler.showShimmer()
+    private fun hideShimmerEffect() = viewDataBinding.recipesRecycler.hideShimmer()
 }
