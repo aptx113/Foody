@@ -13,18 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.api
+package com.danteyu.studio.foody.model
 
-import com.danteyu.studio.foody.model.FoodRecipesResponse
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.QueryMap
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-/**
- * Created by George Yu on 2021/3/29.
- */
-interface FoodyApiService {
-
-    @GET("/recipes/complexSearch")
-    suspend fun getRecipes(@QueryMap queries: Map<String, String>): Response<FoodRecipesResponse>
-}
+@JsonClass(generateAdapter = true)
+data class FoodRecipesResponse(
+    @Json(name = "results")
+    val foodRecipes: List<FoodRecipe>
+)

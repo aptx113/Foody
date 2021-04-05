@@ -17,7 +17,7 @@ package com.danteyu.studio.foody.data.source.remote
 
 import com.danteyu.studio.foody.api.FoodyApiService
 import com.danteyu.studio.foody.data.source.DataSource
-import com.danteyu.studio.foody.model.FoodRecipe
+import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.NetworkResult
 import com.danteyu.studio.foody.utils.safeApiCall
 import javax.inject.Inject
@@ -30,6 +30,6 @@ import javax.inject.Singleton
 class FoodyRemoteDataSource @Inject constructor(private val foodyApiService: FoodyApiService) :
     DataSource {
 
-    suspend fun getRecipes(queries: Map<String, String>): NetworkResult<FoodRecipe> =
+    suspend fun getRecipes(queries: Map<String, String>): NetworkResult<FoodRecipesResponse> =
         safeApiCall { foodyApiService.getRecipes(queries) }
 }

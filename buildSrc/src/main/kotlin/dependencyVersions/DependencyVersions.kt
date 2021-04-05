@@ -16,7 +16,7 @@ object DependencyVersions {
     const val KOTLIN_VERSION = "1.4.32"
     const val LIFECYCLE_VERSION = "2.3.1"
     const val MATERIAL_VERSION = "1.3.0"
-    const val MOSHI_VERSION = "1.11.0"
+    const val MOSHI_VERSION = "1.12.0"
     const val NAV_VERSION = "2.3.4"
     const val OKHTTP3_VERSION = "4.9.1"
     const val PAGING_VERSION = "3.0.0-beta02"
