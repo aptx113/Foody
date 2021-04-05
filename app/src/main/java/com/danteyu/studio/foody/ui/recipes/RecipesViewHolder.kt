@@ -19,7 +19,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.danteyu.studio.foody.databinding.ItemRecipesBinding
-import com.danteyu.studio.foody.model.Result
+import com.danteyu.studio.foody.model.FoodRecipe
 
 /**
  * Created by George Yu on 2021/4/1.
@@ -27,8 +27,8 @@ import com.danteyu.studio.foody.model.Result
 class RecipesViewHolder(private val viewDataBinding: ItemRecipesBinding) :
     RecyclerView.ViewHolder(viewDataBinding.root) {
 
-    fun bind(result: Result) {
-        viewDataBinding.result = result
+    fun bind(foodRecipe: FoodRecipe) {
+        viewDataBinding.foodRecipe = foodRecipe
         viewDataBinding.executePendingBindings()
     }
 

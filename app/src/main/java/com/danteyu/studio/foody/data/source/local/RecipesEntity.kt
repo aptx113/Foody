@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.ui.recipes
+package com.danteyu.studio.foody.data.source.local
 
-import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.danteyu.studio.foody.RECIPES_TABLE
 import com.danteyu.studio.foody.model.FoodRecipe
-import com.danteyu.studio.foody.ui.common.SingleFieldDiffUtil
 
 /**
- * Created by George Yu on 2021/4/1.
+ * Created by George Yu on 2021/4/2.
  */
-class RecipesAdapter :
-    ListAdapter<FoodRecipe, RecipesViewHolder>(SingleFieldDiffUtil<FoodRecipe> { it.id }) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipesViewHolder =
-        RecipesViewHolder.create(parent)
-
-    override fun onBindViewHolder(holder: RecipesViewHolder, position: Int) {
-        holder.bind(getItem(position))
-    }
+@Entity(tableName = RECIPES_TABLE)
+data class RecipesEntity(val foodRecipe: FoodRecipe) {
+    @PrimaryKey(autoGenerate = false)
+    var id: Int = 0
 }

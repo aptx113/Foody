@@ -53,7 +53,7 @@ class RecipesFragment : Fragment() {
             when (response) {
                 is NetworkResult.Success -> {
                     hideShimmerEffect()
-                    response.data?.let { adapter.submitList(it.results) }
+                    response.data?.let { adapter.submitList(it.foodRecipes) }
                 }
                 is NetworkResult.Error -> {
                     hideShimmerEffect()

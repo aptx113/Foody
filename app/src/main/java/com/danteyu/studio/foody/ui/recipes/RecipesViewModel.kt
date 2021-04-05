@@ -25,7 +25,7 @@ import com.danteyu.studio.foody.QUERY_FILL_INGREDIENTS
 import com.danteyu.studio.foody.QUERY_NUM
 import com.danteyu.studio.foody.QUERY_TYPE
 import com.danteyu.studio.foody.data.repository.FoodyRepository
-import com.danteyu.studio.foody.model.FoodRecipe
+import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,8 +40,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipesViewModel @Inject constructor(private val repository: FoodyRepository) : ViewModel() {
 
-    private val _recipesFlow = MutableStateFlow<NetworkResult<FoodRecipe>>(NetworkResult.Loading())
-    val recipesFlow: StateFlow<NetworkResult<FoodRecipe>> = _recipesFlow
+    private val _recipesFlow = MutableStateFlow<NetworkResult<FoodRecipesResponse>>(NetworkResult.Loading())
+    val recipesFlow: StateFlow<NetworkResult<FoodRecipesResponse>> = _recipesFlow
 
     fun getRecipes(queries: Map<String, String>) =
         repository.getRecipesFlow(queries)

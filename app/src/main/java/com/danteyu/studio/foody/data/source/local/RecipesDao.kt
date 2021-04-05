@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.api
+package com.danteyu.studio.foody.data.source.local
 
-import com.danteyu.studio.foody.model.FoodRecipesResponse
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.QueryMap
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 /**
- * Created by George Yu on 2021/3/29.
+ * Created by George Yu on 2021/4/2.
  */
-interface FoodyApiService {
+@Dao
+interface RecipesDao {
 
-    @GET("/recipes/complexSearch")
-    suspend fun getRecipes(@QueryMap queries: Map<String, String>): Response<FoodRecipesResponse>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRecipes(recipesEntity: RecipesEntity)
+
+    @Query("SELECT * FROM recipes_table ORDER BY id ASC")
+    fun loadRecipesFlow(): Flow<List<RecipesEntity>>
 }
