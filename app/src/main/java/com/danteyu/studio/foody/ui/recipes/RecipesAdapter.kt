@@ -17,14 +17,14 @@ package com.danteyu.studio.foody.ui.recipes
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.danteyu.studio.foody.model.Result
+import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.ui.common.SingleFieldDiffUtil
 
 /**
  * Created by George Yu on 2021/4/1.
  */
 class RecipesAdapter :
-    ListAdapter<Result, RecipesViewHolder>(SingleFieldDiffUtil<Result> { it.id }) {
+    ListAdapter<FoodRecipe, RecipesViewHolder>(SingleFieldDiffUtil<FoodRecipe> { it.id }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipesViewHolder =
         RecipesViewHolder.create(parent)
 
