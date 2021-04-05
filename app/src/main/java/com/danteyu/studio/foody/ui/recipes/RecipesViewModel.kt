@@ -16,6 +16,7 @@
 package com.danteyu.studio.foody.ui.recipes
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.danteyu.studio.foody.API_KEY
 import com.danteyu.studio.foody.QUERY_ADD_RECIPE_INFORMATION
@@ -40,7 +41,10 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipesViewModel @Inject constructor(private val repository: FoodyRepository) : ViewModel() {
 
-    private val _recipesFlow = MutableStateFlow<NetworkResult<FoodRecipesResponse>>(NetworkResult.Loading())
+    val recipes = repository.loadRecipesFlow()
+
+    private val _recipesFlow =
+        MutableStateFlow<NetworkResult<FoodRecipesResponse>>(NetworkResult.Loading())
     val recipesFlow: StateFlow<NetworkResult<FoodRecipesResponse>> = _recipesFlow
 
     fun getRecipes(queries: Map<String, String>) =
