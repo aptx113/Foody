@@ -18,12 +18,9 @@ package com.danteyu.studio.foody.data.source.db
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.danteyu.studio.foody.model.ExtendedIngredient
-import com.danteyu.studio.foody.model.FoodRecipe
-import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import com.squareup.moshi.adapter
 import javax.inject.Inject
 
 /**

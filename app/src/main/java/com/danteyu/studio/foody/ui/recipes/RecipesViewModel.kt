@@ -41,7 +41,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipesViewModel @Inject constructor(private val repository: FoodyRepository) : ViewModel() {
 
-    val recipes = repository.loadRecipesFlow()
+    val recipes = repository.loadRecipesFlow().asLiveData()
 
     private val _recipesFlow =
         MutableStateFlow<NetworkResult<FoodRecipesResponse>>(NetworkResult.Loading())

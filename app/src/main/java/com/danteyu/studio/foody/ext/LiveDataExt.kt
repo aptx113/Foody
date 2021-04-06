@@ -13,24 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.data.source.db
+package com.danteyu.studio.foody.ext
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.danteyu.studio.foody.model.FoodRecipe
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 
 /**
- * Created by George Yu on 2021/4/2.
+ * Created by George Yu in Apr. 2021.
  */
-@Dao
-interface RecipesDao {
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRecipes(foodRecipes: List<FoodRecipe>)
-
-    @Query("SELECT * FROM recipes_table ORDER BY id ASC")
-    fun loadRecipesFlow(): Flow<List<FoodRecipe>>
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(
+        lifecycleOwner,
+        object : Observer<T> {
+            override fun onChanged(t: T) {
+                removeObserver(this)
+                observer.onChanged(t)
+            }
+        }
+    )
 }

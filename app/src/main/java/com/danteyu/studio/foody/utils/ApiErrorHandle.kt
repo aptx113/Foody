@@ -26,7 +26,7 @@ import java.lang.Exception
 /**
  * Created by George Yu on 2021/3/31.
  */
-@SuppressWarnings("TooGenericExceptionCaught")
+@SuppressWarnings("TooGenericExceptionCaught", "NestedBlockDepth")
 suspend inline fun <T> networkBoundResource(
     crossinline apiCall: suspend () -> Response<T>,
     crossinline saveApiCall: suspend (T) -> Unit
@@ -40,9 +40,8 @@ suspend inline fun <T> networkBoundResource(
         NetworkResult.Error("Error with $e")
     }
 } else {
-    NetworkResult.Error(getString(R.string.no_internet))
+    NetworkResult.Error(getString(R.string.no_internet_connection))
 }
-
 
 fun <T> handleApiResponse(response: Response<T>): NetworkResult<T> {
     return with(response) {

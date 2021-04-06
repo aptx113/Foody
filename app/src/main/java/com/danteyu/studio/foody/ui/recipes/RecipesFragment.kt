@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.danteyu.studio.foody.databinding.FragmentRecipesBinding
+import com.danteyu.studio.foody.ext.observeOnce
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -43,6 +44,7 @@ class RecipesFragment : Fragment() {
     ): View {
         viewDataBinding = FragmentRecipesBinding.inflate(layoutInflater, container, false)
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
+        viewDataBinding.viewModel = viewModel
         setupRecyclerView()
         return viewDataBinding.root
     }
@@ -59,18 +61,15 @@ class RecipesFragment : Fragment() {
     }
 
     private fun loadDataFromCache(action: () -> Unit = {}, request: () -> Unit = {}) {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.recipes.collect {
-                if (it.isNotEmpty()) {
-                    Timber.d("readDatabase called!!")
-                    adapter.submitList(it)
-                    action()
-                } else {
-                    request()
-                }
+        viewModel.recipes.observeOnce(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                Timber.d("readDatabase called!!")
+                adapter.submitList(it)
+                action()
+            } else {
+                request()
             }
         }
-
     }
 
     private fun requestApiData() {
