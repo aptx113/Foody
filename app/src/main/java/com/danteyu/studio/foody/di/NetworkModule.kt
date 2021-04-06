@@ -18,7 +18,7 @@ package com.danteyu.studio.foody.di
 import com.danteyu.studio.foody.API_TIMEOUT_SECONDS
 import com.danteyu.studio.foody.BASE_URL
 import com.danteyu.studio.foody.BuildConfig
-import com.danteyu.studio.foody.api.FoodyApiService
+import com.danteyu.studio.foody.data.source.api.FoodyApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

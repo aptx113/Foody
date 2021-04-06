@@ -15,9 +15,15 @@
  */
 package com.danteyu.studio.foody.ui.common
 
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import coil.load
+import com.danteyu.studio.foody.R
+import com.danteyu.studio.foody.model.FoodRecipe
+import com.danteyu.studio.foody.model.FoodRecipesResponse
+import com.danteyu.studio.foody.utils.NetworkResult
 
 private const val CROSSFADE_IN_MILLIS = 600
 
@@ -29,5 +35,24 @@ object CommonBinding {
     @BindingAdapter("imgUrl")
     @JvmStatic
     fun bindImageFromUrl(imageView: ImageView, imageUrl: String) =
-        imageView.load(imageUrl) { crossfade(CROSSFADE_IN_MILLIS) }
+        imageView.load(imageUrl) {
+            crossfade(CROSSFADE_IN_MILLIS)
+            error(R.drawable.ic_error_placeholder)
+        }
+
+    @BindingAdapter("apiResponse", "foodRecipes", requireAll = true)
+    @JvmStatic
+    fun bindErrorVisibility(
+        view: View,
+        apiResponse: NetworkResult<FoodRecipesResponse>?,
+        foodRecipes: List<FoodRecipe>?
+    ) {
+        when {
+            apiResponse is NetworkResult.Error && foodRecipes.isNullOrEmpty() -> {
+                view.visibility = View.VISIBLE
+                if (view is TextView) view.text = apiResponse.message.toString()
+            }
+            apiResponse is NetworkResult.Loading -> view.visibility = View.INVISIBLE
+        }
+    }
 }

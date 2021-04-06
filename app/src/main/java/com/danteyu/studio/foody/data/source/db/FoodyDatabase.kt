@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.api
+package com.danteyu.studio.foody.data.source.db
 
-import com.danteyu.studio.foody.model.FoodRecipesResponse
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.QueryMap
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.danteyu.studio.foody.model.FoodRecipe
 
 /**
- * Created by George Yu on 2021/3/29.
+ * Created by George Yu in Apr. 2021.
  */
-interface FoodyApiService {
-
-    @GET("/recipes/complexSearch")
-    suspend fun getRecipes(@QueryMap queries: Map<String, String>): Response<FoodRecipesResponse>
+@Database(entities = [FoodRecipe::class], version = 1, exportSchema = false)
+@TypeConverters(value = [RecipesConverters::class])
+abstract class FoodyDatabase : RoomDatabase() {
+    abstract fun recipesDao(): RecipesDao
 }

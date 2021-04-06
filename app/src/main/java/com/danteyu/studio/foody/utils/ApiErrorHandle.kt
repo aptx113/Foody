@@ -26,17 +26,21 @@ import java.lang.Exception
 /**
  * Created by George Yu on 2021/3/31.
  */
-@SuppressWarnings("TooGenericExceptionCaught")
-suspend inline fun <T> safeApiCall(crossinline apiCall: suspend () -> Response<T>): NetworkResult<T> {
-    return if (hasInternetConnection()) {
-        return try {
-            handleApiResponse(apiCall.invoke())
-        } catch (e: Exception) {
-            NetworkResult.Error("Error with $e")
+@SuppressWarnings("TooGenericExceptionCaught", "NestedBlockDepth")
+suspend inline fun <T> networkBoundResource(
+    crossinline apiCall: suspend () -> Response<T>,
+    crossinline saveApiCall: suspend (T) -> Unit
+): NetworkResult<T> = if (hasInternetConnection()) {
+    try {
+        handleApiResponse(apiCall.invoke()).let {
+            if (it.data != null) saveApiCall(it.data)
+            it
         }
-    } else {
-        NetworkResult.Error(getString(R.string.no_internet))
+    } catch (e: Exception) {
+        NetworkResult.Error("Error with $e")
     }
+} else {
+    NetworkResult.Error(getString(R.string.no_internet_connection))
 }
 
 fun <T> handleApiResponse(response: Response<T>): NetworkResult<T> {
