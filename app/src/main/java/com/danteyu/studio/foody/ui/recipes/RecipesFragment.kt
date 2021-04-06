@@ -22,10 +22,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import com.danteyu.studio.foody.databinding.FragmentRecipesBinding
+import com.danteyu.studio.foody.ext.observeOnce
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
@@ -41,6 +44,7 @@ class RecipesFragment : Fragment() {
     ): View {
         viewDataBinding = FragmentRecipesBinding.inflate(layoutInflater, container, false)
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
+        viewDataBinding.viewModel = viewModel
         setupRecyclerView()
         return viewDataBinding.root
     }
@@ -48,31 +52,51 @@ class RecipesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getRecipes(viewModel.applyQueries())
-        viewModel.recipesFlow.asLiveData().observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is NetworkResult.Success -> {
-                    hideShimmerEffect()
-                    response.data?.let { adapter.submitList(it.foodRecipes) }
-                }
-                is NetworkResult.Error -> {
-                    hideShimmerEffect()
-                    Toast.makeText(
-                        requireContext(),
-                        response.message.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                is NetworkResult.Loading -> {
-                    showShimmerEffect()
-                }
-            }
-        }
+        loadDataFromCache(action = { hideShimmerEffect() }, request = { requestApiData() })
     }
 
     private fun setupRecyclerView() {
         viewDataBinding.recipesRecycler.adapter = adapter
         showShimmerEffect()
+    }
+
+    private fun loadDataFromCache(action: () -> Unit = {}, request: () -> Unit = {}) {
+        viewModel.recipes.observeOnce(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                Timber.d("readDatabase called!!")
+                adapter.submitList(it)
+                action()
+            } else {
+                request()
+            }
+        }
+    }
+
+    private fun requestApiData() {
+        Timber.d("requestApiData called!!")
+        viewModel.getRecipes(viewModel.applyQueries())
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.recipesFlow.collect { response ->
+                when (response) {
+                    is NetworkResult.Success -> {
+                        hideShimmerEffect()
+                        response.data?.let { adapter.submitList(it.foodRecipes) }
+                    }
+                    is NetworkResult.Error -> {
+                        hideShimmerEffect()
+                        loadDataFromCache()
+                        Toast.makeText(
+                            requireContext(),
+                            response.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is NetworkResult.Loading -> {
+                        showShimmerEffect()
+                    }
+                }
+            }
+        }
     }
 
     private fun showShimmerEffect() = viewDataBinding.recipesRecycler.showShimmer()

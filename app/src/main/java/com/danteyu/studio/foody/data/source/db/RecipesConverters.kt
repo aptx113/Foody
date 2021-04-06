@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.data.source.local
+package com.danteyu.studio.foody.data.source.db
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.danteyu.studio.foody.model.FoodRecipe
+import com.danteyu.studio.foody.model.ExtendedIngredient
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import javax.inject.Inject
 
 /**
@@ -28,18 +30,19 @@ import javax.inject.Inject
 class RecipesConverters @Inject constructor(private val moshi: Moshi) {
 
     @TypeConverter
-    fun convertFoodRecipeToJson(foodRecipe: FoodRecipe?): String? {
-        foodRecipe?.let {
-            return moshi.adapter(FoodRecipe::class.java)
+    fun convertFoodRecipeToJson(extendedIngredients: List<ExtendedIngredient>?): String? {
+        return extendedIngredients?.let {
+            moshi.adapter(List::class.java)
                 .toJson(it)
         }
-        return null
     }
 
     @TypeConverter
-    fun convertJsonToFoodRecipe(json: String?): FoodRecipe? {
+    fun convertJsonToFoodRecipe(json: String?): List<ExtendedIngredient>? {
         return json?.let {
-            moshi.adapter(FoodRecipe::class.java).fromJson(it)
+            val type = Types.newParameterizedType(List::class.java, ExtendedIngredient::class.java)
+            val adapter: JsonAdapter<List<ExtendedIngredient>> = moshi.adapter(type)
+            adapter.fromJson(it)
         }
     }
 }

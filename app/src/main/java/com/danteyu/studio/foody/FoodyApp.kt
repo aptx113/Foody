@@ -17,6 +17,7 @@ package com.danteyu.studio.foody
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 /**
@@ -32,5 +33,7 @@ class FoodyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }
 }

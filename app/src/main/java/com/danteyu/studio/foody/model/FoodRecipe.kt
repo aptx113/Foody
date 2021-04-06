@@ -15,9 +15,13 @@
  */
 package com.danteyu.studio.foody.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.danteyu.studio.foody.RECIPES_TABLE
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+@Entity(tableName = RECIPES_TABLE)
 @JsonClass(generateAdapter = true)
 data class FoodRecipe(
     @Json(name = "aggregateLikes")
@@ -30,6 +34,7 @@ data class FoodRecipe(
     val extendedIngredients: List<ExtendedIngredient>,
     @Json(name = "glutenFree")
     val glutenFree: Boolean,
+    @PrimaryKey
     @Json(name = "id")
     val id: Int,
     @Json(name = "image")

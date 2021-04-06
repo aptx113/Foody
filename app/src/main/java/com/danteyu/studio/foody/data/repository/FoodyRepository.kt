@@ -15,7 +15,9 @@
  */
 package com.danteyu.studio.foody.data.repository
 
-import com.danteyu.studio.foody.data.source.remote.FoodyRemoteDataSource
+import com.danteyu.studio.foody.data.source.api.FoodyApiService
+import com.danteyu.studio.foody.data.source.db.RecipesDao
+import com.danteyu.studio.foody.utils.networkBoundResource
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -24,9 +26,21 @@ import javax.inject.Inject
  * Created by George Yu on 2021/3/29.
  */
 @ViewModelScoped
-class FoodyRepository @Inject constructor(private val remoteDataSource: FoodyRemoteDataSource) :
+class FoodyRepository @Inject constructor(
+    private val foodyApiService: FoodyApiService,
+    private val recipesDao: RecipesDao
+) :
     Repository {
 
     fun getRecipesFlow(queries: Map<String, String>) =
-        flow { emit(remoteDataSource.getRecipes(queries)) }
+        flow {
+            emit(
+                networkBoundResource(
+                    apiCall = { foodyApiService.getRecipes(queries) },
+                    saveApiCall = { recipesDao.insertRecipes(it.foodRecipes) }
+                )
+            )
+        }
+
+    fun loadRecipesFlow() = recipesDao.loadRecipesFlow()
 }

@@ -18,8 +18,8 @@ package com.danteyu.studio.foody.di
 import android.content.Context
 import androidx.room.Room
 import com.danteyu.studio.foody.FOODY_DATABASE
-import com.danteyu.studio.foody.data.source.local.FoodyDatabase
-import com.danteyu.studio.foody.data.source.local.RecipesConverters
+import com.danteyu.studio.foody.data.source.db.FoodyDatabase
+import com.danteyu.studio.foody.data.source.db.RecipesConverters
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

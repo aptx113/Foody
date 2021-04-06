@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.data.source.local
+package com.danteyu.studio.foody.ext
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.danteyu.studio.foody.RECIPES_TABLE
-import com.danteyu.studio.foody.model.FoodRecipe
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 
 /**
- * Created by George Yu on 2021/4/2.
+ * Created by George Yu in Apr. 2021.
  */
-@Entity(tableName = RECIPES_TABLE)
-data class RecipesEntity(val foodRecipe: FoodRecipe) {
-    @PrimaryKey(autoGenerate = false)
-    var id: Int = 0
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(
+        lifecycleOwner,
+        object : Observer<T> {
+            override fun onChanged(t: T) {
+                removeObserver(this)
+                observer.onChanged(t)
+            }
+        }
+    )
 }

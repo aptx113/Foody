@@ -86,8 +86,7 @@ android {
     }
 
     packagingOptions {
-        exclude("META-INF/metadata.kotlin_module")
-        exclude("META-INF/metadata.jvm.kotlin_module")
+        exclude("META-INF/*.kotlin_module")
     }
 
     sourceSets {
