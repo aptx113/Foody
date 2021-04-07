@@ -29,10 +29,13 @@ import com.danteyu.studio.foody.data.repository.FoodyRepository
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -46,6 +49,9 @@ class RecipesViewModel @Inject constructor(private val repository: FoodyReposito
     private val _recipesFlow =
         MutableStateFlow<NetworkResult<FoodRecipesResponse>>(NetworkResult.Loading())
     val recipesFlow: StateFlow<NetworkResult<FoodRecipesResponse>> = _recipesFlow
+
+    private val navigateToRecipesBottomSheetChannel = Channel<Boolean>(Channel.CONFLATED)
+    val navigateToRecipesBottomSheetFlow = navigateToRecipesBottomSheetChannel.receiveAsFlow()
 
     fun getRecipes(queries: Map<String, String>) =
         repository.getRecipesFlow(queries)
@@ -64,4 +70,7 @@ class RecipesViewModel @Inject constructor(private val repository: FoodyReposito
 
         return queries
     }
+
+    fun onRecipesBottomSheetNavigated() =
+        viewModelScope.launch { navigateToRecipesBottomSheetChannel.send(true) }
 }

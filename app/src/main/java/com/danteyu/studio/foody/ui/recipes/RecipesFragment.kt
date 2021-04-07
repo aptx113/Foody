@@ -23,11 +23,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.databinding.FragmentRecipesBinding
+import com.danteyu.studio.foody.ext.observeInLifecycle
 import com.danteyu.studio.foody.ext.observeOnce
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -53,6 +57,9 @@ class RecipesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loadDataFromCache(action = { hideShimmerEffect() }, request = { requestApiData() })
+        viewModel.navigateToRecipesBottomSheetFlow
+            .onEach { if (it) findNavController().navigate(R.id.recipesBottomSheetFragment) }
+            .observeInLifecycle(viewLifecycleOwner)
     }
 
     private fun setupRecyclerView() {

@@ -36,6 +36,7 @@
             android:layout_marginBottom="@dimen/space_24"
             android:clickable="true"
             android:focusable="true"
+            android:onClick="@{_ -> viewModel.onRecipesBottomSheetNavigated()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_restaurant"
