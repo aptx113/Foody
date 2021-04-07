@@ -19,6 +19,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.danteyu.studio.foody.API_KEY
+import com.danteyu.studio.foody.DEFAULT_DIET_TYPE
+import com.danteyu.studio.foody.DEFAULT_MEAL_TYPE
+import com.danteyu.studio.foody.DEFAULT_RECIPES_NUM
 import com.danteyu.studio.foody.QUERY_ADD_RECIPE_INFORMATION
 import com.danteyu.studio.foody.QUERY_API_KEY
 import com.danteyu.studio.foody.QUERY_DIET
@@ -26,12 +29,14 @@ import com.danteyu.studio.foody.QUERY_FILL_INGREDIENTS
 import com.danteyu.studio.foody.QUERY_NUM
 import com.danteyu.studio.foody.QUERY_TYPE
 import com.danteyu.studio.foody.data.repository.FoodyRepository
+import com.danteyu.studio.foody.data.repository.UserPreferencesRepository
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -42,9 +47,12 @@ import javax.inject.Inject
  * Created by George Yu on 2021/4/1.
  */
 @HiltViewModel
-class RecipesViewModel @Inject constructor(private val repository: FoodyRepository) : ViewModel() {
+class RecipesViewModel @Inject constructor(
+    private val foodyRepository: FoodyRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
+) : ViewModel() {
 
-    val recipes = repository.loadRecipesFlow().asLiveData()
+    val recipes = foodyRepository.loadRecipesFlow().asLiveData()
 
     private val _recipesFlow =
         MutableStateFlow<NetworkResult<FoodRecipesResponse>>(NetworkResult.Loading())
@@ -53,18 +61,35 @@ class RecipesViewModel @Inject constructor(private val repository: FoodyReposito
     private val navigateToRecipesBottomSheetChannel = Channel<Boolean>(Channel.CONFLATED)
     val navigateToRecipesBottomSheetFlow = navigateToRecipesBottomSheetChannel.receiveAsFlow()
 
+    private var mealType = DEFAULT_MEAL_TYPE
+    private var dietType = DEFAULT_DIET_TYPE
+
+    private val mealAndDietTypeFlow = userPreferencesRepository.mealAndDietFlow
+
+    fun saveMealAndDietType(mealTyp: String, mealTypeId: Int, dietType: String, dietTypeId: Int) =
+        viewModelScope.launch {
+            userPreferencesRepository.saveMealAndDietType(mealTyp, mealTypeId, dietType, dietTypeId)
+        }
+
     fun getRecipes(queries: Map<String, String>) =
-        repository.getRecipesFlow(queries)
+        foodyRepository.getRecipesFlow(queries)
             .onEach { _recipesFlow.value = it }
             .launchIn(viewModelScope)
 
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
 
-        queries[QUERY_NUM] = "50"
+        viewModelScope.launch {
+            mealAndDietTypeFlow.collect { value ->
+                mealType = value.selectedMealType
+                dietType = value.selectedDietType
+            }
+        }
+
+        queries[QUERY_NUM] = DEFAULT_RECIPES_NUM
         queries[QUERY_API_KEY] = API_KEY
-        queries[QUERY_TYPE] = "snack"
-        queries[QUERY_DIET] = "vegan"
+        queries[QUERY_TYPE] = mealType
+        queries[QUERY_DIET] = dietType
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
         queries[QUERY_FILL_INGREDIENTS] = "true"
 
