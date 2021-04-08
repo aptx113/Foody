@@ -33,6 +33,7 @@ import com.danteyu.studio.foody.data.repository.UserPreferencesRepository
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -61,13 +62,16 @@ class RecipesViewModel @Inject constructor(
     private val navigateToRecipesBottomSheetChannel = Channel<Boolean>(Channel.CONFLATED)
     val navigateToRecipesBottomSheetFlow = navigateToRecipesBottomSheetChannel.receiveAsFlow()
 
+    private val applySelectedChipsChannel = Channel<Boolean>(Channel.CONFLATED)
+    val applySelectedChipsFlow = applySelectedChipsChannel.receiveAsFlow()
+
     private var mealType = DEFAULT_MEAL_TYPE
     private var dietType = DEFAULT_DIET_TYPE
 
-    private val mealAndDietTypeFlow = userPreferencesRepository.mealAndDietFlow
+    val mealAndDietTypeFlow = userPreferencesRepository.mealAndDietFlow
 
     fun saveMealAndDietType(mealTyp: String, mealTypeId: Int, dietType: String, dietTypeId: Int) =
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             userPreferencesRepository.saveMealAndDietType(mealTyp, mealTypeId, dietType, dietTypeId)
         }
 
@@ -98,4 +102,6 @@ class RecipesViewModel @Inject constructor(
 
     fun onRecipesBottomSheetNavigated() =
         viewModelScope.launch { navigateToRecipesBottomSheetChannel.send(true) }
+
+    fun onSelectedChipsApplied() = viewModelScope.launch { applySelectedChipsChannel.send(true) }
 }

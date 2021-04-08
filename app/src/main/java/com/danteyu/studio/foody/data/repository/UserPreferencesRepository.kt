@@ -42,7 +42,7 @@ private val Context.dataStore by preferencesDataStore(name = USER_PREFERENCES_NA
  * Created by George Yu in 4月. 2021.
  */
 @ViewModelScoped
-class UserPreferencesRepository @Inject constructor(@ApplicationContext context: Context) :
+class UserPreferencesRepository @Inject constructor(@ApplicationContext private val context: Context) :
     Repository {
 
     private val preferencesDataStore = context.dataStore

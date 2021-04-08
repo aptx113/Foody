@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.danteyu.studio.foody.ui.recipes.RecipesViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -259,6 +263,7 @@
             android:layout_height="60dp"
             android:layout_marginHorizontal="@dimen/space_24"
             android:layout_marginVertical="@dimen/space_24"
+            android:onClick="@{_ -> viewModel.onSelectedChipsApplied()}"
             android:text="@string/apply"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
