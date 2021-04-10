@@ -35,6 +35,7 @@ import java.util.Locale
 /**
  * Created by George Yu in Apr. 2021.
  */
+@SuppressWarnings("TooGenericExceptionCaught")
 class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
 
     private lateinit var viewDataBinding: FragRecipeBottomSheetBinding
@@ -50,7 +51,6 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         viewDataBinding = FragRecipeBottomSheetBinding.inflate(layoutInflater, container, false)
         viewDataBinding.viewModel = viewModel
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
@@ -83,19 +83,19 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
         }
         viewModel.applySelectedChipsFlow
             .onEach {
-                if (it)
+                if (it) {
                     viewModel.saveMealAndDietType(
                         mealTypeChip,
                         mealTypeChipId,
                         dietTypeChip,
                         dietTypeChipId
                     )
-                findNavController().navigate(
-                    RecipesBottomSheetFragmentDirections.actionRecipesBottomSheetFragmentToRecipesFragment(
-                        true
+                    findNavController().navigate(
+                        RecipesBottomSheetFragmentDirections.actionRecipesBottomSheetFragmentToRecipesFragment(
+                            true
+                        )
                     )
-                )
-
+                }
             }.observeInLifecycle(viewLifecycleOwner)
     }
 

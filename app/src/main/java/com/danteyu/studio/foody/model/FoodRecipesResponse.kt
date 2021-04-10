@@ -15,12 +15,18 @@
  */
 package com.danteyu.studio.foody.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.danteyu.studio.foody.RECIPES_TABLE
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+@Entity(tableName = RECIPES_TABLE)
 @JsonClass(generateAdapter = true)
 data class FoodRecipesResponse(
-
     @Json(name = "results")
     val foodRecipes: List<FoodRecipe>
-)
+) {
+    @PrimaryKey(autoGenerate = false)
+    var id: Int = 0
+}

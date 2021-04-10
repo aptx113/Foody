@@ -22,8 +22,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.danteyu.studio.foody.R
@@ -32,7 +30,6 @@ import com.danteyu.studio.foody.ext.observeInLifecycle
 import com.danteyu.studio.foody.ext.observeOnce
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
@@ -74,7 +71,7 @@ class RecipesFragment : Fragment() {
         viewModel.recipes.observeOnce(viewLifecycleOwner) {
             if (it.isNotEmpty() && !args.backFromBottomSheet) {
                 Timber.d("readDatabase called!!")
-                adapter.submitList(it)
+                adapter.submitList(it[0].foodRecipes)
                 action()
             } else {
                 request()
