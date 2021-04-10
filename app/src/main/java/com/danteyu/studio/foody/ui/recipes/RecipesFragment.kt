@@ -61,25 +61,33 @@ class RecipesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadDataFromCache(action = { hideShimmerEffect() }, request = { requestApiData() })
         viewModel.navigateToRecipesBottomSheetFlow
             .onEach {
                 if (it) {
                     if (viewModel.networkStatusFlow.value)
                         findNavController().navigate(R.id.recipesBottomSheetFragment)
-                    else showNetworkStatus(viewModel.networkStatusFlow.value)
+                    else showNetworkStatus(
+                        viewModel.networkStatusFlow.value,
+                        viewModel.backOnline.value
+                    )
                 }
             }
+            .observeInLifecycle(viewLifecycleOwner)
+
+        viewModel.backOnlineFlow
+            .onEach { viewModel.onOnlineBacked(it) }
             .observeInLifecycle(viewLifecycleOwner)
 
         networkListener.checkNetworkAvailability(requireContext())
             .onEach { hasNetwork ->
                 Timber.d(hasNetwork.toString())
                 viewModel.onNetworkStatusChecked(hasNetwork)
-                showNetworkStatus(viewModel.networkStatusFlow.value)
+                showNetworkStatus(viewModel.networkStatusFlow.value, viewModel.backOnline.value)
+                loadDataFromCache(action = { hideShimmerEffect() }, request = { requestApiData() })
             }.observeInLifecycle(viewLifecycleOwner)
 
         viewModel.networkStatusFlow.observeInLifecycle(viewLifecycleOwner)
+        viewModel.backOnlineFlow.observeInLifecycle(viewLifecycleOwner)
     }
 
     private fun setupRecyclerView() {
@@ -127,13 +135,23 @@ class RecipesFragment : Fragment() {
     private fun showShimmerEffect() = viewDataBinding.recipesRecycler.showShimmer()
     private fun hideShimmerEffect() = viewDataBinding.recipesRecycler.hideShimmer()
 
-    private fun showNetworkStatus(hasNetwork: Boolean) {
+    private fun showNetworkStatus(hasNetwork: Boolean, backOnline: Boolean) {
         if (!hasNetwork) {
             Toast.makeText(
                 requireContext(),
                 getString(R.string.no_internet_connection),
                 Toast.LENGTH_SHORT
             ).show()
+            viewModel.saveBackOnline(true)
+        } else {
+            if (backOnline) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.back_online),
+                    Toast.LENGTH_SHORT
+                ).show()
+                viewModel.saveBackOnline(false)
+            }
         }
     }
 }
