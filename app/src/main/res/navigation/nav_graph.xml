@@ -9,7 +9,15 @@
         android:id="@+id/recipesFragment"
         android:name="com.danteyu.studio.foody.ui.recipes.RecipesFragment"
         android:label="Recipes"
-        tools:layout="@layout/fragment_recipes" />
+        tools:layout="@layout/fragment_recipes">
+        <action
+            android:id="@+id/action_recipesFragment_to_recipesBottomSheetFragment"
+            app:destination="@id/recipesBottomSheetFragment" />
+        <argument
+            android:name="backFromBottomSheet"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteRecipesFragment"
         android:name="com.danteyu.studio.foody.ui.favoriteRecipes.FavoriteRecipesFragment"
@@ -20,4 +28,15 @@
         android:name="com.danteyu.studio.foody.ui.foodJoke.FoodJokeFragment"
         android:label="Food Joke"
         tools:layout="@layout/fragment_food_joke" />
+    <dialog
+        android:id="@+id/recipesBottomSheetFragment"
+        android:name="com.danteyu.studio.foody.ui.recipes.RecipesBottomSheetFragment"
+        android:label="RecipesBottomSheetFragment"
+        tools:layout="@layout/frag_recipe_bottom_sheet">
+        <action
+            android:id="@+id/action_recipesBottomSheetFragment_to_recipesFragment"
+            app:destination="@id/recipesFragment"
+            app:popUpTo="@id/recipesFragment"
+            app:popUpToInclusive="true" />
+    </dialog>
 </navigation>

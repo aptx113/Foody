@@ -17,7 +17,7 @@ package com.danteyu.studio.foody.data.source.db
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.danteyu.studio.foody.model.ExtendedIngredient
+import com.danteyu.studio.foody.model.FoodRecipe
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -30,18 +30,18 @@ import javax.inject.Inject
 class RecipesConverters @Inject constructor(private val moshi: Moshi) {
 
     @TypeConverter
-    fun convertFoodRecipeToJson(extendedIngredients: List<ExtendedIngredient>?): String? {
-        return extendedIngredients?.let {
+    fun convertFoodRecipeToJson(foodRecipes: List<FoodRecipe>?): String? {
+        return foodRecipes?.let {
             moshi.adapter(List::class.java)
                 .toJson(it)
         }
     }
 
     @TypeConverter
-    fun convertJsonToFoodRecipe(json: String?): List<ExtendedIngredient>? {
+    fun convertJsonToFoodRecipe(json: String?): List<FoodRecipe>? {
         return json?.let {
-            val type = Types.newParameterizedType(List::class.java, ExtendedIngredient::class.java)
-            val adapter: JsonAdapter<List<ExtendedIngredient>> = moshi.adapter(type)
+            val type = Types.newParameterizedType(List::class.java, FoodRecipe::class.java)
+            val adapter: JsonAdapter<List<FoodRecipe>> = moshi.adapter(type)
             adapter.fromJson(it)
         }
     }
