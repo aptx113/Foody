@@ -61,6 +61,9 @@ class RecipesViewModel @Inject constructor(
     private val navigateToRecipesBottomSheetChannel = Channel<Boolean>(Channel.CONFLATED)
     val navigateToRecipesBottomSheetFlow = navigateToRecipesBottomSheetChannel.receiveAsFlow()
 
+    private val _networkStatusFlow = MutableStateFlow(false)
+    val networkStatusFlow = _networkStatusFlow
+
     private val applySelectedChipsChannel = Channel<Boolean>(Channel.CONFLATED)
     val applySelectedChipsFlow = applySelectedChipsChannel.receiveAsFlow()
 
@@ -101,6 +104,10 @@ class RecipesViewModel @Inject constructor(
 
     fun onRecipesBottomSheetNavigated() =
         viewModelScope.launch { navigateToRecipesBottomSheetChannel.send(true) }
+
+    fun onNetworkStatusChecked(hasNetwork: Boolean) {
+        _networkStatusFlow.value = hasNetwork
+    }
 
     fun onMealTypeSelected(mealTyp: String) {
         _mealTypeFlow.value = mealTyp

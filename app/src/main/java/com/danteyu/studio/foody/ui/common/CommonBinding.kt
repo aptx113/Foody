@@ -18,6 +18,7 @@ package com.danteyu.studio.foody.ui.common
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import coil.load
 import com.danteyu.studio.foody.R
@@ -46,12 +47,14 @@ object CommonBinding {
         apiResponse: NetworkResult<FoodRecipesResponse>?,
         foodRecipes: List<FoodRecipesResponse>?
     ) {
-        when {
-            apiResponse is NetworkResult.Error && foodRecipes.isNullOrEmpty() -> {
-                view.visibility = View.VISIBLE
-                if (view is TextView) view.text = apiResponse.message.toString()
+        when (view) {
+            is ImageView -> view.isVisible =
+                apiResponse is NetworkResult.Error && foodRecipes.isNullOrEmpty()
+
+            is TextView -> {
+                view.isVisible = apiResponse is NetworkResult.Error && foodRecipes.isNullOrEmpty()
+                view.text = apiResponse?.message.toString()
             }
-            apiResponse is NetworkResult.Loading -> view.visibility = View.INVISIBLE
         }
     }
 }
