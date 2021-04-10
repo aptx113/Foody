@@ -24,6 +24,7 @@ import com.squareup.moshi.JsonClass
 @Entity(tableName = RECIPES_TABLE)
 @JsonClass(generateAdapter = true)
 data class FoodRecipesResponse(
+
     @Json(name = "results")
     val foodRecipes: List<FoodRecipe>
 ) {
