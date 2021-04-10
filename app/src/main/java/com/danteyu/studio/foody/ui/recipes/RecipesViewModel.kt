@@ -33,16 +33,15 @@ import com.danteyu.studio.foody.data.repository.UserPreferencesRepository
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by George Yu on 2021/4/1.
@@ -65,8 +64,11 @@ class RecipesViewModel @Inject constructor(
     private val applySelectedChipsChannel = Channel<Boolean>(Channel.CONFLATED)
     val applySelectedChipsFlow = applySelectedChipsChannel.receiveAsFlow()
 
-    private var mealType = DEFAULT_MEAL_TYPE
-    private var dietType = DEFAULT_DIET_TYPE
+    private val _mealTypeFlow = MutableStateFlow(DEFAULT_MEAL_TYPE)
+    val mealTypeFlow = _mealTypeFlow
+
+    private val _dietTypeFlow = MutableStateFlow(DEFAULT_DIET_TYPE)
+    val dietTypeFlow = _dietTypeFlow
 
     val mealAndDietTypeFlow = userPreferencesRepository.mealAndDietFlow
 
@@ -75,25 +77,22 @@ class RecipesViewModel @Inject constructor(
             userPreferencesRepository.saveMealAndDietType(mealTyp, mealTypeId, dietType, dietTypeId)
         }
 
-    fun getRecipes(queries: Map<String, String>) =
+    fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {
+        _recipesFlow.value = NetworkResult.Loading()
         foodyRepository.getRecipesFlow(queries)
-            .onEach { _recipesFlow.value = it }
-            .launchIn(viewModelScope)
+            .onEach {
+                _recipesFlow.value = it
+            }
+            .collect { }
+    }
 
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
 
-        viewModelScope.launch {
-            mealAndDietTypeFlow.collect { value ->
-                mealType = value.selectedMealType
-                dietType = value.selectedDietType
-            }
-        }
-
         queries[QUERY_NUM] = DEFAULT_RECIPES_NUM
         queries[QUERY_API_KEY] = API_KEY
-        queries[QUERY_TYPE] = mealType
-        queries[QUERY_DIET] = dietType
+        queries[QUERY_TYPE] = _mealTypeFlow.value
+        queries[QUERY_DIET] = _dietTypeFlow.value
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
         queries[QUERY_FILL_INGREDIENTS] = "true"
 
@@ -102,6 +101,14 @@ class RecipesViewModel @Inject constructor(
 
     fun onRecipesBottomSheetNavigated() =
         viewModelScope.launch { navigateToRecipesBottomSheetChannel.send(true) }
+
+    fun onMealTypeSelected(mealTyp: String) {
+        _mealTypeFlow.value = mealTyp
+    }
+
+    fun onDietTypeSelected(dietType: String) {
+        _dietTypeFlow.value = dietType
+    }
 
     fun onSelectedChipsApplied() = viewModelScope.launch { applySelectedChipsChannel.send(true) }
 }

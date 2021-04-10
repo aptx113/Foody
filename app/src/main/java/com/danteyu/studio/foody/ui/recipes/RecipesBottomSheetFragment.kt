@@ -21,8 +21,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.danteyu.studio.foody.DEFAULT_DIET_TYPE
-import com.danteyu.studio.foody.DEFAULT_MEAL_TYPE
 import com.danteyu.studio.foody.databinding.FragRecipeBottomSheetBinding
 import com.danteyu.studio.foody.ext.observeInLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -41,9 +39,7 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var viewDataBinding: FragRecipeBottomSheetBinding
     private val viewModel by activityViewModels<RecipesViewModel>()
 
-    private var mealTypeChip = DEFAULT_MEAL_TYPE
     private var mealTypeChipId = 0
-    private var dietTypeChip = DEFAULT_DIET_TYPE
     private var dietTypeChipId = 0
 
     override fun onCreateView(
@@ -62,32 +58,33 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.mealAndDietTypeFlow.onEach {
-            mealTypeChip = it.selectedMealType
-            dietTypeChip = it.selectedDietType
             updateChip(it.selectedMealTypeId, viewDataBinding.mealTypeChipGroup)
             updateChip(it.selectedDietTypeId, viewDataBinding.dietTypeChipGroup)
         }.observeInLifecycle(viewLifecycleOwner)
 
+        viewModel.mealTypeFlow.observeInLifecycle(viewLifecycleOwner)
+        viewModel.dietTypeFlow.observeInLifecycle(viewLifecycleOwner)
+
         viewDataBinding.mealTypeChipGroup.setOnCheckedChangeListener { group, checkedId ->
             val chip = group.findViewById<Chip>(checkedId)
             val selectedMealType = chip.text.toString().toLowerCase(Locale.ROOT)
-            mealTypeChip = selectedMealType
+            viewModel.onMealTypeSelected(selectedMealType)
             mealTypeChipId = checkedId
         }
 
         viewDataBinding.dietTypeChipGroup.setOnCheckedChangeListener { group, checkedId ->
             val chip = group.findViewById<Chip>(checkedId)
             val selectedDietType = chip.text.toString().toLowerCase(Locale.ROOT)
-            dietTypeChip = selectedDietType
+            viewModel.onDietTypeSelected(selectedDietType)
             dietTypeChipId = checkedId
         }
         viewModel.applySelectedChipsFlow
             .onEach {
                 if (it) {
                     viewModel.saveMealAndDietType(
-                        mealTypeChip,
+                        viewModel.mealTypeFlow.value,
                         mealTypeChipId,
-                        dietTypeChip,
+                        viewModel.dietTypeFlow.value,
                         dietTypeChipId
                     )
                     findNavController().navigate(
