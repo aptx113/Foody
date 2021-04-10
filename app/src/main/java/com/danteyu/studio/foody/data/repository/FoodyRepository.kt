@@ -37,7 +37,7 @@ class FoodyRepository @Inject constructor(
             emit(
                 networkBoundResource(
                     apiCall = { foodyApiService.getRecipes(queries) },
-                    saveApiCall = { recipesDao.insertRecipes(it.foodRecipes) }
+                    saveApiCall = { recipesDao.insertRecipes(it) }
                 )
             )
         }

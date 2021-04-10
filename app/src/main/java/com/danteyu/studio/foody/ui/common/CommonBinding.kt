@@ -21,7 +21,6 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import coil.load
 import com.danteyu.studio.foody.R
-import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.NetworkResult
 
@@ -45,7 +44,7 @@ object CommonBinding {
     fun bindErrorVisibility(
         view: View,
         apiResponse: NetworkResult<FoodRecipesResponse>?,
-        foodRecipes: List<FoodRecipe>?
+        foodRecipes: List<FoodRecipesResponse>?
     ) {
         when {
             apiResponse is NetworkResult.Error && foodRecipes.isNullOrEmpty() -> {
