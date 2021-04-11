@@ -61,21 +61,32 @@ class RecipesViewModel @Inject constructor(
     private val navigateToRecipesBottomSheetChannel = Channel<Boolean>(Channel.CONFLATED)
     val navigateToRecipesBottomSheetFlow = navigateToRecipesBottomSheetChannel.receiveAsFlow()
 
+    private val _networkStatusFlow = MutableStateFlow(false)
+    val networkStatusFlow: StateFlow<Boolean> = _networkStatusFlow
+
+    private val _backOnline = MutableStateFlow(false)
+    val backOnline: StateFlow<Boolean> = _backOnline
+
     private val applySelectedChipsChannel = Channel<Boolean>(Channel.CONFLATED)
     val applySelectedChipsFlow = applySelectedChipsChannel.receiveAsFlow()
 
     private val _mealTypeFlow = MutableStateFlow(DEFAULT_MEAL_TYPE)
-    val mealTypeFlow = _mealTypeFlow
+    val mealTypeFlow: StateFlow<String> = _mealTypeFlow
 
     private val _dietTypeFlow = MutableStateFlow(DEFAULT_DIET_TYPE)
-    val dietTypeFlow = _dietTypeFlow
+    val dietTypeFlow: StateFlow<String> = _dietTypeFlow
 
     val mealAndDietTypeFlow = userPreferencesRepository.mealAndDietFlow
+
+    val backOnlineFlow = userPreferencesRepository.backOnlineFlow
 
     fun saveMealAndDietType(mealTyp: String, mealTypeId: Int, dietType: String, dietTypeId: Int) =
         viewModelScope.launch(Dispatchers.IO) {
             userPreferencesRepository.saveMealAndDietType(mealTyp, mealTypeId, dietType, dietTypeId)
         }
+
+    fun saveBackOnline(backOnline: Boolean) =
+        viewModelScope.launch(Dispatchers.IO) { userPreferencesRepository.saveBackOnline(backOnline) }
 
     fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {
         _recipesFlow.value = NetworkResult.Loading()
@@ -101,6 +112,14 @@ class RecipesViewModel @Inject constructor(
 
     fun onRecipesBottomSheetNavigated() =
         viewModelScope.launch { navigateToRecipesBottomSheetChannel.send(true) }
+
+    fun onNetworkStatusChecked(hasNetwork: Boolean) {
+        _networkStatusFlow.value = hasNetwork
+    }
+
+    fun onOnlineBacked(backOnline: Boolean) {
+        _backOnline.value = backOnline
+    }
 
     fun onMealTypeSelected(mealTyp: String) {
         _mealTypeFlow.value = mealTyp

@@ -28,6 +28,7 @@ import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.databinding.FragmentRecipesBinding
 import com.danteyu.studio.foody.ext.observeInLifecycle
 import com.danteyu.studio.foody.ext.observeOnce
+import com.danteyu.studio.foody.utils.NetworkListener
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
@@ -37,6 +38,7 @@ import timber.log.Timber
 class RecipesFragment : Fragment() {
 
     private lateinit var viewDataBinding: FragmentRecipesBinding
+    private lateinit var networkListener: NetworkListener
     private val viewModel by activityViewModels<RecipesViewModel>()
     private val adapter by lazy { RecipesAdapter() }
     private val args by navArgs<RecipesFragmentArgs>()
@@ -49,17 +51,43 @@ class RecipesFragment : Fragment() {
         viewDataBinding = FragmentRecipesBinding.inflate(layoutInflater, container, false)
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
         viewDataBinding.viewModel = viewModel
+
         setupRecyclerView()
+        networkListener = NetworkListener()
+
         return viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadDataFromCache(action = { hideShimmerEffect() }, request = { requestApiData() })
         viewModel.navigateToRecipesBottomSheetFlow
-            .onEach { if (it) findNavController().navigate(R.id.recipesBottomSheetFragment) }
+            .onEach {
+                if (it) {
+                    if (viewModel.networkStatusFlow.value)
+                        findNavController().navigate(R.id.recipesBottomSheetFragment)
+                    else showNetworkStatus(
+                        viewModel.networkStatusFlow.value,
+                        viewModel.backOnline.value
+                    )
+                }
+            }
             .observeInLifecycle(viewLifecycleOwner)
+
+        viewModel.backOnlineFlow
+            .onEach { viewModel.onOnlineBacked(it) }
+            .observeInLifecycle(viewLifecycleOwner)
+
+        networkListener.checkNetworkAvailability(requireContext())
+            .onEach { hasNetwork ->
+                Timber.d(hasNetwork.toString())
+                viewModel.onNetworkStatusChecked(hasNetwork)
+                showNetworkStatus(viewModel.networkStatusFlow.value, viewModel.backOnline.value)
+                loadDataFromCache(action = { hideShimmerEffect() }, request = { requestApiData() })
+            }.observeInLifecycle(viewLifecycleOwner)
+
+        viewModel.networkStatusFlow.observeInLifecycle(viewLifecycleOwner)
+        viewModel.backOnlineFlow.observeInLifecycle(viewLifecycleOwner)
     }
 
     private fun setupRecyclerView() {
@@ -106,4 +134,24 @@ class RecipesFragment : Fragment() {
 
     private fun showShimmerEffect() = viewDataBinding.recipesRecycler.showShimmer()
     private fun hideShimmerEffect() = viewDataBinding.recipesRecycler.hideShimmer()
+
+    private fun showNetworkStatus(hasNetwork: Boolean, backOnline: Boolean) {
+        if (!hasNetwork) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.no_internet_connection),
+                Toast.LENGTH_SHORT
+            ).show()
+            viewModel.saveBackOnline(true)
+        } else {
+            if (backOnline) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.back_online),
+                    Toast.LENGTH_SHORT
+                ).show()
+                viewModel.saveBackOnline(false)
+            }
+        }
+    }
 }
