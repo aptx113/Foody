@@ -17,9 +17,12 @@ package com.danteyu.studio.foody.ui.recipes
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -52,6 +55,7 @@ class RecipesFragment : Fragment() {
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
         viewDataBinding.viewModel = viewModel
 
+        setHasOptionsMenu(true)
         setupRecyclerView()
         networkListener = NetworkListener()
 
@@ -88,6 +92,19 @@ class RecipesFragment : Fragment() {
 
         viewModel.networkStatusFlow.observeInLifecycle(viewLifecycleOwner)
         viewModel.backOnlineFlow.observeInLifecycle(viewLifecycleOwner)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.recipes_menu, menu)
+
+        val search = menu.findItem(R.id.menu_search)
+        val searchView = search.actionView as? SearchView
+        searchView?.isSubmitButtonEnabled = true
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = true
+
+            override fun onQueryTextChange(newText: String?): Boolean = true
+        })
     }
 
     private fun setupRecyclerView() {

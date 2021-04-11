@@ -48,8 +48,9 @@ object CommonBinding {
         foodRecipes: List<FoodRecipesResponse>?
     ) {
         when (view) {
-            is ImageView -> view.isVisible =
-                apiResponse is NetworkResult.Error && foodRecipes.isNullOrEmpty()
+            is ImageView ->
+                view.isVisible =
+                    apiResponse is NetworkResult.Error && foodRecipes.isNullOrEmpty()
 
             is TextView -> {
                 view.isVisible = apiResponse is NetworkResult.Error && foodRecipes.isNullOrEmpty()
