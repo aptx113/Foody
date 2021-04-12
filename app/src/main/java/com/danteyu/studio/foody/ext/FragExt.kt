@@ -13,21 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.data.source.api
+package com.danteyu.studio.foody.ext
 
-import com.danteyu.studio.foody.model.FoodRecipesResponse
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.QueryMap
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 
 /**
- * Created by George Yu on 2021/3/29.
+ * Created by George Yu in Apr. 2021.
  */
-interface FoodyApiService {
-
-    @GET("/recipes/complexSearch")
-    suspend fun getRecipes(@QueryMap queries: Map<String, String>): Response<FoodRecipesResponse>
-
-    @GET("/recipes/complexSearch")
-    suspend fun getSearchRecipes(@QueryMap searchQuery: Map<String, String>): Response<FoodRecipesResponse>
-}
+fun Fragment.showToast(message: String) =
+    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

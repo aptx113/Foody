@@ -17,9 +17,11 @@ package com.danteyu.studio.foody.ui.recipes
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -28,6 +30,7 @@ import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.databinding.FragmentRecipesBinding
 import com.danteyu.studio.foody.ext.observeInLifecycle
 import com.danteyu.studio.foody.ext.observeOnce
+import com.danteyu.studio.foody.ext.showToast
 import com.danteyu.studio.foody.utils.NetworkListener
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,6 +55,7 @@ class RecipesFragment : Fragment() {
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
         viewDataBinding.viewModel = viewModel
 
+        setHasOptionsMenu(true)
         setupRecyclerView()
         networkListener = NetworkListener()
 
@@ -85,9 +89,24 @@ class RecipesFragment : Fragment() {
                 showNetworkStatus(viewModel.networkStatusFlow.value, viewModel.backOnline.value)
                 loadDataFromCache(action = { hideShimmerEffect() }, request = { requestApiData() })
             }.observeInLifecycle(viewLifecycleOwner)
+    }
 
-        viewModel.networkStatusFlow.observeInLifecycle(viewLifecycleOwner)
-        viewModel.backOnlineFlow.observeInLifecycle(viewLifecycleOwner)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.recipes_menu, menu)
+
+        val search = menu.findItem(R.id.menu_search)
+        val searchView = search.actionView as? SearchView
+        searchView?.isSubmitButtonEnabled = true
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!query.isNullOrEmpty()) {
+                    searchApiData(query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean = true
+        })
     }
 
     private fun setupRecyclerView() {
@@ -119,15 +138,30 @@ class RecipesFragment : Fragment() {
                 is NetworkResult.Error -> {
                     hideShimmerEffect()
                     loadDataFromCache()
-                    Toast.makeText(
-                        requireContext(),
-                        response.message.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast(response.message.toString())
                 }
                 is NetworkResult.Loading -> {
                     showShimmerEffect()
                 }
+            }
+        }.observeInLifecycle(viewLifecycleOwner)
+    }
+
+    private fun searchApiData(searchQuery: String) {
+        showShimmerEffect()
+        viewModel.getSearchRecipes(viewModel.applySearchQueries(searchQuery))
+        viewModel.searchRecipesFlow.onEach { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    hideShimmerEffect()
+                    response.data?.let { adapter.submitList(it.foodRecipes) }
+                }
+                is NetworkResult.Error -> {
+                    hideShimmerEffect()
+                    loadDataFromCache()
+                    showToast(response.message.toString())
+                }
+                is NetworkResult.Loading -> showShimmerEffect()
             }
         }.observeInLifecycle(viewLifecycleOwner)
     }
@@ -137,19 +171,11 @@ class RecipesFragment : Fragment() {
 
     private fun showNetworkStatus(hasNetwork: Boolean, backOnline: Boolean) {
         if (!hasNetwork) {
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.no_internet_connection),
-                Toast.LENGTH_SHORT
-            ).show()
+            showToast(getString(R.string.no_internet_connection))
             viewModel.saveBackOnline(true)
         } else {
             if (backOnline) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.back_online),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.back_online))
                 viewModel.saveBackOnline(false)
             }
         }
