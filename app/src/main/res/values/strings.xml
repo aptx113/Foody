@@ -8,7 +8,9 @@
     <string name="resource_not_found">Resource not found.</string>
     <string name="vegan">Vegan</string>
     <string name="no_internet_connection">No Internet Connection</string>
+    <string name="back_online">We\'re back online.</string>
 
+    <!-- MealType   -->
     <string name="meal_type">Meal Type</string>
     <string name="main_course">Main Course</string>
     <string name="side_dish">Side Dish</string>
@@ -25,6 +27,7 @@
     <string name="snack">Snack</string>
     <string name="drink">Drink</string>
 
+    <!-- DietType   -->
     <string name="diet_type">Diet Type</string>
     <string name="gluten_free">Gluten Free</string>
     <string name="ketogenic">Ketogenic</string>
@@ -34,5 +37,7 @@
     <string name="primal">Primal</string>
     <string name="whole30">Whole30</string>
     <string name="apply">Apply</string>
-    <string name="back_online">We\'re back online.</string>
+
+    <!-- Recipes Menu   -->
+    <string name="search">Search</string>
 </resources>
