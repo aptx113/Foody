@@ -27,6 +27,7 @@ import com.danteyu.studio.foody.QUERY_API_KEY
 import com.danteyu.studio.foody.QUERY_DIET
 import com.danteyu.studio.foody.QUERY_FILL_INGREDIENTS
 import com.danteyu.studio.foody.QUERY_NUM
+import com.danteyu.studio.foody.QUERY_SEARCH
 import com.danteyu.studio.foody.QUERY_TYPE
 import com.danteyu.studio.foody.data.repository.FoodyRepository
 import com.danteyu.studio.foody.data.repository.UserPreferencesRepository
@@ -38,7 +39,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -52,11 +52,18 @@ class RecipesViewModel @Inject constructor(
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
+    private var mealType = DEFAULT_MEAL_TYPE
+    private var dietType = DEFAULT_DIET_TYPE
+
     val recipes = foodyRepository.loadRecipesFlow().asLiveData()
 
     private val _recipesFlow =
         MutableStateFlow<NetworkResult<FoodRecipesResponse>>(NetworkResult.Loading())
     val recipesFlow: StateFlow<NetworkResult<FoodRecipesResponse>> = _recipesFlow
+
+    private val _searchRecipesFlow =
+        MutableStateFlow<NetworkResult<FoodRecipesResponse>>(NetworkResult.Loading())
+    val searchRecipesFlow: StateFlow<NetworkResult<FoodRecipesResponse>> = _searchRecipesFlow
 
     private val navigateToRecipesBottomSheetChannel = Channel<Boolean>(Channel.CONFLATED)
     val navigateToRecipesBottomSheetFlow = navigateToRecipesBottomSheetChannel.receiveAsFlow()
@@ -70,12 +77,6 @@ class RecipesViewModel @Inject constructor(
     private val applySelectedChipsChannel = Channel<Boolean>(Channel.CONFLATED)
     val applySelectedChipsFlow = applySelectedChipsChannel.receiveAsFlow()
 
-    private val _mealTypeFlow = MutableStateFlow(DEFAULT_MEAL_TYPE)
-    val mealTypeFlow: StateFlow<String> = _mealTypeFlow
-
-    private val _dietTypeFlow = MutableStateFlow(DEFAULT_DIET_TYPE)
-    val dietTypeFlow: StateFlow<String> = _dietTypeFlow
-
     val mealAndDietTypeFlow = userPreferencesRepository.mealAndDietFlow
 
     val backOnlineFlow = userPreferencesRepository.backOnlineFlow
@@ -88,25 +89,45 @@ class RecipesViewModel @Inject constructor(
     fun saveBackOnline(backOnline: Boolean) =
         viewModelScope.launch(Dispatchers.IO) { userPreferencesRepository.saveBackOnline(backOnline) }
 
-    fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {
-        _recipesFlow.value = NetworkResult.Loading()
-        foodyRepository.getRecipesFlow(queries)
-            .onEach {
-                _recipesFlow.value = it
-            }
-            .collect { }
-    }
+    fun getRecipes(queries: Map<String, String>) =
+        viewModelScope.launch {
+            foodyRepository.getRecipesFlow(queries)
+                .collect { _recipesFlow.value = it }
+        }
+
+    fun getSearchRecipes(searchQueries: Map<String, String>) =
+        viewModelScope.launch {
+            foodyRepository.getSearchRecipesFlow(searchQueries)
+                .collect { _searchRecipesFlow.value = it }
+        }
 
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
 
+        viewModelScope.launch {
+            mealAndDietTypeFlow.collect { value ->
+                mealType = value.selectedMealType
+                dietType = value.selectedDietType
+            }
+        }
+
         queries[QUERY_NUM] = DEFAULT_RECIPES_NUM
         queries[QUERY_API_KEY] = API_KEY
-        queries[QUERY_TYPE] = _mealTypeFlow.value
-        queries[QUERY_DIET] = _dietTypeFlow.value
+        queries[QUERY_TYPE] = mealType
+        queries[QUERY_DIET] = dietType
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
         queries[QUERY_FILL_INGREDIENTS] = "true"
 
+        return queries
+    }
+
+    fun applySearchQueries(searchQuery: String): HashMap<String, String> {
+        val queries: HashMap<String, String> = HashMap()
+        queries[QUERY_SEARCH] = searchQuery
+        queries[QUERY_NUM] = DEFAULT_RECIPES_NUM
+        queries[QUERY_API_KEY] = API_KEY
+        queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
+        queries[QUERY_FILL_INGREDIENTS] = "true"
         return queries
     }
 
@@ -119,14 +140,6 @@ class RecipesViewModel @Inject constructor(
 
     fun onOnlineBacked(backOnline: Boolean) {
         _backOnline.value = backOnline
-    }
-
-    fun onMealTypeSelected(mealTyp: String) {
-        _mealTypeFlow.value = mealTyp
-    }
-
-    fun onDietTypeSelected(dietType: String) {
-        _dietTypeFlow.value = dietType
     }
 
     fun onSelectedChipsApplied() = viewModelScope.launch { applySelectedChipsChannel.send(true) }

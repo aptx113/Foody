@@ -43,4 +43,13 @@ class FoodyRepository @Inject constructor(
         }
 
     fun loadRecipesFlow() = recipesDao.loadRecipesFlow()
+
+    fun getSearchRecipesFlow(searchQueries: Map<String, String>) = flow {
+        emit(
+            networkBoundResource(
+                apiCall = { foodyApiService.getSearchRecipes(searchQueries) },
+                saveApiCall = {}
+            )
+        )
+    }
 }
