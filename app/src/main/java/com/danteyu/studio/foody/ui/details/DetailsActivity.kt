@@ -20,12 +20,18 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.navigation.navArgs
 import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.databinding.ActivityDetailsBinding
+import com.danteyu.studio.foody.ui.details.ingredients.IngredientsFragment
+import com.danteyu.studio.foody.ui.details.instructions.InstructionsFragment
+import com.danteyu.studio.foody.ui.details.overview.OverviewFragment
 
 class DetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailsBinding
+    private val args by navArgs<DetailsActivityArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +40,26 @@ class DetailsActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val fragments = ArrayList<Fragment>().apply {
+            add(OverviewFragment())
+            add(IngredientsFragment())
+            add(InstructionsFragment())
+        }
+
+        val titles = ArrayList<String>().apply {
+            add(getString(R.string.overview))
+            add(getString(R.string.ingredients))
+            add(getString(R.string.instructions))
+        }
+
+        val resultBundle = Bundle().apply {
+            putParcelable("recipeBundle", args.foodRecipe)
+        }
+
+        binding.viewPager.adapter =
+            DetailsPagerAdapter(resultBundle, fragments, titles, supportFragmentManager)
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
