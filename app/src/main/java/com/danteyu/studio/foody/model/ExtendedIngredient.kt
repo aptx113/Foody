@@ -15,9 +15,12 @@
  */
 package com.danteyu.studio.foody.model
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class ExtendedIngredient(
     @Json(name = "amount")
@@ -32,4 +35,4 @@ data class ExtendedIngredient(
     val original: String,
     @Json(name = "unit")
     val unit: String
-)
+) : Parcelable

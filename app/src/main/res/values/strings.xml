@@ -40,4 +40,6 @@
 
     <!-- Recipes Menu   -->
     <string name="search">Search</string>
+    <string name="title_activity_details">Details</string>
+
 </resources>

@@ -43,7 +43,7 @@ class RecipesFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentRecipesBinding
     private lateinit var networkListener: NetworkListener
     private val viewModel by activityViewModels<RecipesViewModel>()
-    private val adapter by lazy { RecipesAdapter() }
+    private val adapter by lazy { RecipesAdapter { viewModel.onDetailsNavigated(it) } }
     private val args by navArgs<RecipesFragmentArgs>()
 
     override fun onCreateView(
@@ -77,6 +77,13 @@ class RecipesFragment : Fragment() {
                 }
             }
             .observeInLifecycle(viewLifecycleOwner)
+
+        viewModel.navigateToDetailsFlow
+            .onEach {
+                findNavController().navigate(
+                    RecipesFragmentDirections.actionRecipesFragmentToDetailsActivity(it)
+                )
+            }.observeInLifecycle(viewLifecycleOwner)
 
         viewModel.backOnlineFlow
             .onEach { viewModel.onOnlineBacked(it) }
