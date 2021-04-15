@@ -24,6 +24,7 @@ import coil.load
 import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.NetworkResult
+import org.jsoup.Jsoup
 
 private const val CROSSFADE_IN_MILLIS = 600
 
@@ -56,6 +57,15 @@ object CommonBinding {
                 view.isVisible = apiResponse is NetworkResult.Error && foodRecipes.isNullOrEmpty()
                 view.text = apiResponse?.message.toString()
             }
+        }
+    }
+
+    @BindingAdapter("parseHtml")
+    @JvmStatic
+    fun bindParseHtml(textView: TextView, description: String?) {
+        if (description != null) {
+            val desc = Jsoup.parse(description).text()
+            textView.text = desc
         }
     }
 }

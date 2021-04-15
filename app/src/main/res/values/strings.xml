@@ -44,6 +44,9 @@
     <!-- Recipes Menu   -->
     <string name="search">Search</string>
     <string name="title_activity_details">Details</string>
+    <string name="dairy_free">Dairy Free</string>
+    <string name="healthy">Healthy</string>
+    <string name="cheap">Cheap</string>
 
 
 </resources>

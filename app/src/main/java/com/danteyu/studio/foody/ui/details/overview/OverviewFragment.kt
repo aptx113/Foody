@@ -20,16 +20,40 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.danteyu.studio.foody.R
+import androidx.fragment.app.activityViewModels
+import com.danteyu.studio.foody.RECIPE_RESULT_KEY
+import com.danteyu.studio.foody.databinding.FragmentOverviewBinding
+import com.danteyu.studio.foody.ext.provideDetailsFactory
+import com.danteyu.studio.foody.ui.details.DetailsAssistedFactory
+import com.danteyu.studio.foody.ui.details.DetailsViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class OverviewFragment : Fragment() {
+
+    @Inject
+    lateinit var detailsViewModelFactory: DetailsAssistedFactory
+
+    private val detailsViewModel by activityViewModels<DetailsViewModel> {
+        provideDetailsFactory(
+            detailsViewModelFactory,
+            requireArguments().getParcelable(
+                RECIPE_RESULT_KEY
+            )
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_overview, container, false)
+    ): View {
+
+        val viewDataBinding = FragmentOverviewBinding.inflate(layoutInflater, container, false)
+        viewDataBinding.detailsViewModel = detailsViewModel
+        viewDataBinding.lifecycleOwner = viewLifecycleOwner
+
+        return viewDataBinding.root
     }
 }

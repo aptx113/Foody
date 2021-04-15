@@ -23,11 +23,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.navArgs
 import com.danteyu.studio.foody.R
+import com.danteyu.studio.foody.RECIPE_RESULT_KEY
 import com.danteyu.studio.foody.databinding.ActivityDetailsBinding
 import com.danteyu.studio.foody.ui.details.ingredients.IngredientsFragment
 import com.danteyu.studio.foody.ui.details.instructions.InstructionsFragment
 import com.danteyu.studio.foody.ui.details.overview.OverviewFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailsBinding
@@ -54,7 +57,7 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         val resultBundle = Bundle().apply {
-            putParcelable("recipeBundle", args.foodRecipe)
+            putParcelable(RECIPE_RESULT_KEY, args.foodRecipe)
         }
 
         binding.viewPager.adapter =
