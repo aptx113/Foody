@@ -31,6 +31,7 @@ import com.danteyu.studio.foody.QUERY_SEARCH
 import com.danteyu.studio.foody.QUERY_TYPE
 import com.danteyu.studio.foody.data.repository.FoodyRepository
 import com.danteyu.studio.foody.data.repository.UserPreferencesRepository
+import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,6 +47,7 @@ import javax.inject.Inject
 /**
  * Created by George Yu on 2021/4/1.
  */
+@SuppressWarnings("TooManyFunctions")
 @HiltViewModel
 class RecipesViewModel @Inject constructor(
     private val foodyRepository: FoodyRepository,
@@ -67,6 +69,9 @@ class RecipesViewModel @Inject constructor(
 
     private val navigateToRecipesBottomSheetChannel = Channel<Boolean>(Channel.CONFLATED)
     val navigateToRecipesBottomSheetFlow = navigateToRecipesBottomSheetChannel.receiveAsFlow()
+
+    private val navigateToDetailsChannel = Channel<FoodRecipe>(Channel.CONFLATED)
+    val navigateToDetailsFlow = navigateToDetailsChannel.receiveAsFlow()
 
     private val _networkStatusFlow = MutableStateFlow(false)
     val networkStatusFlow: StateFlow<Boolean> = _networkStatusFlow
@@ -133,6 +138,9 @@ class RecipesViewModel @Inject constructor(
 
     fun onRecipesBottomSheetNavigated() =
         viewModelScope.launch { navigateToRecipesBottomSheetChannel.send(true) }
+
+    fun onDetailsNavigated(foodRecipe: FoodRecipe) =
+        viewModelScope.launch { navigateToDetailsChannel.send(foodRecipe) }
 
     fun onNetworkStatusChecked(hasNetwork: Boolean) {
         _networkStatusFlow.value = hasNetwork
