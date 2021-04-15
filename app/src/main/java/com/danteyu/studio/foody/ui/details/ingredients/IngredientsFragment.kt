@@ -13,26 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.model
+package com.danteyu.studio.foody.ui.details.ingredients
 
-import android.os.Parcelable
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import kotlinx.parcelize.Parcelize
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.danteyu.studio.foody.R
 
-@Parcelize
-@JsonClass(generateAdapter = true)
-data class ExtendedIngredient(
-    @Json(name = "amount")
-    val amount: Double,
-    @Json(name = "consistency")
-    val consistency: String?,
-    @Json(name = "image")
-    val image: String?,
-    @Json(name = "name")
-    val name: String,
-    @Json(name = "original")
-    val original: String,
-    @Json(name = "unit")
-    val unit: String
-) : Parcelable
+class IngredientsFragment : Fragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_ingredients, container, false)
+    }
+}

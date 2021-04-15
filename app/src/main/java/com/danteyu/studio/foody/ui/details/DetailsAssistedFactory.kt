@@ -13,26 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.model
+package com.danteyu.studio.foody.ui.details
 
-import android.os.Parcelable
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import kotlinx.parcelize.Parcelize
+import com.danteyu.studio.foody.model.FoodRecipe
+import dagger.assisted.AssistedFactory
 
-@Parcelize
-@JsonClass(generateAdapter = true)
-data class ExtendedIngredient(
-    @Json(name = "amount")
-    val amount: Double,
-    @Json(name = "consistency")
-    val consistency: String?,
-    @Json(name = "image")
-    val image: String?,
-    @Json(name = "name")
-    val name: String,
-    @Json(name = "original")
-    val original: String,
-    @Json(name = "unit")
-    val unit: String
-) : Parcelable
+/**
+ * Created by George Yu in Apr. 2021.
+ */
+@AssistedFactory
+interface DetailsAssistedFactory {
+    fun create(foodRecipe: FoodRecipe?): DetailsViewModel
+}

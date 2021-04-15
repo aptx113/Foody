@@ -15,6 +15,7 @@ object Plugins {
     const val KOTLIN = "kotlin"
     const val KOTLIN_ANDROID = "android"
     const val KOTLIN_KAPT = "kapt"
+    const val KOTLIN_PARCELIZE = "kotlin-parcelize"
     const val NAV_SAFEARGS = "androidx.navigation.safeargs.kotlin"
 
     const val DETEKT = "io.gitlab.arturbosch.detekt"

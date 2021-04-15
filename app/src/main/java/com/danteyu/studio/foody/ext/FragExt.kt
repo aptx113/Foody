@@ -17,9 +17,24 @@ package com.danteyu.studio.foody.ext
 
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.danteyu.studio.foody.model.FoodRecipe
+import com.danteyu.studio.foody.ui.details.DetailsAssistedFactory
 
 /**
  * Created by George Yu in Apr. 2021.
  */
 fun Fragment.showToast(message: String) =
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+
+@Suppress("UNCHECKED_CAST")
+fun Fragment.provideDetailsFactory(
+    assistedFactory: DetailsAssistedFactory,
+    foodRecipe: FoodRecipe?
+): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return assistedFactory.create(foodRecipe) as T
+    }
+}

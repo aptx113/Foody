@@ -15,12 +15,15 @@
  */
 package com.danteyu.studio.foody.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.danteyu.studio.foody.RECIPES_TABLE
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = RECIPES_TABLE)
 @JsonClass(generateAdapter = true)
 data class FoodRecipe(
@@ -55,4 +58,4 @@ data class FoodRecipe(
     val vegetarian: Boolean,
     @Json(name = "veryHealthy")
     val veryHealthy: Boolean
-)
+) : Parcelable

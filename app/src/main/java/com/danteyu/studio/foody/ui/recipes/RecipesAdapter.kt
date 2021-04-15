@@ -23,12 +23,14 @@ import com.danteyu.studio.foody.ui.common.SingleFieldDiffUtil
 /**
  * Created by George Yu on 2021/4/1.
  */
-class RecipesAdapter :
+class RecipesAdapter(private val navigateToDetails: (FoodRecipe) -> Unit) :
     ListAdapter<FoodRecipe, RecipesViewHolder>(SingleFieldDiffUtil<FoodRecipe> { it.id }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipesViewHolder =
         RecipesViewHolder.create(parent)
 
     override fun onBindViewHolder(holder: RecipesViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val foodRecipe = getItem(position)
+        holder.itemView.setOnClickListener { navigateToDetails(foodRecipe) }
+        holder.bind(foodRecipe)
     }
 }
