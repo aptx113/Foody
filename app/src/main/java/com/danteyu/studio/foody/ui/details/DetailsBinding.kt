@@ -53,7 +53,7 @@ object DetailsBinding {
 
     @BindingAdapter("ingredientImg")
     @JvmStatic
-    fun bindIngredientImage(imageView: ImageView, imgUrl: String) {
+    fun bindIngredientImage(imageView: ImageView, imgUrl: String?) {
         imageView.load(BASE_IMAGE_URL + imgUrl) {
             crossfade(CROSS_FADE_IN_MILLIS)
             error(R.drawable.ic_error_placeholder)
