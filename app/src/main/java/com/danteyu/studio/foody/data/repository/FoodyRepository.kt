@@ -19,14 +19,12 @@ import com.danteyu.studio.foody.data.source.api.FoodyApiService
 import com.danteyu.studio.foody.data.source.db.RecipesDao
 import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.utils.networkBoundResource
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
  * Created by George Yu on 2021/3/29.
  */
-@ViewModelScoped
 class FoodyRepository @Inject constructor(
     private val foodyApiService: FoodyApiService,
     private val recipesDao: RecipesDao
