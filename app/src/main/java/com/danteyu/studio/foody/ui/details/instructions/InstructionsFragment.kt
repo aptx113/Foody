@@ -19,17 +19,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
-import com.danteyu.studio.foody.R
+import com.danteyu.studio.foody.RECIPE_RESULT_KEY
+import com.danteyu.studio.foody.databinding.FragmentInstructionsBinding
+import com.danteyu.studio.foody.model.FoodRecipe
 
 class InstructionsFragment : Fragment() {
+
+    private lateinit var viewDataBinding: FragmentInstructionsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_instructions, container, false)
+    ): View {
+
+        viewDataBinding = FragmentInstructionsBinding.inflate(layoutInflater, container, false)
+
+        val foodRecipe: FoodRecipe? = requireArguments().getParcelable(RECIPE_RESULT_KEY)
+        viewDataBinding.webView.webViewClient = object : WebViewClient() {}
+        if (foodRecipe?.sourceUrl != null) viewDataBinding.webView.loadUrl(foodRecipe.sourceUrl)
+
+        return viewDataBinding.root
     }
 }
