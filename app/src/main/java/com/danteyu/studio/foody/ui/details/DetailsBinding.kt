@@ -20,6 +20,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import coil.load
+import com.danteyu.studio.foody.BASE_IMAGE_URL
+import com.danteyu.studio.foody.CROSS_FADE_IN_MILLIS
 import com.danteyu.studio.foody.R
 
 /**
@@ -27,8 +30,8 @@ import com.danteyu.studio.foody.R
  */
 object DetailsBinding {
 
-    @JvmStatic
     @BindingAdapter("stateIsOn")
+    @JvmStatic
     fun bindStateColor(view: View, stateIsOn: Boolean) {
         if (stateIsOn) {
             when (view) {
@@ -45,6 +48,15 @@ object DetailsBinding {
                     )
                 )
             }
+        }
+    }
+
+    @BindingAdapter("ingredientImg")
+    @JvmStatic
+    fun bindIngredientImage(imageView: ImageView, imgUrl: String) {
+        imageView.load(BASE_IMAGE_URL + imgUrl) {
+            crossfade(CROSS_FADE_IN_MILLIS)
+            error(R.drawable.ic_error_placeholder)
         }
     }
 }

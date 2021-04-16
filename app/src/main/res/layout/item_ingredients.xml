@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="ingredient"
+            type="com.danteyu.studio.foody.model.ExtendedIngredient" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_4">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/ingredients_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/lightMediumGray"
+            app:strokeWidth="1dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ingredients_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:elevation="2dp">
+
+                <View
+                    android:id="@+id/white_background"
+                    android:layout_width="120dp"
+                    android:layout_height="0dp"
+                    android:background="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ingredients_img"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toBottomOf="@id/white_background"
+                    app:layout_constraintEnd_toEndOf="@id/white_background"
+                    app:layout_constraintStart_toStartOf="@id/white_background"
+                    app:layout_constraintTop_toTopOf="@id/white_background"
+                    bind:ingredientImg="@{ingredient.image}" />
+
+                <TextView
+                    android:id="@+id/name_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/space_12"
+                    android:layout_marginTop="@dimen/space_12"
+                    android:fontFamily="@font/courgette"
+                    android:textColor="@color/darker"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/white_background"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/amount_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_12"
+                    android:text="@{String.valueOf(ingredient.amount)}"
+                    app:layout_constraintStart_toStartOf="@id/name_txt"
+                    app:layout_constraintTop_toBottomOf="@id/name_txt" />
+
+                <TextView
+                    android:id="@+id/unit_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_8"
+                    android:text="@{ingredient.unit}"
+                    app:layout_constraintBottom_toBottomOf="@id/amount_txt"
+                    app:layout_constraintStart_toEndOf="@id/amount_txt"
+                    app:layout_constraintTop_toTopOf="@id/amount_txt" />
+
+                <TextView
+                    android:id="@+id/consistency_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_12"
+                    android:layout_marginEnd="@dimen/space_12"
+                    android:text="@{ingredient.consistency}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/amount_txt"
+                    app:layout_constraintTop_toBottomOf="@id/amount_txt" />
+
+                <TextView
+                    android:id="@+id/original_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/space_12"
+                    android:layout_marginEnd="@dimen/space_12"
+                    android:text="@{ingredient.original}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/consistency_txt"
+                    app:layout_constraintTop_toBottomOf="@id/consistency_txt"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
