@@ -20,16 +20,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.danteyu.studio.foody.R
+import com.danteyu.studio.foody.RECIPE_RESULT_KEY
+import com.danteyu.studio.foody.databinding.FragmentIngredientsBinding
+import com.danteyu.studio.foody.model.FoodRecipe
 
 class IngredientsFragment : Fragment() {
+
+    private val adapter by lazy { IngredientsAdapter() }
+    private lateinit var viewDataBinding: FragmentIngredientsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ingredients, container, false)
+    ): View {
+
+        viewDataBinding = FragmentIngredientsBinding.inflate(layoutInflater, container, false)
+        viewDataBinding.lifecycleOwner = viewLifecycleOwner
+
+        val foodRecipe: FoodRecipe? = requireArguments().getParcelable(RECIPE_RESULT_KEY)
+        viewDataBinding.ingredientsRecyclerView.adapter =
+            adapter.apply { submitList(foodRecipe?.extendedIngredients) }
+
+        return viewDataBinding.root
     }
 }

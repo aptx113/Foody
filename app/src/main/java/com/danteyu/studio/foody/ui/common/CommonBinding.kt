@@ -21,12 +21,11 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import coil.load
+import com.danteyu.studio.foody.CROSS_FADE_IN_MILLIS
 import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.NetworkResult
 import org.jsoup.Jsoup
-
-private const val CROSSFADE_IN_MILLIS = 600
 
 /**
  * Created by George Yu on 2021/4/2.
@@ -37,7 +36,7 @@ object CommonBinding {
     @JvmStatic
     fun bindImageFromUrl(imageView: ImageView, imageUrl: String) =
         imageView.load(imageUrl) {
-            crossfade(CROSSFADE_IN_MILLIS)
+            crossfade(CROSS_FADE_IN_MILLIS)
             error(R.drawable.ic_error_placeholder)
         }
 

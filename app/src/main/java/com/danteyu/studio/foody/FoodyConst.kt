@@ -19,7 +19,9 @@ package com.danteyu.studio.foody
  * Created by George Yu on 2021/3/29.
  */
 const val BASE_URL = "https://api.spoonacular.com"
+const val BASE_IMAGE_URL = "https://spoonacular.com/cdn/ingredients_100x100/"
 const val API_KEY = "90d932a05e7d42bda04d6aea5b3eaf2f"
+const val CROSS_FADE_IN_MILLIS = 600
 
 const val API_TIMEOUT_SECONDS = 15L
 const val TIME_OUT = "timeout"
