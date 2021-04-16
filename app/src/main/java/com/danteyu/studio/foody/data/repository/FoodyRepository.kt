@@ -17,6 +17,7 @@ package com.danteyu.studio.foody.data.repository
 
 import com.danteyu.studio.foody.data.source.api.FoodyApiService
 import com.danteyu.studio.foody.data.source.db.RecipesDao
+import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.utils.networkBoundResource
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.flow
@@ -52,4 +53,14 @@ class FoodyRepository @Inject constructor(
             )
         )
     }
+
+    fun loadFavoriteRecipesFlow() = recipesDao.loadFavoriteRecipesFlow()
+
+    suspend fun insertFavoriteRecipe(foodRecipe: FoodRecipe) =
+        recipesDao.insertFavoriteRecipe(foodRecipe)
+
+    suspend fun deleteFavoriteRecipe(foodRecipe: FoodRecipe) =
+        recipesDao.deleteFavoriteRecipe(foodRecipe)
+
+    suspend fun deleteAllFavoriteRecipes() = recipesDao.deleteAllFavoriteRecipes()
 }
