@@ -16,9 +16,11 @@
 package com.danteyu.studio.foody.data.source.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -33,4 +35,16 @@ interface RecipesDao {
 
     @Query("SELECT * FROM recipes_table ORDER BY id ASC")
     fun loadRecipesFlow(): Flow<List<FoodRecipesResponse>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFavoriteRecipe(foodRecipe: FoodRecipe)
+
+    @Query("SELECT * FROM favorite_recipes_table ORDER BY id ASC")
+    fun loadFavoriteRecipesFlow(): Flow<List<FoodRecipe>>
+
+    @Delete
+    suspend fun deleteFavoriteRecipe(foodRecipe: FoodRecipe)
+
+    @Query("DELETE FROM favorite_recipes_table")
+    suspend fun deleteAllFavoriteRecipes()
 }
