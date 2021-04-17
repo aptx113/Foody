@@ -13,28 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danteyu.studio.foody.ui.details
+package com.danteyu.studio.foody.ui.favoriteRecipes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.danteyu.studio.foody.data.repository.FoodyRepository
 import com.danteyu.studio.foody.model.FoodRecipe
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by George Yu in Apr. 2021.
  */
-class DetailsViewModel @AssistedInject constructor(
-    private val repository: FoodyRepository,
-    @Assisted private val argument: FoodRecipe
-) :
+@HiltViewModel
+class FavoriteRecipesViewModel @Inject constructor(private val repository: FoodyRepository) :
     ViewModel() {
 
-    val foodRecipe = argument
+    val favoriteRecipesFlow = repository.loadFavoriteRecipesFlow()
 
-    private fun insertFavoriteRecipe(foodRecipe: FoodRecipe) =
-        viewModelScope.launch(Dispatchers.IO) { repository.insertFavoriteRecipe(foodRecipe) }
+    private fun deleteFavoriteRecipe(foodRecipe: FoodRecipe) =
+        viewModelScope.launch(Dispatchers.IO) { repository.deleteFavoriteRecipe(foodRecipe) }
+
+    private fun deleteAllFavoriteRecipes() =
+        viewModelScope.launch(Dispatchers.IO) { repository.deleteAllFavoriteRecipes() }
 }

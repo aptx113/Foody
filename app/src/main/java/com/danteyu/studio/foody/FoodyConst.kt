@@ -38,6 +38,7 @@ const val QUERY_FILL_INGREDIENTS = "fillIngredients"
 
 // Database
 const val RECIPES_TABLE = "recipes_table"
+const val FAVORITE_RECIPES_TABLE = "favorite_recipes_table"
 const val FOODY_DATABASE = "foody_database"
 
 // Bottom Sheet and Preferences
