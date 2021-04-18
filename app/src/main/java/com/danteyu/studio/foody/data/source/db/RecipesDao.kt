@@ -42,9 +42,6 @@ interface RecipesDao {
     @Query("SELECT * FROM favorite_recipes_table ORDER BY id ASC")
     fun loadFavoriteRecipesFlow(): Flow<List<FoodRecipe>>
 
-    @Query("SELECT * FROM favorite_recipes_table WHERE id = :id")
-    fun loadFavoriteRecipeFlow(id: Int): Flow<FoodRecipe>
-
     @Delete
     suspend fun deleteFavoriteRecipe(foodRecipe: FoodRecipe)
 

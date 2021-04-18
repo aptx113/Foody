@@ -46,7 +46,6 @@ class DetailsViewModel @AssistedInject constructor(
         contained
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
-
     fun insertFavoriteRecipe(foodRecipe: FoodRecipe) =
         viewModelScope.launch(Dispatchers.IO) { repository.insertFavoriteRecipe(foodRecipe) }
 

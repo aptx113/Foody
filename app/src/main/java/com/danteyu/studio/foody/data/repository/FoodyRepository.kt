@@ -54,8 +54,6 @@ class FoodyRepository @Inject constructor(
 
     fun loadFavoriteRecipesFlow() = recipesDao.loadFavoriteRecipesFlow()
 
-    fun loadFavoriteRecipeFlow(id: Int) = recipesDao.loadFavoriteRecipeFlow(id)
-
     suspend fun insertFavoriteRecipe(foodRecipe: FoodRecipe) =
         recipesDao.insertFavoriteRecipe(foodRecipe)
 
