@@ -96,6 +96,7 @@ class RecipesViewModel @Inject constructor(
 
     fun getRecipes(queries: Map<String, String>) =
         viewModelScope.launch {
+            _recipesFlow.value = NetworkResult.Loading()
             foodyRepository.getRecipesFlow(queries)
                 .collect { _recipesFlow.value = it }
         }

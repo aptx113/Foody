@@ -16,7 +16,10 @@
 package com.danteyu.studio.foody.ui.details
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -25,16 +28,21 @@ import androidx.navigation.navArgs
 import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.RECIPE_RESULT_KEY
 import com.danteyu.studio.foody.databinding.ActivityDetailsBinding
+import com.danteyu.studio.foody.ext.observeInLifecycle
+import com.danteyu.studio.foody.ext.showSnackBar
+import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.ui.details.ingredients.IngredientsFragment
 import com.danteyu.studio.foody.ui.details.instructions.InstructionsFragment
 import com.danteyu.studio.foody.ui.details.overview.OverviewFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailsBinding
     private val args by navArgs<DetailsActivityArgs>()
+    private val viewModel by viewModels<DetailsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,10 +73,54 @@ class DetailsActivity : AppCompatActivity() {
         binding.tabLayout.setupWithViewPager(binding.viewPager)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.details_menu, menu)
+        val menuItem = menu?.findItem(R.id.save_to_favorites)
+        checkSavedRecipe(menuItem)
+        return true
+    }
+
+    private fun checkSavedRecipe(menuItem: MenuItem?) {
+        viewModel.isInMyFavoriteFlow
+            .onEach {
+                if (it) changeItemColor(menuItem, R.color.yellow)
+                else changeItemColor(menuItem, R.color.white)
+            }
+            .observeInLifecycle(this)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
+        when {
+            item.itemId == android.R.id.home -> finish()
+            item.itemId == R.id.save_to_favorites && !viewModel.isInMyFavoriteFlow.value -> saveToFavorites(
+                args.foodRecipe
+            )
+            item.itemId == R.id.save_to_favorites && viewModel.isInMyFavoriteFlow.value -> removeFromFavorites(
+                args.foodRecipe
+            )
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun saveToFavorites(foodRecipe: FoodRecipe) {
+        viewModel.insertFavoriteRecipe(foodRecipe)
+        showSnackBar(
+            binding.detailsLayout,
+            getString(R.string.recipe_saved),
+            getString(R.string.ok)
+        )
+    }
+
+    private fun removeFromFavorites(foodRecipe: FoodRecipe) {
+        viewModel.deleteFavoriteRecipe(foodRecipe)
+        showSnackBar(
+            binding.detailsLayout,
+            getString(R.string.removed_from_favorites),
+            getString(R.string.ok)
+        )
+    }
+
+    private fun changeItemColor(item: MenuItem?, @ColorRes color: Int) {
+        item?.icon?.setTint(ContextCompat.getColor(this, color))
     }
 }
