@@ -22,6 +22,9 @@ import com.danteyu.studio.foody.model.FoodRecipe
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
@@ -35,6 +38,17 @@ class DetailsViewModel @AssistedInject constructor(
 
     val foodRecipe = argument
 
-    private fun insertFavoriteRecipe(foodRecipe: FoodRecipe) =
+    val isInMyFavoriteFlow = repository.loadFavoriteRecipesFlow().map {
+        var contained = false
+        it.forEach { favoriteRecipe ->
+            if (favoriteRecipe.id == argument.id) contained = true
+        }
+        contained
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+
+    fun insertFavoriteRecipe(foodRecipe: FoodRecipe) =
         viewModelScope.launch(Dispatchers.IO) { repository.insertFavoriteRecipe(foodRecipe) }
+
+    fun deleteFavoriteRecipe(foodRecipe: FoodRecipe) =
+        viewModelScope.launch(Dispatchers.IO) { repository.deleteFavoriteRecipe(foodRecipe) }
 }
