@@ -16,6 +16,7 @@
 package com.danteyu.studio.foody.ui.favoriteRecipes
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.danteyu.studio.foody.data.repository.FoodyRepository
 import com.danteyu.studio.foody.model.FoodRecipe
@@ -31,11 +32,11 @@ import javax.inject.Inject
 class FavoriteRecipesViewModel @Inject constructor(private val repository: FoodyRepository) :
     ViewModel() {
 
-    val favoriteRecipesFlow = repository.loadFavoriteRecipesFlow()
+    val favoriteRecipes = repository.loadFavoriteRecipesFlow().asLiveData()
 
-    private fun deleteFavoriteRecipe(foodRecipe: FoodRecipe) =
+    fun deleteFavoriteRecipe(foodRecipe: FoodRecipe) =
         viewModelScope.launch(Dispatchers.IO) { repository.deleteFavoriteRecipe(foodRecipe) }
 
-    private fun deleteAllFavoriteRecipes() =
+    fun deleteAllFavoriteRecipes() =
         viewModelScope.launch(Dispatchers.IO) { repository.deleteAllFavoriteRecipes() }
 }

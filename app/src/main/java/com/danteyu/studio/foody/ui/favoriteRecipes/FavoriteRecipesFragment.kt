@@ -20,16 +20,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.danteyu.studio.foody.R
+import androidx.fragment.app.viewModels
+import com.danteyu.studio.foody.databinding.FragmentFavoriteRecipesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteRecipesFragment : Fragment() {
+
+    private lateinit var viewDataBinding: FragmentFavoriteRecipesBinding
+    private val adapter by lazy { FavoriteRecipesAdapter() }
+    private val viewModel by viewModels<FavoriteRecipesViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_recipes, container, false)
+    ): View {
+
+        viewDataBinding = FragmentFavoriteRecipesBinding.inflate(inflater, container, false)
+        viewDataBinding.recyclerView.adapter = adapter
+        viewDataBinding.lifecycleOwner = viewLifecycleOwner
+        viewDataBinding.viewModel = viewModel
+
+        return viewDataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.favoriteRecipes.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
 }
