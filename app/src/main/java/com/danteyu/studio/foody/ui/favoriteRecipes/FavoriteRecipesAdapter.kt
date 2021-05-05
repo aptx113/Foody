@@ -23,7 +23,7 @@ import com.danteyu.studio.foody.ui.common.SingleFieldDiffUtil
 /**
  * Created by George Yu in Apr. 2021.
  */
-class FavoriteRecipesAdapter :
+class FavoriteRecipesAdapter(private val onClick: (FoodRecipe) -> Unit) :
     ListAdapter<FoodRecipe, FavoriteRecipesViewHolder>(SingleFieldDiffUtil<FoodRecipe> { it.id }) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteRecipesViewHolder =
@@ -32,5 +32,8 @@ class FavoriteRecipesAdapter :
     override fun onBindViewHolder(holder: FavoriteRecipesViewHolder, position: Int) {
         val favoriteRecipe = getItem(position)
         holder.bind(favoriteRecipe)
+        holder.itemView.setOnClickListener {
+            onClick(favoriteRecipe)
+        }
     }
 }

@@ -21,14 +21,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.danteyu.studio.foody.databinding.FragmentFavoriteRecipesBinding
+import com.danteyu.studio.foody.ext.observeInLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class FavoriteRecipesFragment : Fragment() {
 
     private lateinit var viewDataBinding: FragmentFavoriteRecipesBinding
-    private val adapter by lazy { FavoriteRecipesAdapter() }
+    private val adapter by lazy { FavoriteRecipesAdapter { viewModel.onDetailsNavigated(it) } }
     private val viewModel by viewModels<FavoriteRecipesViewModel>()
 
     override fun onCreateView(
@@ -51,5 +54,15 @@ class FavoriteRecipesFragment : Fragment() {
         viewModel.favoriteRecipes.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+
+        viewModel.navigateToDetailsFlow
+            .onEach {
+                findNavController().navigate(
+                    FavoriteRecipesFragmentDirections.actionFavoriteRecipesFragmentToDetailsActivity(
+                        it
+                    )
+                )
+            }
+            .observeInLifecycle(viewLifecycleOwner)
     }
 }

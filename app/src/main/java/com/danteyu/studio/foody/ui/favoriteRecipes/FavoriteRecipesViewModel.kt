@@ -24,6 +24,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
  * Created by George Yu in Apr. 2021.
@@ -34,9 +36,15 @@ class FavoriteRecipesViewModel @Inject constructor(private val repository: Foody
 
     val favoriteRecipes = repository.loadFavoriteRecipesFlow().asLiveData()
 
+    private val navigateToDetailsChannel = Channel<FoodRecipe>(Channel.CONFLATED)
+    val navigateToDetailsFlow = navigateToDetailsChannel.receiveAsFlow()
+
     fun deleteFavoriteRecipe(foodRecipe: FoodRecipe) =
         viewModelScope.launch(Dispatchers.IO) { repository.deleteFavoriteRecipe(foodRecipe) }
 
     fun deleteAllFavoriteRecipes() =
         viewModelScope.launch(Dispatchers.IO) { repository.deleteAllFavoriteRecipes() }
+
+    fun onDetailsNavigated(favoriteFoodRecipe: FoodRecipe) =
+        viewModelScope.launch { navigateToDetailsChannel.send(favoriteFoodRecipe) }
 }
