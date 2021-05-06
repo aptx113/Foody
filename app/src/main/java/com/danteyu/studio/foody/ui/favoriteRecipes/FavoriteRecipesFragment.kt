@@ -31,8 +31,14 @@ import kotlinx.coroutines.flow.onEach
 class FavoriteRecipesFragment : Fragment() {
 
     private lateinit var viewDataBinding: FragmentFavoriteRecipesBinding
-    private val adapter by lazy { FavoriteRecipesAdapter { viewModel.onDetailsNavigated(it) } }
     private val viewModel by viewModels<FavoriteRecipesViewModel>()
+    private val adapter by lazy {
+        FavoriteRecipesAdapter(requireActivity(), viewModel) {
+            viewModel.onDetailsNavigated(
+                it
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,5 +70,10 @@ class FavoriteRecipesFragment : Fragment() {
                 )
             }
             .observeInLifecycle(viewLifecycleOwner)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter.clearContextualActionMode()
     }
 }

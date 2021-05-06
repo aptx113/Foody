@@ -22,10 +22,10 @@ import com.danteyu.studio.foody.data.repository.FoodyRepository
 import com.danteyu.studio.foody.model.FoodRecipe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by George Yu in Apr. 2021.

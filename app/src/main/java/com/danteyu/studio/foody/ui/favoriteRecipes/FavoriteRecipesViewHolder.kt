@@ -24,7 +24,7 @@ import com.danteyu.studio.foody.model.FoodRecipe
 /**
  * Created by George Yu in Apr. 2021.
  */
-class FavoriteRecipesViewHolder(private val viewDataBinding: ItemFavoriteRecipesBinding) :
+class FavoriteRecipesViewHolder(val viewDataBinding: ItemFavoriteRecipesBinding) :
     RecyclerView.ViewHolder(viewDataBinding.root) {
 
     fun bind(favoriteRecipe: FoodRecipe) {

@@ -54,5 +54,15 @@
     <string name="recipe_saved">Recipe saved</string>
     <string name="ok">Okay</string>
     <string name="removed_from_favorites">Removed from Favorites</string>
+    <string name="delete_favorite">Delete Favorite</string>
+
+    <plurals name="favorite_recipes">
+        <item quantity="one">%d item selected</item>
+        <item quantity="other">%d items selected</item>
+    </plurals>
+    <plurals name="deleted_recipes">
+        <item quantity="one">%d recipe removed</item>
+        <item quantity="other">%d recipes removed</item>
+    </plurals>
 
 </resources>

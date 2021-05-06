@@ -17,4 +17,5 @@
     <color name="green">#00C980</color>
 
     <color name="checkedChipBackground">#206200EA</color>
+    <color name="cardBackgroundLightColor">#106200EA</color>
 </resources>

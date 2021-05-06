@@ -72,11 +72,11 @@
                     android:layout_marginTop="@dimen/space_12"
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:text="@{favoriteRecipe.summary}"
                     android:textColor="@color/darkGray"
                     app:layout_constraintEnd_toEndOf="@id/item_favorite_title_txt"
                     app:layout_constraintStart_toStartOf="@id/item_favorite_title_txt"
-                    app:layout_constraintTop_toBottomOf="@id/item_favorite_title_txt" />
+                    app:layout_constraintTop_toBottomOf="@id/item_favorite_title_txt"
+                    bind:parseHtml="@{favoriteRecipe.summary}" />
 
                 <ImageView
                     android:id="@+id/item_favorite_heart_img"
