@@ -17,13 +17,18 @@ package com.danteyu.studio.foody.ui.favoriteRecipes
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.databinding.FragmentFavoriteRecipesBinding
 import com.danteyu.studio.foody.ext.observeInLifecycle
+import com.danteyu.studio.foody.ext.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
@@ -51,6 +56,7 @@ class FavoriteRecipesFragment : Fragment() {
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
         viewDataBinding.viewModel = viewModel
 
+        setHasOptionsMenu(true)
         return viewDataBinding.root
     }
 
@@ -70,6 +76,22 @@ class FavoriteRecipesFragment : Fragment() {
                 )
             }
             .observeInLifecycle(viewLifecycleOwner)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.favorite_recipes_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.deleteAll_favorite) {
+            viewModel.deleteAllFavoriteRecipes()
+            showSnackBar(
+                viewDataBinding.root,
+                getString(R.string.all_recipes_removed),
+                getString(R.string.ok)
+            )
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {

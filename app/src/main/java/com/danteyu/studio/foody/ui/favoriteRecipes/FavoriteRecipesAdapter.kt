@@ -24,13 +24,11 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.ListAdapter
-import com.danteyu.studio.foody.FoodyApp
 import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.ext.applyStatusBarColor
 import com.danteyu.studio.foody.ext.showSnackBar
 import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.ui.common.SingleFieldDiffUtil
-import com.google.android.material.snackbar.Snackbar
 
 /**
  * Created by George Yu in Apr. 2021.
@@ -49,7 +47,6 @@ class FavoriteRecipesAdapter(
 
     private val selectedRecipes = arrayListOf<FoodRecipe>()
     private val viewHolders = arrayListOf<FavoriteRecipesViewHolder>()
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteRecipesViewHolder =
         FavoriteRecipesViewHolder.create(parent)
@@ -73,7 +70,6 @@ class FavoriteRecipesAdapter(
                 applySelection(holder, favoriteRecipe)
                 true
             }
-
         }
     }
 
@@ -130,11 +126,13 @@ class FavoriteRecipesAdapter(
         if (item?.itemId == R.id.delete_favorite_recipe) {
             selectedRecipes.forEach { viewModel.deleteFavoriteRecipe(it) }
             requiredActivity.showSnackBar(
-                rootView, requiredActivity.resources.getQuantityString(
+                rootView,
+                requiredActivity.resources.getQuantityString(
                     R.plurals.deleted_recipes,
                     selectedRecipes.size,
                     selectedRecipes.size
-                ), requiredActivity.getString(R.string.ok)
+                ),
+                requiredActivity.getString(R.string.ok)
             )
             multiSelection = false
             selectedRecipes.clear()
