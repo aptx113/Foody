@@ -67,4 +67,11 @@ object CommonBinding {
             textView.text = desc
         }
     }
+
+    @BindingAdapter("visibleGone")
+    @JvmStatic
+    fun bindVisibility(view: View, condition: Boolean) {
+        if (condition) view.visibility = View.GONE
+        else view.visibility = View.VISIBLE
+    }
 }

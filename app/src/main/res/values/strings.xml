@@ -8,6 +8,7 @@
     <string name="resource_not_found">Resource not found.</string>
     <string name="vegan">Vegan</string>
     <string name="no_internet_connection">No Internet Connection</string>
+    <string name="no_favorite_recipes">No Favorite Recipes</string>
     <string name="back_online">We\'re back online.</string>
     <string name="overview">Overview</string>
     <string name="ingredients">Ingredients</string>
@@ -52,7 +53,20 @@
     <string name="save_to_favorites">Save to Favorites</string>
     <string name="recipe_saved">Recipe saved</string>
     <string name="ok">Okay</string>
-    <string name="removed_from_favorites">Removed from Favorites</string>
 
+    <!-- Favorite Recipes   -->
+    <string name="removed_from_favorites">Removed from Favorites</string>
+    <string name="delete_favorite">Delete Favorite</string>
+    <string name="delete_all">Delete All</string>
+    <string name="all_recipes_removed">All recipes removed.</string>
+
+    <plurals name="favorite_recipes">
+        <item quantity="one">%d item selected</item>
+        <item quantity="other">%d items selected</item>
+    </plurals>
+    <plurals name="deleted_recipes">
+        <item quantity="one">%d recipe removed</item>
+        <item quantity="other">%d recipes removed</item>
+    </plurals>
 
 </resources>
