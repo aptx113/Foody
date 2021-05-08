@@ -1,5 +1,6 @@
 package gradlePlugins
 
+
 /**
  * Precompiled [spotless.gradle.kts][gradlePlugins.Spotless_gradle] script plugin.
  *

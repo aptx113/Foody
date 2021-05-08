@@ -1,5 +1,6 @@
 package gradlePlugins
 
+
 /**
  * Precompiled [git-hooks.gradle.kts][gradlePlugins.Git_hooks_gradle] script plugin.
  *

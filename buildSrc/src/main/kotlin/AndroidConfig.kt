@@ -3,7 +3,6 @@
  */
 object AndroidConfig {
     const val COMPILE_SDK_VERSION = 30
-    const val BUILD_TOOLS_VERSION = "30.0.0"
 
     const val APPLICATION_ID = "com.danteyu.studio.foody"
     const val MIN_SDK_VERSION = 24
