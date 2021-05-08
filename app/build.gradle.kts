@@ -29,12 +29,10 @@ plugins {
     id(Plugins.KOTLIN_PARCELIZE)
     id(Plugins.HILT_ANDROID)
     id(Plugins.NAV_SAFEARGS)
-    id("kotlin-android")
 }
 
 android {
     compileSdkVersion(AndroidConfig.COMPILE_SDK_VERSION)
-    buildToolsVersion(AndroidConfig.BUILD_TOOLS_VERSION)
 
     defaultConfig {
         applicationId = AndroidConfig.APPLICATION_ID
@@ -106,12 +104,8 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
-    implementation("androidx.wear:wear:1.0.0")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     addDependencies(libraries)
     addKapt(kaptLibraries)
     addTestDependencies(testLibraries)
     addAndroidTestDependencies(androidTestLibraries)
-    compileOnly("com.google.android.wearable:wearable:2.6.0")
 }
