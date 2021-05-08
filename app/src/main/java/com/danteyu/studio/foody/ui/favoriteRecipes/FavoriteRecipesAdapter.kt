@@ -77,12 +77,11 @@ class FavoriteRecipesAdapter(
         if (selectedRecipes.contains(currentRecipe)) {
             selectedRecipes.remove(currentRecipe)
             changeRecipeStyle(holder, R.color.white, R.color.lightMediumGray)
-            applyActionModeTitle()
         } else {
             selectedRecipes.add(currentRecipe)
             changeRecipeStyle(holder, R.color.cardBackgroundLightColor, R.color.colorPrimary)
-            applyActionModeTitle()
         }
+        applyActionModeTitle()
     }
 
     private fun changeRecipeStyle(
