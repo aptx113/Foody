@@ -15,14 +15,19 @@
  */
 package com.danteyu.studio.foody.ui.foodJoke
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.danteyu.studio.foody.API_KEY
+import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.databinding.FragmentFoodJokeBinding
 import com.danteyu.studio.foody.ext.observeInLifecycle
 import com.danteyu.studio.foody.ext.observeOnce
@@ -37,6 +42,7 @@ class FoodJokeFragment : Fragment() {
 
     private val viewModel: FoodJokeViewModel by viewModels()
     private lateinit var viewDataBinding: FragmentFoodJokeBinding
+    private var foodJoke = "No Food Joke"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +54,7 @@ class FoodJokeFragment : Fragment() {
 
         viewDataBinding.viewModel = viewModel
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
+        setHasOptionsMenu(true)
 
         return viewDataBinding.root
     }
@@ -58,6 +65,9 @@ class FoodJokeFragment : Fragment() {
             when (response) {
                 is NetworkResult.Success -> {
                     viewDataBinding.foodJokeTxt.text = response.data?.text
+                    if (response.data != null) {
+                        foodJoke = response.data.text
+                    }
                     viewDataBinding.foodJokeCardView.visibility = View.VISIBLE
                     viewDataBinding.foodJokeProgress.visibility = View.INVISIBLE
                 }
@@ -75,11 +85,28 @@ class FoodJokeFragment : Fragment() {
         }.observeInLifecycle(viewLifecycleOwner)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.food_joke_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.food_joke_share) {
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, foodJoke)
+                type = "text/plain"
+            }
+            startActivity(shareIntent)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun loadDataFromCache() {
         lifecycleScope.launchWhenStarted {
             viewModel.foodJokeResult.observeOnce(viewLifecycleOwner) {
                 if (!it.isNullOrEmpty()) {
                     viewDataBinding.foodJokeTxt.text = it[0].text
+                    foodJoke = it[0].text
                 }
                 viewDataBinding.foodJokeCardView.visibility = View.VISIBLE
                 if (it != null)
