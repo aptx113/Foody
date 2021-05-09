@@ -18,6 +18,7 @@ package com.danteyu.studio.foody.data.source.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.danteyu.studio.foody.model.FoodJoke
 import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 
@@ -25,11 +26,11 @@ import com.danteyu.studio.foody.model.FoodRecipesResponse
  * Created by George Yu in Apr. 2021.
  */
 @Database(
-    entities = [FoodRecipesResponse::class, FoodRecipe::class],
+    entities = [FoodRecipesResponse::class, FoodRecipe::class, FoodJoke::class],
     version = 1,
     exportSchema = false
 )
 @TypeConverters(value = [RecipesConverters::class])
 abstract class FoodyDatabase : RoomDatabase() {
-    abstract fun recipesDao(): RecipesDao
+    abstract fun recipesDao(): FoodyDao
 }

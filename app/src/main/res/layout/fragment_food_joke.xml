@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="viewModel"
+            type="com.danteyu.studio.foody.ui.foodJoke.FoodJokeViewModel" />
 
     </data>
 
@@ -69,7 +74,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.37" />
+            app:layout_constraintVertical_bias="0.37"
+            bind:foodJokeApiRequest="@{viewModel.foodJokeRequestFlow.value}"
+            bind:foodJokeResult="@{viewModel.foodJokeResult}" />
 
         <TextView
             android:id="@+id/food_joke_error_txt"
@@ -82,6 +89,8 @@
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="@id/food_joke_error_img"
             app:layout_constraintStart_toStartOf="@id/food_joke_error_img"
-            app:layout_constraintTop_toBottomOf="@id/food_joke_error_img" />
+            app:layout_constraintTop_toBottomOf="@id/food_joke_error_img"
+            bind:foodJokeApiRequest="@{viewModel.foodJokeRequestFlow.value}"
+            bind:foodJokeResult="@{viewModel.foodJokeResult}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
