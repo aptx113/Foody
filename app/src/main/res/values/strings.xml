@@ -59,6 +59,7 @@
     <string name="delete_favorite">Delete Favorite</string>
     <string name="delete_all">Delete All</string>
     <string name="all_recipes_removed">All recipes removed.</string>
+    <string name="share">Share</string>
 
     <plurals name="favorite_recipes">
         <item quantity="one">%d item selected</item>
