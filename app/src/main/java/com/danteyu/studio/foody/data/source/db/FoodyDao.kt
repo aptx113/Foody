@@ -20,6 +20,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.danteyu.studio.foody.model.FoodJoke
 import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +29,7 @@ import kotlinx.coroutines.flow.Flow
  * Created by George Yu on 2021/4/2.
  */
 @Dao
-interface RecipesDao {
+interface FoodyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipes(foodRecipesResponse: FoodRecipesResponse)
@@ -47,4 +48,10 @@ interface RecipesDao {
 
     @Query("DELETE FROM favorite_recipes_table")
     suspend fun deleteAllFavoriteRecipes()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFoodJoke(foodJoke: FoodJoke)
+
+    @Query("SELECT * FROM food_joke_table ORDER BY id ASC")
+    fun loadFoodJoke(): Flow<List<FoodJoke>>
 }

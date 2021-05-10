@@ -16,7 +16,7 @@
 package com.danteyu.studio.foody.data.repository
 
 import com.danteyu.studio.foody.data.source.api.FoodyApiService
-import com.danteyu.studio.foody.data.source.db.RecipesDao
+import com.danteyu.studio.foody.data.source.db.FoodyDao
 import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.utils.networkBoundResource
 import kotlinx.coroutines.flow.flow
@@ -27,7 +27,7 @@ import javax.inject.Inject
  */
 class FoodyRepository @Inject constructor(
     private val foodyApiService: FoodyApiService,
-    private val recipesDao: RecipesDao
+    private val foodyDao: FoodyDao
 ) :
     Repository {
 
@@ -36,12 +36,12 @@ class FoodyRepository @Inject constructor(
             emit(
                 networkBoundResource(
                     apiCall = { foodyApiService.getRecipes(queries) },
-                    saveApiCall = { recipesDao.insertRecipes(it) }
+                    saveApiCall = { foodyDao.insertRecipes(it) }
                 )
             )
         }
 
-    fun loadRecipesFlow() = recipesDao.loadRecipesFlow()
+    fun loadRecipesFlow() = foodyDao.loadRecipesFlow()
 
     fun getSearchRecipesFlow(searchQueries: Map<String, String>) = flow {
         emit(
@@ -52,13 +52,24 @@ class FoodyRepository @Inject constructor(
         )
     }
 
-    fun loadFavoriteRecipesFlow() = recipesDao.loadFavoriteRecipesFlow()
+    fun getFoodJokeFlow(apiKey: String) = flow {
+        emit(
+            networkBoundResource(
+                apiCall = { foodyApiService.getFoodJoke(apiKey) },
+                saveApiCall = { foodyDao.insertFoodJoke(it) }
+            )
+        )
+    }
+
+    fun loadFavoriteRecipesFlow() = foodyDao.loadFavoriteRecipesFlow()
 
     suspend fun insertFavoriteRecipe(foodRecipe: FoodRecipe) =
-        recipesDao.insertFavoriteRecipe(foodRecipe)
+        foodyDao.insertFavoriteRecipe(foodRecipe)
 
     suspend fun deleteFavoriteRecipe(foodRecipe: FoodRecipe) =
-        recipesDao.deleteFavoriteRecipe(foodRecipe)
+        foodyDao.deleteFavoriteRecipe(foodRecipe)
 
-    suspend fun deleteAllFavoriteRecipes() = recipesDao.deleteAllFavoriteRecipes()
+    suspend fun deleteAllFavoriteRecipes() = foodyDao.deleteAllFavoriteRecipes()
+
+    fun loadFoodJokeFlow() = foodyDao.loadFoodJoke()
 }
