@@ -19,8 +19,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.danteyu.studio.foody.API_KEY
-import com.danteyu.studio.foody.DEFAULT_DIET_TYPE
-import com.danteyu.studio.foody.DEFAULT_MEAL_TYPE
 import com.danteyu.studio.foody.DEFAULT_RECIPES_NUM
 import com.danteyu.studio.foody.QUERY_ADD_RECIPE_INFORMATION
 import com.danteyu.studio.foody.QUERY_API_KEY
@@ -53,9 +51,6 @@ class RecipesViewModel @Inject constructor(
     private val foodyRepository: FoodyRepository,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
-
-    private var mealType = DEFAULT_MEAL_TYPE
-    private var dietType = DEFAULT_DIET_TYPE
 
     val recipes = foodyRepository.loadRecipesFlow().asLiveData()
 
@@ -107,15 +102,8 @@ class RecipesViewModel @Inject constructor(
                 .collect { _searchRecipesFlow.value = it }
         }
 
-    fun applyQueries(): HashMap<String, String> {
+    fun applyQueries(mealType: String, dietType: String): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
-
-        viewModelScope.launch {
-            mealAndDietTypeFlow.collect { value ->
-                mealType = value.selectedMealType
-                dietType = value.selectedDietType
-            }
-        }
 
         queries[QUERY_NUM] = DEFAULT_RECIPES_NUM
         queries[QUERY_API_KEY] = API_KEY

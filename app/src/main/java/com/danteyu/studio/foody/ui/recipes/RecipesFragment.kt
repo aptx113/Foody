@@ -94,7 +94,10 @@ class RecipesFragment : Fragment() {
                 Timber.d(hasNetwork.toString())
                 viewModel.onNetworkStatusChecked(hasNetwork)
                 showNetworkStatus(viewModel.networkStatusFlow.value, viewModel.backOnline.value)
-                loadDataFromCache(action = { hideShimmerEffect() }, request = { requestApiData() })
+                loadDataFromCache(
+                    action = { hideShimmerEffect() },
+                    request = { requestApiData(args.mealType, args.dietType) }
+                )
             }.observeInLifecycle(viewLifecycleOwner)
     }
 
@@ -133,9 +136,9 @@ class RecipesFragment : Fragment() {
         }
     }
 
-    private fun requestApiData() {
+    private fun requestApiData(mealType: String, dietType: String) {
         Timber.d("requestApiData called!!")
-        viewModel.getRecipes(viewModel.applyQueries())
+        viewModel.getRecipes(viewModel.applyQueries(mealType, dietType))
         viewModel.recipesFlow.onEach { response ->
             when (response) {
                 is NetworkResult.Success -> {
