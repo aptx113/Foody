@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setTheme(R.style.AppTheme)
         viewDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val navHostFragment =
