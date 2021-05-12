@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/cardBackgroundColor">
 
         <TextView
             android:id="@+id/mealType_txt"
@@ -22,7 +22,7 @@
             android:layout_marginStart="@dimen/space_24"
             android:layout_marginTop="@dimen/space_24"
             android:text="@string/meal_type"
-            android:textColor="@color/dark"
+            android:textColor="@color/titleColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +164,7 @@
             android:layout_marginStart="@dimen/space_24"
             android:layout_marginTop="@dimen/space_12"
             android:text="@string/diet_type"
-            android:textColor="@color/dark"
+            android:textColor="@color/titleColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"

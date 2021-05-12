@@ -5,5 +5,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionModeBackground">@color/contextualActionBarColor</item>
+        <item name="android:statusBarColor">@color/statusBarColor</item>
+        <item name="bottomNavigationStyle">@style/CustomBottomNavigationViewStyle</item>
     </style>
 </resources>
