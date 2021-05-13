@@ -109,7 +109,7 @@
             android:src="@drawable/ic_check_mark"
             app:layout_constraintStart_toStartOf="@id/title_txt"
             app:layout_constraintTop_toBottomOf="@id/title_txt"
-            app:tint="@color/darkGray"
+            app:tint="@color/itemColor"
             bind:stateIsOn="@{detailsViewModel.foodRecipe.vegetarian}" />
 
         <TextView
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_8"
             android:text="@string/vegetarian"
-            android:textColor="@color/darkGray"
+            android:textColor="@color/itemColor"
             app:layout_constraintBottom_toBottomOf="@id/vegetarian_img"
             app:layout_constraintStart_toEndOf="@id/vegetarian_img"
             app:layout_constraintTop_toTopOf="@id/vegetarian_img"
@@ -132,7 +132,7 @@
             android:src="@drawable/ic_check_mark"
             app:layout_constraintStart_toStartOf="@id/vegetarian_img"
             app:layout_constraintTop_toBottomOf="@id/vegetarian_img"
-            app:tint="@color/darkGray"
+            app:tint="@color/itemColor"
             bind:stateIsOn="@{detailsViewModel.foodRecipe.vegan}" />
 
         <TextView
@@ -141,7 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_8"
             android:text="@string/vegan"
-            android:textColor="@color/darkGray"
+            android:textColor="@color/itemColor"
             app:layout_constraintBottom_toBottomOf="@id/vegan_img"
             app:layout_constraintStart_toEndOf="@id/vegan_img"
             app:layout_constraintTop_toTopOf="@id/vegan_img"
@@ -156,7 +156,7 @@
             app:layout_constraintBottom_toBottomOf="@id/vegetarian_txt"
             app:layout_constraintStart_toEndOf="@id/vegetarian_txt"
             app:layout_constraintTop_toTopOf="@id/vegetarian_txt"
-            app:tint="@color/darkGray"
+            app:tint="@color/itemColor"
             bind:stateIsOn="@{detailsViewModel.foodRecipe.glutenFree}" />
 
         <TextView
@@ -165,7 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_8"
             android:text="@string/gluten_free"
-            android:textColor="@color/darkGray"
+            android:textColor="@color/itemColor"
             app:layout_constraintBottom_toBottomOf="@id/gluten_free_img"
             app:layout_constraintStart_toEndOf="@id/gluten_free_img"
             app:layout_constraintTop_toTopOf="@id/gluten_free_img"
@@ -179,7 +179,7 @@
             android:src="@drawable/ic_check_mark"
             app:layout_constraintStart_toStartOf="@id/gluten_free_img"
             app:layout_constraintTop_toBottomOf="@id/gluten_free_img"
-            app:tint="@color/darkGray"
+            app:tint="@color/itemColor"
             bind:stateIsOn="@{detailsViewModel.foodRecipe.dairyFree}" />
 
         <TextView
@@ -188,7 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_8"
             android:text="@string/dairy_free"
-            android:textColor="@color/darkGray"
+            android:textColor="@color/itemColor"
             app:layout_constraintBottom_toBottomOf="@id/dairy_free_img"
             app:layout_constraintStart_toEndOf="@id/dairy_free_img"
             app:layout_constraintTop_toTopOf="@id/dairy_free_img"
@@ -203,7 +203,7 @@
             app:layout_constraintBottom_toBottomOf="@id/gluten_free_txt"
             app:layout_constraintStart_toEndOf="@id/gluten_free_txt"
             app:layout_constraintTop_toTopOf="@id/gluten_free_txt"
-            app:tint="@color/darkGray"
+            app:tint="@color/itemColor"
             bind:stateIsOn="@{detailsViewModel.foodRecipe.veryHealthy}" />
 
         <TextView
@@ -212,7 +212,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_8"
             android:text="@string/healthy"
-            android:textColor="@color/darkGray"
+            android:textColor="@color/itemColor"
             app:layout_constraintBottom_toBottomOf="@id/healthy_img"
             app:layout_constraintStart_toEndOf="@id/healthy_img"
             app:layout_constraintTop_toTopOf="@id/healthy_img"
@@ -226,7 +226,7 @@
             android:src="@drawable/ic_check_mark"
             app:layout_constraintStart_toStartOf="@id/healthy_img"
             app:layout_constraintTop_toBottomOf="@id/healthy_img"
-            app:tint="@color/darkGray"
+            app:tint="@color/itemColor"
             bind:stateIsOn="@{detailsViewModel.foodRecipe.cheap}" />
 
         <TextView
@@ -235,7 +235,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_8"
             android:text="@string/cheap"
-            android:textColor="@color/darkGray"
+            android:textColor="@color/itemColor"
             app:layout_constraintBottom_toBottomOf="@id/cheap_img"
             app:layout_constraintStart_toEndOf="@id/cheap_img"
             app:layout_constraintTop_toTopOf="@id/cheap_img"
