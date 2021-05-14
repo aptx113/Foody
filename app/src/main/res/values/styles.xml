@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="CustomActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
+        <item name="background">@color/actionBarBackgroundColor</item>
+    </style>
+
     <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="chipBackgroundColor">@color/chip_background_color</item>
         <item name="android:textColor">@color/chip_text_color</item>
@@ -8,7 +12,7 @@
     </style>
 
     <style name="CustomTabLayoutStyle" parent="Widget.Design.TabLayout">
-        <item name="background">@color/colorPrimary</item>
+        <item name="background">@color/actionBarBackgroundColor</item>
         <item name="tabIndicatorColor">@color/white</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabSelectedTextColor">@color/white</item>
@@ -16,6 +20,12 @@
 
     <style name="CustomTabTextStyle" parent="TextAppearance.Design.Tab">
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="CustomBottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="backgroundTint">@color/bottomNavBackground</item>
+        <item name="itemIconTint">@color/bottom_nav_view_item_color</item>
+        <item name="itemTextColor">@color/bottom_nav_view_item_color</item>
     </style>
 
 </resources>
