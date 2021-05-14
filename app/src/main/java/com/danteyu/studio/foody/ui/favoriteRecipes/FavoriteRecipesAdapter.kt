@@ -76,7 +76,7 @@ class FavoriteRecipesAdapter(
     private fun applySelection(holder: FavoriteRecipesViewHolder, currentRecipe: FoodRecipe) {
         if (selectedRecipes.contains(currentRecipe)) {
             selectedRecipes.remove(currentRecipe)
-            changeRecipeStyle(holder, R.color.white, R.color.lightMediumGray)
+            changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor)
         } else {
             selectedRecipes.add(currentRecipe)
             changeRecipeStyle(holder, R.color.cardBackgroundLightColor, R.color.colorPrimary)
@@ -113,7 +113,7 @@ class FavoriteRecipesAdapter(
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         mode?.menuInflater?.inflate(R.menu.favorites_contextual_menu, menu)
         actionMode = mode ?: return false
-        requiredActivity.applyStatusBarColor(R.color.darker)
+        requiredActivity.applyStatusBarColor(R.color.contextualStatusBarColor)
         return true
     }
 
@@ -144,13 +144,13 @@ class FavoriteRecipesAdapter(
         viewHolders.forEach { holder ->
             changeRecipeStyle(
                 holder,
-                R.color.white,
-                R.color.lightMediumGray
+                R.color.cardBackgroundColor,
+                R.color.strokeColor
             )
         }
         multiSelection = false
         selectedRecipes.clear()
-        requiredActivity.applyStatusBarColor(R.color.colorPrimaryDark)
+        requiredActivity.applyStatusBarColor(R.color.statusBarColor)
     }
 
     fun clearContextualActionMode() {
