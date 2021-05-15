@@ -12,9 +12,11 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layoutDescription="@xml/fragment_overview_xml_constraintlayout2_scene"
         tools:context=".ui.details.overview.OverviewFragment">
 
         <ImageView
@@ -242,6 +244,7 @@
             bind:stateIsOn="@{detailsViewModel.foodRecipe.cheap}" />
 
         <ScrollView
+            android:id="@+id/scrollView3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/space_12"
@@ -266,5 +269,5 @@
             </LinearLayout>
         </ScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
