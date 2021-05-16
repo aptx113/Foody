@@ -67,14 +67,12 @@ class RecipesFragment : Fragment() {
 
         viewModel.navigateToRecipesBottomSheetFlow
             .onEach {
-                if (it) {
-                    if (viewModel.networkStatusFlow.value)
-                        findNavController().navigate(R.id.recipesBottomSheetFragment)
-                    else showNetworkStatus(
-                        viewModel.networkStatusFlow.value,
-                        viewModel.backOnline.value
-                    )
-                }
+                if (viewModel.networkStatusFlow.value)
+                    findNavController().navigate(R.id.recipesBottomSheetFragment)
+                else showNetworkStatus(
+                    viewModel.networkStatusFlow.value,
+                    viewModel.backOnline.value
+                )
             }
             .observeInLifecycle(viewLifecycleOwner)
 

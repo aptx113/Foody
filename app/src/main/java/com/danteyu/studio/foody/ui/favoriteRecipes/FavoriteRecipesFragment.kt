@@ -29,6 +29,7 @@ import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.databinding.FragmentFavoriteRecipesBinding
 import com.danteyu.studio.foody.ext.observeInLifecycle
 import com.danteyu.studio.foody.ext.showSnackBar
+import com.danteyu.studio.foody.ext.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
@@ -84,12 +85,17 @@ class FavoriteRecipesFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.deleteAll_favorite) {
-            viewModel.deleteAllFavoriteRecipes()
-            showSnackBar(
-                viewDataBinding.root,
-                getString(R.string.all_recipes_removed),
-                getString(R.string.ok)
-            )
+
+            if (viewModel.favoriteRecipes.value?.size == 0) {
+                showToast(getString(R.string.nothing_left_to_remove))
+            } else {
+                viewModel.deleteAllFavoriteRecipes()
+                showSnackBar(
+                    viewDataBinding.root,
+                    getString(R.string.all_recipes_removed),
+                    getString(R.string.ok)
+                )
+            }
         }
         return super.onOptionsItemSelected(item)
     }

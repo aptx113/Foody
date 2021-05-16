@@ -131,8 +131,15 @@ class FavoriteRecipesAdapter(
                     selectedRecipes.size,
                     selectedRecipes.size
                 ),
-                requiredActivity.getString(R.string.ok)
-            )
+                requiredActivity.getString(R.string.undo)
+            ) {
+                viewModel.deletedRecipes.forEach { foodRecipe ->
+                    viewModel.insertFavoriteRecipe(
+                        foodRecipe
+                    )
+                }
+                viewModel.deletedRecipes.clear()
+            }
             multiSelection = false
             selectedRecipes.clear()
             actionMode.finish()
