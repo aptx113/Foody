@@ -33,6 +33,7 @@ import com.danteyu.studio.foody.ui.common.SingleFieldDiffUtil
 /**
  * Created by George Yu in Apr. 2021.
  */
+@SuppressWarnings("TooManyFunctions")
 class FavoriteRecipesAdapter(
     private val requiredActivity: FragmentActivity,
     private val viewModel: FavoriteRecipesViewModel,
@@ -56,6 +57,7 @@ class FavoriteRecipesAdapter(
         rootView = holder.itemView.rootView
         val favoriteRecipe = getItem(position)
         holder.bind(favoriteRecipe)
+        saveItemStateOnScroll(favoriteRecipe, holder)
         holder.itemView.setOnClickListener {
             if (multiSelection) applySelection(holder, favoriteRecipe)
             else onClick(favoriteRecipe)
@@ -71,6 +73,18 @@ class FavoriteRecipesAdapter(
                 true
             }
         }
+    }
+
+    private fun saveItemStateOnScroll(
+        currentRecipe: FoodRecipe,
+        holder: FavoriteRecipesViewHolder
+    ) {
+        if (selectedRecipes.contains(currentRecipe)) changeRecipeStyle(
+            holder,
+            R.color.cardBackgroundLightColor,
+            R.color.colorPrimary
+        )
+        else changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor)
     }
 
     private fun applySelection(holder: FavoriteRecipesViewHolder, currentRecipe: FoodRecipe) {
@@ -131,8 +145,15 @@ class FavoriteRecipesAdapter(
                     selectedRecipes.size,
                     selectedRecipes.size
                 ),
-                requiredActivity.getString(R.string.ok)
-            )
+                requiredActivity.getString(R.string.undo)
+            ) {
+                viewModel.deletedRecipes.forEach { foodRecipe ->
+                    viewModel.insertFavoriteRecipe(
+                        foodRecipe
+                    )
+                }
+                viewModel.deletedRecipes.clear()
+            }
             multiSelection = false
             selectedRecipes.clear()
             actionMode.finish()

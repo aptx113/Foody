@@ -22,7 +22,6 @@ import androidx.activity.viewModels
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.navArgs
 import com.danteyu.studio.foody.R
@@ -34,6 +33,7 @@ import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.ui.details.ingredients.IngredientsFragment
 import com.danteyu.studio.foody.ui.details.instructions.InstructionsFragment
 import com.danteyu.studio.foody.ui.details.overview.OverviewFragment
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
@@ -46,7 +46,8 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
+        binding = ActivityDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
@@ -68,9 +69,11 @@ class DetailsActivity : AppCompatActivity() {
             putParcelable(RECIPE_RESULT_KEY, args.foodRecipe)
         }
 
-        binding.viewPager.adapter =
-            DetailsPagerAdapter(resultBundle, fragments, titles, supportFragmentManager)
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
+        binding.viewPager2.adapter =
+            DetailsPagerAdapter(resultBundle, fragments, this)
+        TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
+            tab.text = titles[position]
+        }.attach()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

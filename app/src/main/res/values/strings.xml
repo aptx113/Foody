@@ -13,6 +13,8 @@
     <string name="overview">Overview</string>
     <string name="ingredients">Ingredients</string>
     <string name="instructions">Instructions</string>
+    <string name="undo">Undo</string>
+    <string name="ok">Okay</string>
 
     <!-- MealType   -->
     <string name="meal_type">Meal Type</string>
@@ -52,7 +54,6 @@
     <string name="cheap">Cheap</string>
     <string name="save_to_favorites">Save to Favorites</string>
     <string name="recipe_saved">Recipe saved</string>
-    <string name="ok">Okay</string>
 
     <!-- Favorite Recipes   -->
     <string name="removed_from_favorites">Removed from Favorites</string>
@@ -60,6 +61,7 @@
     <string name="delete_all">Delete All</string>
     <string name="all_recipes_removed">All recipes removed.</string>
     <string name="share">Share</string>
+    <string name="nothing_left_to_remove">Noting left to remove</string>
 
     <plurals name="favorite_recipes">
         <item quantity="one">%d item selected</item>

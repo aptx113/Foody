@@ -83,19 +83,17 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
         }
         viewModel.applySelectedChipsFlow
             .onEach {
-                if (it) {
-                    viewModel.saveMealAndDietType(
-                        mealTypeChip,
-                        mealTypeChipId,
-                        dietTypeChip,
-                        dietTypeChipId
+                viewModel.saveMealAndDietType(
+                    mealTypeChip,
+                    mealTypeChipId,
+                    dietTypeChip,
+                    dietTypeChipId
+                )
+                findNavController().navigate(
+                    RecipesBottomSheetFragmentDirections.actionRecipesBottomSheetFragmentToRecipesFragment(
+                        true, mealTypeChip, dietTypeChip
                     )
-                    findNavController().navigate(
-                        RecipesBottomSheetFragmentDirections.actionRecipesBottomSheetFragmentToRecipesFragment(
-                            true, mealTypeChip, dietTypeChip
-                        )
-                    )
-                }
+                )
             }.observeInLifecycle(viewLifecycleOwner)
     }
 

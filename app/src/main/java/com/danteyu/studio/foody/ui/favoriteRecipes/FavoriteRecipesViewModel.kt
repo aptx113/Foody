@@ -39,8 +39,17 @@ class FavoriteRecipesViewModel @Inject constructor(private val repository: Foody
     private val navigateToDetailsChannel = Channel<FoodRecipe>(Channel.CONFLATED)
     val navigateToDetailsFlow = navigateToDetailsChannel.receiveAsFlow()
 
+    val deletedRecipes = mutableListOf<FoodRecipe>()
+
+    fun insertFavoriteRecipe(foodRecipe: FoodRecipe) {
+        viewModelScope.launch(Dispatchers.IO) { repository.insertFavoriteRecipe(foodRecipe) }
+    }
+
     fun deleteFavoriteRecipe(foodRecipe: FoodRecipe) =
-        viewModelScope.launch(Dispatchers.IO) { repository.deleteFavoriteRecipe(foodRecipe) }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteFavoriteRecipe(foodRecipe)
+            deletedRecipes.add(foodRecipe)
+        }
 
     fun deleteAllFavoriteRecipes() =
         viewModelScope.launch(Dispatchers.IO) { repository.deleteAllFavoriteRecipes() }
