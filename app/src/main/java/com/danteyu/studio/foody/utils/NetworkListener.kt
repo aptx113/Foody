@@ -33,8 +33,6 @@ class NetworkListener : ConnectivityManager.NetworkCallback() {
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.registerDefaultNetworkCallback(this)
 
-        isNetworkAvailable.value = false
-
         connectivityManager.allNetworks.forEach { network ->
             val networkCapability = connectivityManager.getNetworkCapabilities(network)
             networkCapability?.let {
