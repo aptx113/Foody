@@ -24,7 +24,6 @@ object DependencyVersions {
     const val RETROFIT2_VERSION = "2.9.0"
     const val ROOM_VERSION = "2.3.0-rc01"
     const val SHIMMER_VERSION = "0.5.0"
-    const val SHIMMER_RECYCLER_VERSION = "0.4.1"
     const val TIMBER_VERSION = "4.7.1"
     const val VIEWPAGER2_VERSION = "1.0.0"
 }
