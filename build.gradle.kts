@@ -21,6 +21,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
     }
     dependencies {
         classpath(dependencyLibs.Hilt.HILT_GRADLE)

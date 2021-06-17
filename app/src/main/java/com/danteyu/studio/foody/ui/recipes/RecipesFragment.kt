@@ -187,8 +187,8 @@ class RecipesFragment : Fragment() {
         }.observeInLifecycle(viewLifecycleOwner)
     }
 
-    private fun showShimmerEffect() = viewDataBinding.recipesRecycler.showShimmer()
-    private fun hideShimmerEffect() = viewDataBinding.recipesRecycler.hideShimmer()
+    private fun showShimmerEffect() = viewDataBinding.shimmerFrameLayout.startShimmer()
+    private fun hideShimmerEffect() = viewDataBinding.shimmerFrameLayout.stopShimmer()
 
     private fun showNetworkStatus(hasNetwork: Boolean, backOnline: Boolean) {
         if (!hasNetwork) {

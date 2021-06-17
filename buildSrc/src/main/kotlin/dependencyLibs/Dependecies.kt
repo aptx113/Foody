@@ -21,7 +21,6 @@ import dependencyVersions.DependencyVersions.PAGING_VERSION
 import dependencyVersions.DependencyVersions.RECYCLERVIEW_VERSION
 import dependencyVersions.DependencyVersions.RETROFIT2_VERSION
 import dependencyVersions.DependencyVersions.ROOM_VERSION
-import dependencyVersions.DependencyVersions.SHIMMER_RECYCLER_VERSION
 import dependencyVersions.DependencyVersions.SHIMMER_VERSION
 import dependencyVersions.DependencyVersions.TIMBER_VERSION
 import dependencyVersions.DependencyVersions.VIEWPAGER2_VERSION
@@ -135,7 +134,6 @@ object Room {
 
 object Shimmer {
     const val SHIMMER = "com.facebook.shimmer:shimmer:${SHIMMER_VERSION}"
-    const val SHIMMER_RECYCLER = "com.todkars:shimmer-recyclerview:${SHIMMER_RECYCLER_VERSION}"
 }
 
 object Timber {
@@ -178,7 +176,6 @@ object Libraries {
         add(Room.KTX)
         add(Room.RUNTIME)
         add(Shimmer.SHIMMER)
-        add(Shimmer.SHIMMER_RECYCLER)
         add(Timber.TIMBER)
         add(ViewPager2.VIEWPAGER2)
     }
