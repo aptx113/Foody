@@ -33,6 +33,10 @@ class IngredientsAdapter :
     override fun onBindViewHolder(holder: IngredientsViewHolder, position: Int) {
         val ingredient = getItem(position)
         holder.bind(ingredient)
-        holder.viewDataBinding.nameTxt.text = ingredient.name.capitalize(Locale.ROOT)
+        holder.viewDataBinding.nameTxt.text = ingredient.name.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.ROOT
+            ) else it.toString()
+        }
     }
 }
