@@ -83,7 +83,7 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
         }
         viewModel.applySelectedChipsFlow
             .onEach {
-                viewModel.saveMealAndDietType(
+                viewModel.saveMealAndDietTypeTemp(
                     mealTypeChip,
                     mealTypeChipId,
                     dietTypeChip,
