@@ -36,7 +36,7 @@ suspend inline fun <T> networkBoundResource(
         handleApiResponse(apiCall.invoke()).let {
             when {
                 it.data is FoodRecipesResponse &&
-                        (it.data as FoodRecipesResponse).foodRecipes.isNullOrEmpty() -> {
+                    (it.data as FoodRecipesResponse).foodRecipes.isNullOrEmpty() -> {
                 }
                 it.data != null -> saveApiCall(it.data)
             }
@@ -58,7 +58,7 @@ fun <T> handleApiResponse(response: Response<T>): NetworkResult<T> {
             isSuccessful -> {
                 when {
                     body() is FoodRecipesResponse &&
-                            (body() as FoodRecipesResponse).foodRecipes.isNullOrEmpty() ->
+                        (body() as FoodRecipesResponse).foodRecipes.isNullOrEmpty() ->
                         NetworkResult.Error(getString(R.string.resource_not_found))
                     body() != null -> NetworkResult.Success(body()!!)
                     else -> NetworkResult.Error(getString(R.string.resource_not_found))
