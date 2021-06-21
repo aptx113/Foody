@@ -18,6 +18,7 @@ package com.danteyu.studio.foody.utils
 import com.danteyu.studio.foody.PAYMENT_REQUIRED
 import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.TIME_OUT
+import com.danteyu.studio.foody.model.FoodRecipesResponse
 import com.danteyu.studio.foody.utils.Util.getString
 import com.danteyu.studio.foody.utils.Util.hasInternetConnection
 import retrofit2.Response
@@ -33,7 +34,12 @@ suspend inline fun <T> networkBoundResource(
 ): NetworkResult<T> = if (hasInternetConnection()) {
     try {
         handleApiResponse(apiCall.invoke()).let {
-            if (it.data != null) saveApiCall(it.data)
+            when {
+                it.data is FoodRecipesResponse &&
+                    (it.data as FoodRecipesResponse).foodRecipes.isNullOrEmpty() -> {
+                }
+                it.data != null -> saveApiCall(it.data)
+            }
             it
         }
     } catch (e: Exception) {
@@ -50,8 +56,13 @@ fun <T> handleApiResponse(response: Response<T>): NetworkResult<T> {
                 .contains(TIME_OUT) -> NetworkResult.Error(getString(R.string.timeout))
             code() == PAYMENT_REQUIRED -> NetworkResult.Error(getString(R.string.api_key_limited))
             isSuccessful -> {
-                if (body() != null) NetworkResult.Success(body()!!)
-                else NetworkResult.Error(getString(R.string.resource_not_found))
+                when {
+                    body() is FoodRecipesResponse &&
+                        (body() as FoodRecipesResponse).foodRecipes.isNullOrEmpty() ->
+                        NetworkResult.Error(getString(R.string.resource_not_found))
+                    body() != null -> NetworkResult.Success(body()!!)
+                    else -> NetworkResult.Error(getString(R.string.resource_not_found))
+                }
             }
             else -> NetworkResult.Error(message())
         }

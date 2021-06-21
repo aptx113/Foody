@@ -17,7 +17,7 @@ package com.danteyu.studio.foody.di
 
 import com.danteyu.studio.foody.data.repository.FoodyRepository
 import com.danteyu.studio.foody.data.source.api.FoodyApiService
-import com.danteyu.studio.foody.data.source.db.RecipesDao
+import com.danteyu.studio.foody.data.source.db.FoodyDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,6 +33,6 @@ object RepositoryModule {
 
     @ViewModelScoped
     @Provides
-    fun provideFoodyRepository(apiService: FoodyApiService, dao: RecipesDao) =
+    fun provideFoodyRepository(apiService: FoodyApiService, dao: FoodyDao) =
         FoodyRepository(apiService, dao)
 }

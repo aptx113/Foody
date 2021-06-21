@@ -15,10 +15,12 @@
  */
 package com.danteyu.studio.foody.ui.details.instructions
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import com.danteyu.studio.foody.RECIPE_RESULT_KEY
@@ -38,7 +40,16 @@ class InstructionsFragment : Fragment() {
         viewDataBinding = FragmentInstructionsBinding.inflate(layoutInflater, container, false)
 
         val foodRecipe: FoodRecipe? = requireArguments().getParcelable(RECIPE_RESULT_KEY)
-        viewDataBinding.webView.webViewClient = object : WebViewClient() {}
+
+        viewDataBinding.webView.webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                viewDataBinding.progressBar.visibility = View.VISIBLE
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                viewDataBinding.progressBar.visibility = View.INVISIBLE
+            }
+        }
         if (foodRecipe?.sourceUrl != null) viewDataBinding.webView.loadUrl(foodRecipe.sourceUrl)
 
         return viewDataBinding.root

@@ -15,9 +15,11 @@
  */
 package com.danteyu.studio.foody.data.source.api
 
+import com.danteyu.studio.foody.model.FoodJoke
 import com.danteyu.studio.foody.model.FoodRecipesResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 /**
@@ -30,4 +32,7 @@ interface FoodyApiService {
 
     @GET("/recipes/complexSearch")
     suspend fun getSearchRecipes(@QueryMap searchQuery: Map<String, String>): Response<FoodRecipesResponse>
+
+    @GET("/food/jokes/random")
+    suspend fun getFoodJoke(@Query("apiKey") apiKey: String): Response<FoodJoke>
 }

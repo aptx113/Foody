@@ -17,19 +17,91 @@ package com.danteyu.studio.foody.ui.favoriteRecipes
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.danteyu.studio.foody.R
+import com.danteyu.studio.foody.databinding.FragmentFavoriteRecipesBinding
+import com.danteyu.studio.foody.ext.observeInLifecycle
+import com.danteyu.studio.foody.ext.showSnackBar
+import com.danteyu.studio.foody.ext.showToast
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class FavoriteRecipesFragment : Fragment() {
+
+    private lateinit var viewDataBinding: FragmentFavoriteRecipesBinding
+    private val viewModel by viewModels<FavoriteRecipesViewModel>()
+    private val adapter by lazy {
+        FavoriteRecipesAdapter(requireActivity(), viewModel) {
+            viewModel.onDetailsNavigated(
+                it
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_recipes, container, false)
+    ): View {
+
+        viewDataBinding = FragmentFavoriteRecipesBinding.inflate(inflater, container, false)
+        viewDataBinding.recyclerView.adapter = adapter
+        viewDataBinding.lifecycleOwner = viewLifecycleOwner
+        viewDataBinding.viewModel = viewModel
+
+        setHasOptionsMenu(true)
+        return viewDataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.favoriteRecipes.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+
+        viewModel.navigateToDetailsFlow
+            .onEach {
+                findNavController().navigate(
+                    FavoriteRecipesFragmentDirections.actionFavoriteRecipesFragmentToDetailsActivity(
+                        it
+                    )
+                )
+            }
+            .observeInLifecycle(viewLifecycleOwner)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.favorite_recipes_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.deleteAll_favorite) {
+
+            if (viewModel.favoriteRecipes.value?.size == 0) {
+                showToast(getString(R.string.nothing_left_to_remove))
+            } else {
+                viewModel.deleteAllFavoriteRecipes()
+                showSnackBar(
+                    viewDataBinding.root,
+                    getString(R.string.all_recipes_removed),
+                    getString(R.string.ok)
+                )
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter.clearContextualActionMode()
     }
 }

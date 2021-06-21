@@ -20,12 +20,24 @@
         <action
             android:id="@+id/action_recipesFragment_to_detailsActivity"
             app:destination="@id/detailsActivity" />
+        <argument
+            android:name="mealType"
+            app:argType="string"
+            android:defaultValue="main course" />
+        <argument
+            android:name="dietType"
+            app:argType="string"
+            android:defaultValue="gluten free" />
     </fragment>
     <fragment
         android:id="@+id/favoriteRecipesFragment"
         android:name="com.danteyu.studio.foody.ui.favoriteRecipes.FavoriteRecipesFragment"
         android:label="Favorites"
-        tools:layout="@layout/fragment_favorite_recipes" />
+        tools:layout="@layout/fragment_favorite_recipes" >
+        <action
+            android:id="@+id/action_favoriteRecipesFragment_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+    </fragment>
     <fragment
         android:id="@+id/foodJokeFragment"
         android:name="com.danteyu.studio.foody.ui.foodJoke.FoodJokeFragment"

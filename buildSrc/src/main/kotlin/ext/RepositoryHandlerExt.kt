@@ -1,6 +1,7 @@
 package ext
 
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.kotlin.dsl.maven
 
 /**
  * Adds all default repositories used to access the different declared dependencies
@@ -8,5 +9,5 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 fun RepositoryHandler.applyDefault() {
     google()
     mavenCentral()
-    jcenter()
+    maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }

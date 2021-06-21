@@ -16,6 +16,7 @@
 package com.danteyu.studio.foody.ui.recipes
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -37,6 +38,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
+@SuppressWarnings("TooManyFunctions")
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
 
@@ -45,6 +47,7 @@ class RecipesFragment : Fragment() {
     private val viewModel by activityViewModels<RecipesViewModel>()
     private val adapter by lazy { RecipesAdapter { viewModel.onDetailsNavigated(it) } }
     private val args by navArgs<RecipesFragmentArgs>()
+    private var state: Parcelable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,14 +70,12 @@ class RecipesFragment : Fragment() {
 
         viewModel.navigateToRecipesBottomSheetFlow
             .onEach {
-                if (it) {
-                    if (viewModel.networkStatusFlow.value)
-                        findNavController().navigate(R.id.recipesBottomSheetFragment)
-                    else showNetworkStatus(
-                        viewModel.networkStatusFlow.value,
-                        viewModel.backOnline.value
-                    )
-                }
+                if (viewModel.networkStatusFlow.value)
+                    findNavController().navigate(R.id.recipesBottomSheetFragment)
+                else showNetworkStatus(
+                    viewModel.networkStatusFlow.value,
+                    viewModel.backOnline.value
+                )
             }
             .observeInLifecycle(viewLifecycleOwner)
 
@@ -94,7 +95,10 @@ class RecipesFragment : Fragment() {
                 Timber.d(hasNetwork.toString())
                 viewModel.onNetworkStatusChecked(hasNetwork)
                 showNetworkStatus(viewModel.networkStatusFlow.value, viewModel.backOnline.value)
-                loadDataFromCache(action = { hideShimmerEffect() }, request = { requestApiData() })
+                loadDatabase(
+                    action = { hideShimmerEffect() },
+                    request = { requestApiData(args.mealType, args.dietType) }
+                )
             }.observeInLifecycle(viewLifecycleOwner)
     }
 
@@ -116,12 +120,22 @@ class RecipesFragment : Fragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewDataBinding.recipesRecycler.layoutManager?.onRestoreInstanceState(state)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        state = viewDataBinding.recipesRecycler.layoutManager?.onSaveInstanceState()
+    }
+
     private fun setupRecyclerView() {
         viewDataBinding.recipesRecycler.adapter = adapter
         showShimmerEffect()
     }
 
-    private fun loadDataFromCache(action: () -> Unit = {}, request: () -> Unit = {}) {
+    private fun loadDatabase(action: () -> Unit = {}, request: () -> Unit = {}) {
         viewModel.recipes.observeOnce(viewLifecycleOwner) {
             if (it.isNotEmpty() && !args.backFromBottomSheet) {
                 Timber.d("readDatabase called!!")
@@ -133,14 +147,23 @@ class RecipesFragment : Fragment() {
         }
     }
 
-    private fun requestApiData() {
+    private fun loadDataFromCache() {
+        viewModel.recipes.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                adapter.submitList(it[0].foodRecipes)
+            }
+        }
+    }
+
+    private fun requestApiData(mealType: String, dietType: String) {
         Timber.d("requestApiData called!!")
-        viewModel.getRecipes(viewModel.applyQueries())
+        viewModel.getRecipes(viewModel.applyQueries(mealType, dietType))
         viewModel.recipesFlow.onEach { response ->
             when (response) {
                 is NetworkResult.Success -> {
                     hideShimmerEffect()
                     response.data?.let { adapter.submitList(it.foodRecipes) }
+                    viewModel.saveMealAndDietType()
                 }
                 is NetworkResult.Error -> {
                     hideShimmerEffect()
@@ -165,7 +188,7 @@ class RecipesFragment : Fragment() {
                 }
                 is NetworkResult.Error -> {
                     hideShimmerEffect()
-                    loadDataFromCache()
+                    loadDatabase()
                     showToast(response.message.toString())
                 }
                 is NetworkResult.Loading -> showShimmerEffect()
@@ -173,8 +196,17 @@ class RecipesFragment : Fragment() {
         }.observeInLifecycle(viewLifecycleOwner)
     }
 
-    private fun showShimmerEffect() = viewDataBinding.recipesRecycler.showShimmer()
-    private fun hideShimmerEffect() = viewDataBinding.recipesRecycler.hideShimmer()
+    private fun showShimmerEffect() {
+        viewDataBinding.shimmerFrameLayout.startShimmer()
+        viewDataBinding.shimmerFrameLayout.visibility = View.VISIBLE
+        viewDataBinding.recipesRecycler.visibility = View.GONE
+    }
+
+    private fun hideShimmerEffect() {
+        viewDataBinding.shimmerFrameLayout.stopShimmer()
+        viewDataBinding.shimmerFrameLayout.visibility = View.GONE
+        viewDataBinding.recipesRecycler.visibility = View.VISIBLE
+    }
 
     private fun showNetworkStatus(hasNetwork: Boolean, backOnline: Boolean) {
         if (!hasNetwork) {

@@ -17,6 +17,8 @@ package com.danteyu.studio.foody.ext
 
 import android.app.Activity
 import android.view.View
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -29,3 +31,6 @@ fun Activity.showSnackBar(
     action: () -> Unit = {}
 ) =
     Snackbar.make(view, message, Snackbar.LENGTH_SHORT).setAction(actionTitle) { action() }.show()
+fun Activity.applyStatusBarColor(@ColorRes color: Int) {
+    this.window.statusBarColor = ContextCompat.getColor(this, color)
+}

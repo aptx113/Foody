@@ -14,9 +14,30 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
         tools:context=".RecipesFragment">
 
-        <com.todkars.shimmer.ShimmerRecyclerView
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_placeholder_recipes" />
+
+                <include layout="@layout/item_placeholder_recipes" />
+
+                <include layout="@layout/item_placeholder_recipes" />
+
+                <include layout="@layout/item_placeholder_recipes" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recipes_recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -24,9 +45,7 @@
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shimmer_recycler_item_count="3"
-            app:shimmer_recycler_layout="@layout/item_placeholder_recipes" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/recipes_fab"
