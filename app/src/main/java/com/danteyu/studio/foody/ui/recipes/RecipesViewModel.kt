@@ -28,6 +28,7 @@ import com.danteyu.studio.foody.QUERY_NUM
 import com.danteyu.studio.foody.QUERY_SEARCH
 import com.danteyu.studio.foody.QUERY_TYPE
 import com.danteyu.studio.foody.data.repository.FoodyRepository
+import com.danteyu.studio.foody.data.repository.MealAndDietType
 import com.danteyu.studio.foody.data.repository.UserPreferencesRepository
 import com.danteyu.studio.foody.model.FoodRecipe
 import com.danteyu.studio.foody.model.FoodRecipesResponse
@@ -51,6 +52,8 @@ class RecipesViewModel @Inject constructor(
     private val foodyRepository: FoodyRepository,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
+
+    private lateinit var mealAndDiet: MealAndDietType
 
     val recipes = foodyRepository.loadRecipesFlow().asLiveData()
 
@@ -81,10 +84,24 @@ class RecipesViewModel @Inject constructor(
 
     val backOnlineFlow = userPreferencesRepository.backOnlineFlow
 
-    fun saveMealAndDietType(mealTyp: String, mealTypeId: Int, dietType: String, dietTypeId: Int) =
+    fun saveMealAndDietType() =
         viewModelScope.launch(Dispatchers.IO) {
-            userPreferencesRepository.saveMealAndDietType(mealTyp, mealTypeId, dietType, dietTypeId)
+            userPreferencesRepository.saveMealAndDietType(
+                mealAndDiet.selectedMealType,
+                mealAndDiet.selectedMealTypeId,
+                mealAndDiet.selectedDietType,
+                mealAndDiet.selectedDietTypeId
+            )
         }
+
+    fun saveMealAndDietTypeTemp(
+        mealType: String,
+        mealTypeId: Int,
+        dietType: String,
+        dietTypeId: Int
+    ) {
+        mealAndDiet = MealAndDietType(mealType, mealTypeId, dietType, dietTypeId)
+    }
 
     fun saveBackOnline(backOnline: Boolean) =
         viewModelScope.launch(Dispatchers.IO) { userPreferencesRepository.saveBackOnline(backOnline) }
