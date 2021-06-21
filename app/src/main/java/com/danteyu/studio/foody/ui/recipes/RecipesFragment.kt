@@ -95,7 +95,7 @@ class RecipesFragment : Fragment() {
                 Timber.d(hasNetwork.toString())
                 viewModel.onNetworkStatusChecked(hasNetwork)
                 showNetworkStatus(viewModel.networkStatusFlow.value, viewModel.backOnline.value)
-                loadDataFromCache(
+                loadDatabase(
                     action = { hideShimmerEffect() },
                     request = { requestApiData(args.mealType, args.dietType) }
                 )
@@ -135,7 +135,7 @@ class RecipesFragment : Fragment() {
         showShimmerEffect()
     }
 
-    private fun loadDataFromCache(action: () -> Unit = {}, request: () -> Unit = {}) {
+    private fun loadDatabase(action: () -> Unit = {}, request: () -> Unit = {}) {
         viewModel.recipes.observeOnce(viewLifecycleOwner) {
             if (it.isNotEmpty() && !args.backFromBottomSheet) {
                 Timber.d("readDatabase called!!")
@@ -143,6 +143,14 @@ class RecipesFragment : Fragment() {
                 action()
             } else {
                 request()
+            }
+        }
+    }
+
+    private fun loadDataFromCache() {
+        viewModel.recipes.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                adapter.submitList(it[0].foodRecipes)
             }
         }
     }
@@ -155,6 +163,7 @@ class RecipesFragment : Fragment() {
                 is NetworkResult.Success -> {
                     hideShimmerEffect()
                     response.data?.let { adapter.submitList(it.foodRecipes) }
+                    viewModel.saveMealAndDietType()
                 }
                 is NetworkResult.Error -> {
                     hideShimmerEffect()
@@ -179,7 +188,7 @@ class RecipesFragment : Fragment() {
                 }
                 is NetworkResult.Error -> {
                     hideShimmerEffect()
-                    loadDataFromCache()
+                    loadDatabase()
                     showToast(response.message.toString())
                 }
                 is NetworkResult.Loading -> showShimmerEffect()
@@ -187,8 +196,17 @@ class RecipesFragment : Fragment() {
         }.observeInLifecycle(viewLifecycleOwner)
     }
 
-    private fun showShimmerEffect() = viewDataBinding.shimmerFrameLayout.startShimmer()
-    private fun hideShimmerEffect() = viewDataBinding.shimmerFrameLayout.stopShimmer()
+    private fun showShimmerEffect() {
+        viewDataBinding.shimmerFrameLayout.startShimmer()
+        viewDataBinding.shimmerFrameLayout.visibility = View.VISIBLE
+        viewDataBinding.recipesRecycler.visibility = View.GONE
+    }
+
+    private fun hideShimmerEffect() {
+        viewDataBinding.shimmerFrameLayout.stopShimmer()
+        viewDataBinding.shimmerFrameLayout.visibility = View.GONE
+        viewDataBinding.recipesRecycler.visibility = View.VISIBLE
+    }
 
     private fun showNetworkStatus(hasNetwork: Boolean, backOnline: Boolean) {
         if (!hasNetwork) {
