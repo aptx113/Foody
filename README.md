@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-Foody is a demo application based on modern Android application tech-stacks and MVVM architecture.<br>This project is for focusing especially on the new library Hilt of implementing dependency injection.<br>
+Foody is a sample food recipes application based on modern Android application tech-stacks and MVVM architecture.<br>This project is for focusing especially on the new library Hilt of implementing dependency injection.<br>
 Also fetching data from the network and integrating persisted data in the database via repository pattern.
 </p>
 
@@ -38,6 +38,7 @@ Go to the [Releases](https://github.com/aptx113/Foody/releases) to download the 
 ## Tech stack & Open-source libraries
 - Minimum SDK level 24
 - [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
+- [Gradle Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html) - For writing Gradle build scripts using Kotlin.
 - Jetpack
   - [Constraintlayout](https://developer.android.com/training/constraint-layout/motionlayout) - Construct MotionLayout to animate view.
   - [Databinding](https://developer.android.com/topic/libraries/data-binding) - Bind UI components in the layouts to data sources in the app.
@@ -56,6 +57,8 @@ Go to the [Releases](https://github.com/aptx113/Foody/releases) to download the 
   - [Retrofit2](https://github.com/square/retrofit) - Send requests to API and receive response.
   - [Timber](https://github.com/JakeWharton/timber) - For logging.
 - [Material](https://github.com/material-components/material-components-android) - Help to build material components like bottom navigation bar, floating action button.
+- [detekt](https://github.com/detekt/detekt) - Use static code analysis tool for the Kotlin to improve code smell.
+- [Ktlint](https://github.com/JLLeitschuh/ktlint-gradle) - To make code follow Kotlin official code style.
 - Architectural and Design pattern
   - MVVM
   - Observer
@@ -74,4 +77,9 @@ width="10%"/>
 
 Foody using the [Spoonacular API](https://spoonacular.com/food-api) for obtaining remote data.<br>
 Spoonacular API provides a RESTful API interface to highly detailed objects built from plenty of lines of data related to Food Recipes.
+
+## Contact
+<danteyu.studio@gmail.com>
+
+Dante Yu
 
