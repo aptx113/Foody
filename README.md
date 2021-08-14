@@ -2,8 +2,8 @@
 
 <p align="center">
   <a href="https://android-arsenal.com/api?level=24"><img alt="API" src="https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat"/></a>
-   <a href="https://github.com/aptx113/Foody/actions"><img alt="Build Status" src="https://github.com/aptx113/Foody/actions/workflows/build.yml/badge.svg"/></a> 
-  <a href="https://github.com/aptx113"><img alt="Profile" src="https://img.shields.io/static/v1?label=GitHub&message=aptx113&color=blue&logo=github"/></a> 
+   <a href="https://github.com/aptx113/Foody/actions"><img alt="Build Status" src="https://github.com/aptx113/Foody/actions/workflows/build.yml/badge.svg"/></a>
+  <a href="https://github.com/aptx113"><img alt="Profile" src="https://img.shields.io/static/v1?label=GitHub&message=aptx113&color=blue&logo=github"/></a>
 </p>
 
 <p align="center">
@@ -72,7 +72,7 @@ Go to the [Releases](https://github.com/aptx113/Foody/releases) to download the 
 
 ## Open API
 
-<img src="https://user-images.githubusercontent.com/56501046/129440570-48ffd12e-c6fa-426e-960f-7d88e8739d8b.png" align="right" height="10%" 
+<img src="https://user-images.githubusercontent.com/56501046/129440570-48ffd12e-c6fa-426e-960f-7d88e8739d8b.png" align="right" height="10%"
 width="10%"/>
 
 Foody using the [Spoonacular API](https://spoonacular.com/food-api) for obtaining remote data.<br>
@@ -82,4 +82,3 @@ Spoonacular API provides a RESTful API interface to highly detailed objects buil
 <danteyu.studio@gmail.com>
 
 Dante Yu
-
