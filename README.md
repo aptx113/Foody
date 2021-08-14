@@ -61,4 +61,17 @@ Go to the [Releases](https://github.com/aptx113/Foody/releases) to download the 
   - Observer
   - Adapter
   - Dependency Injection
-  - Singleton      
+  - Singleton
+
+## MAD Score
+![summary](https://user-images.githubusercontent.com/56501046/129439729-0ddb2de0-77ec-4a8c-924a-5c6bc7dccc40.jpg)
+![kotlin](https://user-images.githubusercontent.com/56501046/129439743-8912c545-4448-4296-849e-2075adfae776.jpg)
+
+## Open API
+
+<img src="https://user-images.githubusercontent.com/56501046/129440570-48ffd12e-c6fa-426e-960f-7d88e8739d8b.png" align="right" height="10%" 
+width="10%"/>
+
+Foody using the [Spoonacular API](https://spoonacular.com/food-api) for obtaining remote data.<br>
+Spoonacular API provides a RESTful API interface to highly detailed objects built from plenty of lines of data related to Food Recipes.
+
