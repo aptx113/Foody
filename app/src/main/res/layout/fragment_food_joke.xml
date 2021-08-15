@@ -76,7 +76,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.37"
-            bind:foodJokeApiRequest="@{viewModel.foodJokeRequestFlow.value}"
+            bind:foodJokeApiRequest="@{viewModel.foodJokeRequestFlow}"
             bind:foodJokeResult="@{viewModel.foodJokeResult}" />
 
         <TextView
@@ -91,7 +91,7 @@
             app:layout_constraintEnd_toEndOf="@id/food_joke_error_img"
             app:layout_constraintStart_toStartOf="@id/food_joke_error_img"
             app:layout_constraintTop_toBottomOf="@id/food_joke_error_img"
-            bind:foodJokeApiRequest="@{viewModel.foodJokeRequestFlow.value}"
+            bind:foodJokeApiRequest="@{viewModel.foodJokeRequestFlow}"
             bind:foodJokeResult="@{viewModel.foodJokeResult}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

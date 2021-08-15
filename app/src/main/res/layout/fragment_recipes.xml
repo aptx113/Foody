@@ -72,7 +72,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.37"
-            bind:apiResponse="@{viewModel.recipesFlow.value}"
+            bind:apiResponse="@{viewModel.recipesFlow}"
             bind:foodRecipes="@{viewModel.recipes}" />
 
         <TextView
@@ -87,7 +87,7 @@
             app:layout_constraintEnd_toEndOf="@id/recipes_error_img"
             app:layout_constraintStart_toStartOf="@id/recipes_error_img"
             app:layout_constraintTop_toBottomOf="@id/recipes_error_img"
-            bind:apiResponse="@{viewModel.recipesFlow.value}"
+            bind:apiResponse="@{viewModel.recipesFlow}"
             bind:foodRecipes="@{viewModel.recipes}" />
 
 
