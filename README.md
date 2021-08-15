@@ -16,24 +16,24 @@ Go to the [Releases](https://github.com/aptx113/Foody/releases) to download the 
 ## Feature
 1. Search recipes by selecting chips or entering keyword.
 
-<img width="300" height="600" src="https://github.com/aptx113/Foody/blob/create_readme/preview/Foody_Recipe_search.gif"/>
+<img width="300" height="600" src="https://github.com/aptx113/Foody/blob/master/preview/Foody_Recipe_search.gif"/>
 
 2. Navigate to Details to check more recipe info.
 <p align="left">
-<img width="300" height="600" src="https://github.com/aptx113/Foody/blob/create_readme/preview/Foody_Details.gif"/>
+<img width="300" height="600" src="https://github.com/aptx113/Foody/blob/master/preview/Foody_Details.gif"/>
 </p>
 
 3. Add recipes to Favorite with multiple selection and deletion.
 
-<img width="300" height="600" src="https://github.com/aptx113/Foody/blob/create_readme/preview/Foody_Favorite.gif"/>
+<img width="300" height="600" src="https://github.com/aptx113/Foody/blob/master/preview/Foody_Favorite.gif"/>
 
 4. Randomly show food joke.
 
-<img width="300" height="600" src="https://github.com/aptx113/Foody/blob/create_readme/preview/Foody_Joke.gif"/>
+<img width="300" height="600" src="https://github.com/aptx113/Foody/blob/master/preview/Foody_Joke.gif"/>
 
 5. Display the last Recipe list when offline through cache.
 
-<img width="300" height="600" src="https://github.com/aptx113/Foody/blob/create_readme/preview/Foody_Offline_Cache.gif"/>
+<img width="300" height="600" src="https://github.com/aptx113/Foody/blob/master/preview/Foody_Offline_Cache.gif"/>
 
 ## Tech stack & Open-source libraries
 - Minimum SDK level 24
