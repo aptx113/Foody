@@ -92,3 +92,7 @@ lint/tmp/
 
 # Fabric
 Fabric.properties
+
+#idea folder
+.idea/
+**/.idea
