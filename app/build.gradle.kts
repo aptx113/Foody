@@ -66,11 +66,6 @@ android {
     }
 
     flavorDimensions(BuildProductDimensions.ENVIRONMENT)
-    productFlavors {
-        ProductFlavorDevelop.appCreate(this)
-        ProductFlavorQA.appCreate(this)
-        ProductFlavorProduction.appCreate(this)
-    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
