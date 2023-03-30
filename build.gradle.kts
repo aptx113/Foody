@@ -40,7 +40,7 @@ plugins {
 }
 
 allprojects {
-    repositories.applyDefault()
+//    repositories.applyDefault()
 
     apply {
         plugin(Plugins.DOKKA)
