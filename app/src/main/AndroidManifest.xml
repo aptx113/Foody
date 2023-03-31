@@ -19,7 +19,9 @@
             android:name=".ui.details.DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@style/DetailsActivityTheme" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

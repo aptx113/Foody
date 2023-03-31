@@ -36,6 +36,7 @@ gmsPlugin = "4.3.14"
 hilt = "2.44.2"
 hiltExt = "1.0.0"
 jacoco = "0.8.7"
+jsoup = "1.15.4"
 junit4 = "4.13.2"
 kotlin = "1.8.0"
 kotlinxCoroutines = "1.6.4"
@@ -44,6 +45,7 @@ kotlinxSerializationJson = "1.4.1"
 ksp = "1.8.0-1.0.9"
 lint = "30.3.1"
 material = "1.8.0"
+moshi = "1.14.0"
 okhttp = "4.10.0"
 protobuf = "3.22.2"
 protobufPlugin = "0.8.19"
@@ -51,6 +53,8 @@ retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "0.8.0"
 room = "2.5.0"
 secrets = "2.0.1"
+shimmer = "0.5.0"
+timber = "5.0.1"
 truth = "1.1.3"
 turbine = "0.12.2"
 xLog = "1.11.0"
@@ -73,7 +77,7 @@ androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-t
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
-androidx-constaintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintlayout" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 androidx-dataStore-core = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
@@ -117,6 +121,7 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
 hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltExt" }
+jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
@@ -125,14 +130,19 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+moshi = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
+moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
+retorfit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 xLog = { group = "com.elvishew", name = "xlog", version.ref = "xLog" }
@@ -154,6 +164,8 @@ androidx-navigation = ["androidx.navigation.compose", "androidx.navigation.fragm
 androidx-test = ["androidx.test.core", "androidx.test.espresso.core", "androidx.test.ext", "androidx.test.ext.truth", "androidx.test.rules", "androidx.test.runner", "androidx.test.uiautomator"]
 coil = ["coil.kt.bom", "coil.kt", "coil.kt.compose", "coil.kt.svg"]
 kotlinx = ["kotlinx.coroutines.android", "kotlinx.datetime", "kotlinx.serialization.json"]
+retrofit = ["retrofit.core", "retrofit.kotlin-serialization", "retorfit-moshi"]
+room = ["room.ktx", "room.runtime"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
