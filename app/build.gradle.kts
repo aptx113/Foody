@@ -1,52 +1,58 @@
-/*
- * Copyright 2021 Dante Yu
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+import com.danteyu.studio.foody.config.DefaultConfigs
 import dependencyLibs.AndroidTestDependencies.androidTestLibraries
-import dependencyLibs.Libraries.kaptLibraries
 import dependencyLibs.Libraries.libraries
+import com.danteyu.studio.foody.FoodyBuildType
 import dependencyLibs.TestDependencies.testLibraries
 import ext.addAndroidTestDependencies
 import ext.addDependencies
-import ext.addKapt
 import ext.addTestDependencies
 
 plugins {
-    id(Plugins.ANDROID_APPLICATION)
-    kotlin(Plugins.KOTLIN_ANDROID)
-    kotlin(Plugins.KOTLIN_KAPT)
-    id(Plugins.KOTLIN_PARCELIZE)
-    id(Plugins.HILT_ANDROID)
-    id(Plugins.NAV_SAFEARGS)
+    id("foody.android.application")
+    kotlin("kapt")
+    id("foody.android.application.compose")
+    id("foody.android.application.jacoco")
+    id("foody.android.application.flavors")
+    id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
-    compileSdkVersion(AndroidConfig.COMPILE_SDK_VERSION)
 
     defaultConfig {
-        applicationId = AndroidConfig.APPLICATION_ID
-        minSdkVersion(AndroidConfig.MIN_SDK_VERSION)
-        targetSdkVersion(AndroidConfig.TARGET_SDK_VERSION)
+        applicationId = DefaultConfigs.APPLICATION_ID
 
-        versionCode = AndroidConfig.VERSION_CODE
-        versionName = AndroidConfig.VERSION_NAME
+        versionCode = DefaultConfigs.VERSION_CODE
+        versionName = DefaultConfigs.VERSION_NAME
 
-        testInstrumentationRunner = AndroidConfig.TEST_INSTRUMENTATION_RUNNER
+        testInstrumentationRunner = DefaultConfigs.TEST_INSTRUMENTATION_RUNNER
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+
+    buildTypes {
+        val debug by getting {
+            applicationIdSuffix = FoodyBuildType.Debug.applicationIdSuffix
+        }
+        val release by getting {
+            isMinifyEnabled = true
+            applicationIdSuffix = FoodyBuildType.Release.applicationIdSuffix
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+            // To publish on the Play store a private signing key is required, but to allow anyone
+            // who clones the code to sign and run the release variant, use the debug signing key.
+            // TODO: Abstract the signing configuration to a separate file to avoid hardcoding this.
+            signingConfig = signingConfigs.getByName("debug")
+        }
     }
 
     buildFeatures {
-        dataBinding = BuildFeatures.DATA_BINDING_ENABLED
+        dataBinding = true
     }
 
     buildTypes {
@@ -65,43 +71,26 @@ android {
         }
     }
 
-    flavorDimensions(BuildProductDimensions.ENVIRONMENT)
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-
-    lintOptions {
-        lintConfig = rootProject.file(".lint/config.xml")
-        isCheckDependencies = true
-    }
-
     packagingOptions {
-        exclude("META-INF/*.kotlin_module")
-    }
-
-    sourceSets {
-        getByName("main") {
-            java.srcDir("src/main/kotlin")
-        }
-        getByName("test") {
-            java.srcDir("src/test/kotlin")
-        }
-        getByName("androidTest") {
-            java.srcDir("src/androidTest/kotlin")
+        resources {
+            excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+    namespace = DefaultConfigs.NAME_SPACE
 }
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     addDependencies(libraries)
-    addKapt(kaptLibraries)
     addTestDependencies(testLibraries)
     addAndroidTestDependencies(androidTestLibraries)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    kaptAndroidTest(libs.hilt.compiler)
 }

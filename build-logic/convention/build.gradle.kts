@@ -17,3 +17,24 @@ dependencies {
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.navigation.safe.args.gradlePlugin)
 }
+
+gradlePlugin {
+    plugins {
+        register("androidApplicationCompose") {
+            id = "foody.android.application.compose"
+            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        }
+        register("androidApplication") {
+            id = "foody.android.application"
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
+        register("androidApplicationJacoco") {
+            id = "foody.android.application.jacoco"
+            implementationClass = "AndroidApplicationJacocoConventionPlugin"
+        }
+        register("androidFlavors") {
+            id = "foody.android.application.flavors"
+            implementationClass = "AndroidApplicationFlavorsConventionPlugin"
+        }
+    }
+}
