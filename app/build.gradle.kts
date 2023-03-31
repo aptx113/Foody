@@ -65,6 +65,9 @@ android {
             isIncludeAndroidResources = true
         }
     }
+    kotlin {
+        jvmToolchain(11)
+    }
     namespace = DefaultConfigs.NAME_SPACE
 }
 

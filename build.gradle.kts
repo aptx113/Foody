@@ -17,3 +17,9 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.secrets) apply false
 }
+
+tasks.register("clean") {
+    doLast {
+        delete(rootProject.buildDir)
+    }
+}
