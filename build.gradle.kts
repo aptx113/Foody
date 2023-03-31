@@ -17,6 +17,4 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.secrets) apply false
     alias(libs.plugins.protobuf) apply false
-    id("com.android.library") version "7.4.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.0" apply false
 }

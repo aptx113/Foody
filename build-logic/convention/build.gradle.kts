@@ -32,9 +32,21 @@ gradlePlugin {
             id = "foody.android.application.jacoco"
             implementationClass = "AndroidApplicationJacocoConventionPlugin"
         }
+        register("androidLibrary") {
+            id = "foody.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("androidLibraryCompose") {
+            id = "foody.android.library.compose"
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
         register("androidFlavors") {
             id = "foody.android.application.flavors"
             implementationClass = "AndroidApplicationFlavorsConventionPlugin"
+        }
+        register("androidHilt") {
+            id = "foody.android.hilt"
+            implementationClass = "AndroidHiltConventionPlugin"
         }
     }
 }
