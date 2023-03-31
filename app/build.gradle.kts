@@ -1,15 +1,9 @@
-import com.danteyu.studio.foody.config.DefaultConfigs
-import dependencyLibs.AndroidTestDependencies.androidTestLibraries
-import dependencyLibs.Libraries.libraries
 import com.danteyu.studio.foody.FoodyBuildType
+import com.danteyu.studio.foody.config.DefaultConfigs
 import com.google.protobuf.gradle.builtins
 import com.google.protobuf.gradle.generateProtoTasks
 import com.google.protobuf.gradle.protobuf
 import com.google.protobuf.gradle.protoc
-import dependencyLibs.TestDependencies.testLibraries
-import ext.addAndroidTestDependencies
-import ext.addDependencies
-import ext.addTestDependencies
 
 plugins {
     id("foody.android.application")
@@ -59,22 +53,6 @@ android {
 
     buildFeatures {
         dataBinding = true
-    }
-
-    buildTypes {
-        getByName(BuildType.RELEASE) {
-            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
-
-            isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
-            isTestCoverageEnabled = BuildTypeRelease.isTestCoverageEnabled
-        }
-
-        getByName(BuildType.DEBUG) {
-            applicationIdSuffix = BuildTypeDebug.APPLICATION_ID_SUFFIX
-            versionNameSuffix = BuildTypeDebug.VERSION_NAME_SUFFIX
-            isMinifyEnabled = BuildTypeDebug.isMinifyEnabled
-            isTestCoverageEnabled = BuildTypeDebug.isTestCoverageEnabled
-        }
     }
 
     packagingOptions {
@@ -169,9 +147,4 @@ dependencies {
     implementation(libs.timber)
 
     implementation(libs.xLog)
-
-//    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-//    addDependencies(libraries)
-//    addTestDependencies(testLibraries)
-//    addAndroidTestDependencies(androidTestLibraries)
 }
