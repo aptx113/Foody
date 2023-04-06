@@ -18,10 +18,6 @@ package com.danteyu.studio.foody.ext
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.danteyu.studio.foody.model.FoodRecipe
-import com.danteyu.studio.foody.ui.details.DetailsAssistedFactory
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -37,14 +33,3 @@ fun Fragment.showSnackBar(
     action: () -> Unit = {}
 ) =
     Snackbar.make(view, message, Snackbar.LENGTH_SHORT).setAction(actionTitle) { action() }.show()
-
-@Suppress("UNCHECKED_CAST")
-fun Fragment.provideDetailsFactory(
-    assistedFactory: DetailsAssistedFactory,
-    foodRecipe: FoodRecipe?
-): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return assistedFactory.create(foodRecipe) as T
-    }
-}

@@ -20,7 +20,6 @@ import com.danteyu.studio.foody.BASE_URL
 import com.danteyu.studio.foody.BuildConfig
 import com.danteyu.studio.foody.data.source.api.FoodyApiService
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,7 +42,6 @@ object NetworkModule {
     @Provides
     fun provideMoshi(): Moshi =
         Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
             .build()
 
     @Singleton

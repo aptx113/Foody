@@ -15,33 +15,32 @@
  */
 package com.danteyu.studio.foody.ui.details
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.danteyu.studio.foody.data.repository.FoodyRepository
 import com.danteyu.studio.foody.model.FoodRecipe
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-/**
- * Created by George Yu in Apr. 2021.
- */
-class DetailsViewModel @AssistedInject constructor(
+@HiltViewModel
+class DetailsViewModel @Inject constructor(
     private val repository: FoodyRepository,
-    @Assisted private val argument: FoodRecipe
+    savedStateHandle: SavedStateHandle,
 ) :
     ViewModel() {
 
-    val foodRecipe = argument
+    val foodRecipe = savedStateHandle.get<FoodRecipe>("foodRecipe")
 
     val isInMyFavoriteFlow = repository.loadFavoriteRecipesFlow().map {
         var contained = false
         it.forEach { favoriteRecipe ->
-            if (favoriteRecipe.id == argument.id) contained = true
+            if (favoriteRecipe.id == foodRecipe?.id) contained = true
         }
         contained
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)

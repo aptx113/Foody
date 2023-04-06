@@ -21,28 +21,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.danteyu.studio.foody.RECIPE_RESULT_KEY
 import com.danteyu.studio.foody.databinding.FragmentOverviewBinding
-import com.danteyu.studio.foody.ext.provideDetailsFactory
-import com.danteyu.studio.foody.ui.details.DetailsAssistedFactory
 import com.danteyu.studio.foody.ui.details.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class OverviewFragment : Fragment() {
 
-    @Inject
-    lateinit var detailsViewModelFactory: DetailsAssistedFactory
-
-    private val detailsViewModel by activityViewModels<DetailsViewModel> {
-        provideDetailsFactory(
-            detailsViewModelFactory,
-            requireArguments().getParcelable(
-                RECIPE_RESULT_KEY
-            )
-        )
-    }
+    private val detailsViewModel by activityViewModels<DetailsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
