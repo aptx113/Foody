@@ -74,6 +74,8 @@ class DetailsActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
             tab.text = titles[position]
         }.attach()
+
+        args.toSavedStateHandle()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
