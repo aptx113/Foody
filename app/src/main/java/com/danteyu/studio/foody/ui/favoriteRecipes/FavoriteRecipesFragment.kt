@@ -22,8 +22,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.danteyu.studio.foody.R
 import com.danteyu.studio.foody.databinding.FragmentFavoriteRecipesBinding
@@ -56,8 +59,8 @@ class FavoriteRecipesFragment : Fragment() {
         viewDataBinding.recyclerView.adapter = adapter
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
         viewDataBinding.viewModel = viewModel
+        provideMenu()
 
-        setHasOptionsMenu(true)
         return viewDataBinding.root
     }
 
@@ -79,29 +82,35 @@ class FavoriteRecipesFragment : Fragment() {
             .observeInLifecycle(viewLifecycleOwner)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.favorite_recipes_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.deleteAll_favorite) {
-
-            if (viewModel.favoriteRecipes.value?.size == 0) {
-                showToast(getString(R.string.nothing_left_to_remove))
-            } else {
-                viewModel.deleteAllFavoriteRecipes()
-                showSnackBar(
-                    viewDataBinding.root,
-                    getString(R.string.all_recipes_removed),
-                    getString(R.string.ok)
-                )
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         adapter.clearContextualActionMode()
+    }
+
+    private fun provideMenu() {
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.favorite_recipes_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                if (menuItem.itemId == R.id.deleteAll_favorite) {
+
+                    if (viewModel.favoriteRecipes.value?.size == 0) {
+                        showToast(getString(R.string.nothing_left_to_remove))
+                    } else {
+                        viewModel.deleteAllFavoriteRecipes()
+                        showSnackBar(
+                            viewDataBinding.root,
+                            getString(R.string.all_recipes_removed),
+                            getString(R.string.ok)
+                        )
+                    }
+                }
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 }
