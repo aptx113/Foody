@@ -17,14 +17,12 @@ package com.danteyu.studio.foody.ui.foodJoke
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.danteyu.studio.foody.API_KEY
 import com.danteyu.studio.foody.R
@@ -54,7 +52,6 @@ class FoodJokeFragment : Fragment() {
 
         viewDataBinding.viewModel = viewModel
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
-        setHasOptionsMenu(true)
 
         return viewDataBinding.root
     }
@@ -85,22 +82,6 @@ class FoodJokeFragment : Fragment() {
         }.observeInLifecycle(viewLifecycleOwner)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.food_joke_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.food_joke_share) {
-            val shareIntent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, foodJoke)
-                type = "text/plain"
-            }
-            startActivity(shareIntent)
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun loadDataFromCache() {
         lifecycleScope.launchWhenStarted {
             viewModel.foodJokeResult.observeOnce(viewLifecycleOwner) {
@@ -113,5 +94,27 @@ class FoodJokeFragment : Fragment() {
                     if (it.isEmpty()) viewDataBinding.foodJokeCardView.visibility = View.INVISIBLE
             }
         }
+    }
+
+    private fun provideMenu() {
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.food_joke_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                if (menuItem.itemId == R.id.food_joke_share) {
+                    val shareIntent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, foodJoke)
+                        type = "text/plain"
+                    }
+                    startActivity(shareIntent)
+                }
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 }
