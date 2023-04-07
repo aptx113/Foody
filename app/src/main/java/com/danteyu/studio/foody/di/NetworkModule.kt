@@ -19,15 +19,17 @@ import com.danteyu.studio.foody.API_TIMEOUT_SECONDS
 import com.danteyu.studio.foody.BASE_URL
 import com.danteyu.studio.foody.BuildConfig
 import com.danteyu.studio.foody.data.source.api.FoodyApiService
-import com.squareup.moshi.Moshi
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -40,9 +42,9 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideMoshi(): Moshi =
-        Moshi.Builder()
-            .build()
+    fun providesNetworkJson(): Json = Json {
+        ignoreUnknownKeys = true
+    }
 
     @Singleton
     @Provides
@@ -59,13 +61,14 @@ object NetworkModule {
             )
             .build()
 
+    @OptIn(ExperimentalSerializationApi::class)
     @Singleton
     @Provides
-    fun provideRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit =
+    fun provideRetrofit(networkJson: Json, okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(networkJson.asConverterFactory("application/json".toMediaType()))
             .build()
 
     @Singleton

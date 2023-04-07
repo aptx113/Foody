@@ -45,7 +45,6 @@ kotlinxSerializationJson = "1.4.1"
 ksp = "1.8.0-1.0.9"
 lint = "30.3.1"
 material = "1.8.0"
-moshi = "1.14.0"
 okhttp = "4.10.0"
 protobuf = "3.22.2"
 protobufPlugin = "0.8.19"
@@ -131,14 +130,11 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-moshi = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
-moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
-retorfit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
@@ -165,7 +161,7 @@ androidx-navigation = ["androidx.navigation.compose", "androidx.navigation.fragm
 androidx-test = ["androidx.test.core", "androidx.test.espresso.core", "androidx.test.ext", "androidx.test.ext.truth", "androidx.test.rules", "androidx.test.runner", "androidx.test.uiautomator"]
 coil = ["coil.kt.bom", "coil.kt", "coil.kt.compose", "coil.kt.svg"]
 kotlinx = ["kotlinx.coroutines.android", "kotlinx.datetime", "kotlinx.serialization.json"]
-retrofit = ["retrofit.core", "retrofit.kotlin-serialization", "retorfit-moshi"]
+retrofit = ["retrofit.core", "retrofit.kotlin-serialization"]
 room = ["room.ktx", "room.runtime"]
 
 [plugins]

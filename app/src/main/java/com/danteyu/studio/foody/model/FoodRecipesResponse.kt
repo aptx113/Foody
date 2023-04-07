@@ -18,14 +18,14 @@ package com.danteyu.studio.foody.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.danteyu.studio.foody.RECIPES_TABLE
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Entity(tableName = RECIPES_TABLE)
-@JsonClass(generateAdapter = true)
+@Serializable
 data class FoodRecipesResponse(
 
-    @Json(name = "results")
+    @SerialName(value = "results")
     val foodRecipes: List<FoodRecipe>
 ) {
     @PrimaryKey(autoGenerate = false)

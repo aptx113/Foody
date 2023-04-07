@@ -19,16 +19,16 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.danteyu.studio.foody.FOOD_JOKE_TABLE
-import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 /**
  * Created by George Yu in May. 2021.
  */
 @Entity(tableName = FOOD_JOKE_TABLE)
 @Parcelize
-@JsonClass(generateAdapter = true)
+@Serializable
 data class FoodJoke(val text: String) : Parcelable {
 
     @PrimaryKey(autoGenerate = false)
