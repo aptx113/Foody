@@ -21,9 +21,6 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import kotlinx.coroutines.flow.MutableStateFlow
 
-/**
- * Created by George Yu in 4月. 2021.
- */
 class NetworkListener : ConnectivityManager.NetworkCallback() {
 
     private val isNetworkAvailable = MutableStateFlow(false)
@@ -33,13 +30,24 @@ class NetworkListener : ConnectivityManager.NetworkCallback() {
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.registerDefaultNetworkCallback(this)
 
-        connectivityManager.allNetworks.forEach { network ->
-            val networkCapability = connectivityManager.getNetworkCapabilities(network)
-            networkCapability?.let {
-                if (it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
-                    isNetworkAvailable.value = true
-                    return@forEach
-                }
+        val network = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+
+        when {
+            network == null -> {
+                isNetworkAvailable.value = false
+            }
+            networkCapabilities == null -> {
+                isNetworkAvailable.value = false
+            }
+            networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                isNetworkAvailable.value = true
+            }
+            networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                isNetworkAvailable.value = true
+            }
+            else -> {
+                isNetworkAvailable.value = false
             }
         }
         return isNetworkAvailable
