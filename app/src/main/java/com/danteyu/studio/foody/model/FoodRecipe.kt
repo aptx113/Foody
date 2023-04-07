@@ -19,43 +19,27 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.danteyu.studio.foody.FAVORITE_RECIPES_TABLE
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 @Entity(tableName = FAVORITE_RECIPES_TABLE)
-@JsonClass(generateAdapter = true)
 data class FoodRecipe(
-    @Json(name = "aggregateLikes")
     val aggregateLikes: Int,
-    @Json(name = "cheap")
     val cheap: Boolean,
-    @Json(name = "dairyFree")
     val dairyFree: Boolean,
-    @Json(name = "extendedIngredients")
     val extendedIngredients: List<ExtendedIngredient>,
-    @Json(name = "glutenFree")
     val glutenFree: Boolean,
     @PrimaryKey
-    @Json(name = "id")
     val id: Int,
-    @Json(name = "image")
     val image: String,
-    @Json(name = "readyInMinutes")
     val readyInMinutes: Int,
-    @Json(name = "sourceName")
     val sourceName: String?,
-    @Json(name = "sourceUrl")
     val sourceUrl: String,
-    @Json(name = "summary")
     val summary: String,
-    @Json(name = "title")
     val title: String,
-    @Json(name = "vegan")
     val vegan: Boolean,
-    @Json(name = "vegetarian")
     val vegetarian: Boolean,
-    @Json(name = "veryHealthy")
     val veryHealthy: Boolean
 ) : Parcelable

@@ -19,48 +19,42 @@ import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.danteyu.studio.foody.model.ExtendedIngredient
 import com.danteyu.studio.foody.model.FoodRecipe
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 /**
  * Created by George Yu on 2021/4/4.
  */
 @ProvidedTypeConverter
-class RecipesConverters @Inject constructor(private val moshi: Moshi) {
+class RecipesConverters @Inject constructor() {
 
     @TypeConverter
     fun convertFoodRecipesToJson(foodRecipes: List<FoodRecipe>?): String? {
         return foodRecipes?.let {
-            moshi.adapter(List::class.java)
-                .toJson(it)
+            Json.encodeToString(it)
         }
     }
 
     @TypeConverter
     fun convertJsonToFoodRecipes(json: String?): List<FoodRecipe>? {
         return json?.let {
-            val type = Types.newParameterizedType(List::class.java, FoodRecipe::class.java)
-            val adapter: JsonAdapter<List<FoodRecipe>> = moshi.adapter(type)
-            adapter.fromJson(it)
+            Json.decodeFromString<List<FoodRecipe>>(it)
         }
     }
 
     @TypeConverter
     fun convertIngredientsToJson(ingredients: List<ExtendedIngredient>?): String? {
         return ingredients?.let {
-            moshi.adapter(List::class.java)
-                .toJson(it)
+            Json.encodeToString(it)
         }
     }
 
     @TypeConverter
     fun covertJsonToIngredients(json: String?): List<ExtendedIngredient>? {
         return json?.let {
-            val type = Types.newParameterizedType(List::class.java, ExtendedIngredient::class.java)
-            val adapter: JsonAdapter<List<ExtendedIngredient>> = moshi.adapter(type)
-            adapter.fromJson(it)
+            Json.decodeFromString<List<ExtendedIngredient>>(it)
         }
     }
 }

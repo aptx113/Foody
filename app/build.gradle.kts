@@ -14,6 +14,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
     kotlin("kapt")
+    id("kotlinx-serialization")
     id("kotlin-parcelize")
     alias(libs.plugins.protobuf)
 }
@@ -129,9 +130,6 @@ dependencies {
     implementation(libs.bundles.kotlinx)
 
     implementation(libs.material)
-
-    implementation(libs.moshi)
-    ksp(libs.moshi.codegen)
 
     implementation(libs.okhttp.logging)
 
