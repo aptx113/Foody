@@ -17,14 +17,13 @@ package com.danteyu.studio.foody.ui.recipes
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.danteyu.studio.foody.R
@@ -58,8 +57,8 @@ class RecipesFragment : Fragment() {
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
         viewDataBinding.viewModel = viewModel
 
-        setHasOptionsMenu(true)
         setupRecyclerView()
+        provideMenu()
         networkListener = NetworkListener()
 
         return viewDataBinding.root
@@ -100,24 +99,6 @@ class RecipesFragment : Fragment() {
                     request = { requestApiData(args.mealType, args.dietType) }
                 )
             }.observeInLifecycle(viewLifecycleOwner)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.recipes_menu, menu)
-
-        val search = menu.findItem(R.id.menu_search)
-        val searchView = search.actionView as? SearchView
-        searchView?.isSubmitButtonEnabled = true
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (!query.isNullOrEmpty()) {
-                    searchApiData(query)
-                }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean = true
-        })
     }
 
     override fun onResume() {
@@ -218,5 +199,32 @@ class RecipesFragment : Fragment() {
                 viewModel.saveBackOnline(false)
             }
         }
+    }
+
+    private fun provideMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.recipes_menu, menu)
+
+                val search = menu.findItem(R.id.menu_search)
+                val searchView = search.actionView as? SearchView
+                searchView?.isSubmitButtonEnabled = true
+                searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        if (!query.isNullOrEmpty()) {
+                            searchApiData(query)
+                        }
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean = true
+                })
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 }
