@@ -68,19 +68,20 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
             updateChip(it.selectedDietTypeId, viewDataBinding.dietTypeChipGroup)
         }.observeInLifecycle(viewLifecycleOwner)
 
-        viewDataBinding.mealTypeChipGroup.setOnCheckedChangeListener { group, checkedId ->
-            val chip = group.findViewById<Chip>(checkedId)
+        viewDataBinding.mealTypeChipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            val chip = group.findViewById<Chip>(checkedIds.first())
             val selectedMealType = chip.text.toString().lowercase(Locale.ROOT)
             mealTypeChip = selectedMealType
-            mealTypeChipId = checkedId
+            mealTypeChipId = checkedIds.first()
         }
 
-        viewDataBinding.dietTypeChipGroup.setOnCheckedChangeListener { group, checkedId ->
-            val chip = group.findViewById<Chip>(checkedId)
+        viewDataBinding.dietTypeChipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            val chip = group.findViewById<Chip>(checkedIds.first())
             val selectedDietType = chip.text.toString().lowercase(Locale.ROOT)
             dietTypeChip = selectedDietType
-            dietTypeChipId = checkedId
+            dietTypeChipId = checkedIds.first()
         }
+
         viewModel.applySelectedChipsFlow
             .onEach {
                 viewModel.saveMealAndDietTypeTemp(
